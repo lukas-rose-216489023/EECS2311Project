@@ -7,6 +7,7 @@ public class Main {
 		System.out.println("How are you?");
 		System.out.println("Test1?");
 		System.out.println("New test!");
+		//Added a new comment!
 	}
 
 }
