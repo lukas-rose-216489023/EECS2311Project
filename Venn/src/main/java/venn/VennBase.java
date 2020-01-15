@@ -1,4 +1,4 @@
-package venn.venn;
+package venn;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
