@@ -16,15 +16,17 @@ public class VennBase extends Application	 {
 		Stage stage2 = new Stage();
 		Circle circle = new Circle();
 		circle.centerYProperty().bind(pane.heightProperty().divide(2.0));	
-		circle.setCenterX(250);
-		circle.setRadius(100);
+		circle.centerXProperty().bind(pane.widthProperty().divide(5.0/3.0));
+		circle.radiusProperty().bind(pane.widthProperty().divide(5.0));
+//		circle.setRadius(100);
 		circle.setStroke(Color.BLUE);
 		circle.setFill(Color.RED);
 
 		Circle circle2 = new Circle();
 		circle2.centerYProperty().bind(pane.heightProperty().divide(2.0));												
-		circle2.setCenterX(350);
-		circle2.setRadius(100);
+		circle2.centerXProperty().bind(pane.widthProperty().divide(5.0/2.0));
+		circle2.radiusProperty().bind(pane.widthProperty().divide(5.0));
+//		circle2.setRadius(100);
 		circle2.setStroke(Color.RED);
 		circle2.setFill(Color.BLUE);
 		
