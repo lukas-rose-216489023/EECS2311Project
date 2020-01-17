@@ -4,6 +4,9 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+
+import javafx.application.Application;
+
 import javax.swing.*;
  
  
@@ -41,25 +44,15 @@ public class MainApp extends JFrame{
     	menu.setMnemonic(KeyEvent.VK_A);
     	menu.getAccessibleContext().setAccessibleDescription("Menu for Venn Diagram Maker");
     	
-    	menuItem = new JMenuItem("Circle");
-    	menuItem.addActionListener((event) -> createCircle());;
+    	menuItem = new JMenuItem("Venn Diagram");
+    	menuItem.addActionListener((event) -> new VennBase());;
     	
     	menuBar.add(menu);
     	window.setJMenuBar(menuBar);
     	menu.add(menuItem);
     }
     
-    public static void createCircle() {
-    	Ball redBall = new Ball();
-     
-        redBall.setBallBorderColor(Color.red);
-        redBall.setBallWidth(100);
-        redBall.setBallHeight(100);
-        redBall.setBallX(100);
-        redBall.setBallY(100);
-        redBall.drawBall(window);
-         
-    }
+    
     
     
 }
