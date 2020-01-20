@@ -2,15 +2,18 @@ Requirements Document - Group 17
 Venn Diagram Tool
 
 Members:
-*
+* Jawad Ahmed 216340309
 *
 *
 *
 
 ---What is the tool?
 
+	This tool is a visual mathematical tool to categorize entities in a venn diagram format which makes use of the set base mathematics. The venn diagram are mainly a combination of two or more circular objects which is a composition of one or more objects.
 
 ---Uses cases?
-
+	- 
 
 ---Acceptance tests?
+	
+	- If an object falls into a particular category
