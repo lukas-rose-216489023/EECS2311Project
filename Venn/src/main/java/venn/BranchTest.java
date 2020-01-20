@@ -10,6 +10,8 @@ public class BranchTest {
 		System.out.println("master ");
 
 		System.out.println("test Branch");
+		System.out.println("New statement from Branch!");
+
 	}
 
 }
