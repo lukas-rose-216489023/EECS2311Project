@@ -2,15 +2,36 @@ Requirements Document - Group 17
 Venn Diagram Tool
 
 Members:
-*
-*
-*
-*
+* Jawad Ahmed 216340309
+* 
+* Sarwat Shaheen (214677322)
+
+
+* Wei Ming Yu (216665424)
 
 ---What is the tool?
 
+	This tool is a visual mathematical tool to categorize entities in a venn diagram format which makes use of the set base mathematics. 
+	The venn diagram are mainly a combination of two or more circular objects which is a composition of one or more objects.
 
 ---Uses cases?
-
+	- 
 
 ---Acceptance tests?
+	
+	- If an object falls into a particular category, we want to test if our venn diagram contains the object. 
+	- If an object falls in two categories, we want to test if the objects exists in the intersection of the respective circles.
+	- If an object does not fall into any category, we want to test if it does not exists in the venn diagram.
+	- An object should not come into contact with the boundary of the circle (ie the object is fully enclosed within the circle).
+	- The different circles must be of the same radius
+	- The circle have an upper bound radius (due to screen size)
+	- The object will have a 25 character limit.
+***	- The object is a "dot" which when hovered over, will show the entry 
+	- The circles will be of different colors
+	- The object will be added via clicking options
+	- 
+	
+	
+	
+	
+	
