@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class VennBase extends Application {
+public class VennBase extends Application	 {
 	
 	@Override 
 	public void start(Stage primaryStage) {
@@ -19,16 +19,17 @@ public class VennBase extends Application {
 		
 		Pane pane = new Pane();
 		Circle circle = new Circle();
-		circle.centerYProperty().bind(pane.heightProperty().divide(4.0/3.0));	
-		circle.centerXProperty().bind(pane.widthProperty().divide(10.0/4.0));
-		circle.radiusProperty().bind(pane.heightProperty().divide(4.0));
+		circle.centerYProperty().bind(pane.heightProperty().divide(2.0));	
+		circle.centerXProperty().bind(pane.widthProperty().divide(5.0/3.0));
+		circle.radiusProperty().bind(pane.widthProperty().divide(5.0));
 		circle.setStroke(Color.BLUE);
 		circle.setFill(red);
 		
+		Pane pane2 = new Pane();
 		Circle circle2 = new Circle();
-		circle2.centerYProperty().bind(pane.heightProperty().divide(4.0/3.0));												
-		circle2.centerXProperty().bind(pane.widthProperty().divide(10.0/6.0));
-		circle2.radiusProperty().bind(pane.widthProperty().divide(pane.heightProperty().doubleValue()));
+		circle2.centerYProperty().bind(pane.heightProperty().divide(2.0));												
+		circle2.centerXProperty().bind(pane.widthProperty().divide(5.0/2.0));
+		circle2.radiusProperty().bind(pane.widthProperty().divide(5.0));
 		circle2.setStroke(Color.RED);
 		circle2.setFill(blue);
 		
