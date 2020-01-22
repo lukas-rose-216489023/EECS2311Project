@@ -14,34 +14,33 @@ import javafx.event.EventHandler;
 
 import javafx.stage.Stage;
 
+import javafx.fxml.FXMLLoader;
+
  
  
-public class MainApp extends Application{
-    
-	Menu mainmenu;
-	Button button1;   
-    
+public class MainApp extends Application{   
 	
-    public static void main(String[] args) 
-    {
-        launch(args);
-             
+	Stage window;
+	Scene scene1;
+    
+    public static void main(String[] args) {
+    	Application.launch(args);
     }
      
-    public void start(Stage primaryStage) throws Exception
-    {
-        primaryStage.getScene(menuScene);
+    public void start(Stage primaryStage) throws Exception{
+    	window = primaryStage;
+        
+    	Button but1 = new Button("Venn Diagram");
+    	but1.setOnAction(e -> window.setScene(scene1));
+    	but1.isVisible();
+        window.show();
     }
     
-    public void menu(Scene menuScene) throws Exception
-    {
-        menuScene.
-    }
-    
+    public void scene(Scene scene1) throws Exception{
     	
-  
+        
+    }
     
     
-    
-    
+   
 }
