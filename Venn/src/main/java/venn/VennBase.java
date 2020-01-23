@@ -1,11 +1,21 @@
 package venn;
 
+import java.awt.*;
+
+import javax.swing.event.ChangeListener;
+
 import javafx.application.Application;
+import javafx.beans.*;
+import javafx.animation.*;
+import javafx.event.*;
+import javafx.collections.*;
+import javafx.stage.*;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.*;
+import javafx.scene.shape.*;
+import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class VennBase extends Application	 {
 	
@@ -14,10 +24,11 @@ public class VennBase extends Application	 {
 		
 		Stage stage = new Stage();
 		
-		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.75);		
-		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.75);
+		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.2);		
+		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.2);
 		
 		Pane pane = new Pane();
+		
 		Circle circle = new Circle();
 		circle.centerYProperty().bind(pane.heightProperty().divide(2.0));	
 		circle.centerXProperty().bind(pane.widthProperty().divide(5.0/3.0));
@@ -25,7 +36,6 @@ public class VennBase extends Application	 {
 		circle.setStroke(Color.BLUE);
 		circle.setFill(red);
 		
-		Pane pane2 = new Pane();
 		Circle circle2 = new Circle();
 		circle2.centerYProperty().bind(pane.heightProperty().divide(2.0));												
 		circle2.centerXProperty().bind(pane.widthProperty().divide(5.0/2.0));
@@ -41,8 +51,20 @@ public class VennBase extends Application	 {
 		stage.setScene(scene2);
 		stage.show();
 		
+		Slider slider = new Slider();
+		slider.setMin(0);
+	    slider.setMax(100);
+	    slider.setValue(80);
+	    slider.setShowTickLabels(true);
+	    slider.setShowTickMarks(true);
+	    slider.setBlockIncrement(10);
+	    
+	    
+		
 		
 	}
+	
+
 	
 	
 	
