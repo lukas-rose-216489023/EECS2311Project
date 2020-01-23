@@ -10,8 +10,11 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) throws Exception{
 		Parent root = FXMLLoader.load(getClass().getResource("SceneVenn.fxml"));
+		
+		Scene scene = new Scene(root, 100, 100);
+		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("Venn Diagram");
-		primaryStage.setScene(new Scene(root, 800, 500));
+		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	
