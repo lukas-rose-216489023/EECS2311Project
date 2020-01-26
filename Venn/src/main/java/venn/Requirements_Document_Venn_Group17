@@ -2,11 +2,10 @@ Requirements Document - Group 17
 Venn Diagram Tool
 
 Members:
-* Jawad Ahmed 216340309
-* 
-* Sarwat Shaheen 214677322
-
-*
+* Jawad Ahmed 		216340309
+* Lucas Rose 		21
+* Sarwat Shaheen 	214677322
+* Wei Ming Yu 		21
 
 ---What is the tool:
 	
@@ -14,10 +13,12 @@ Members:
 	system are described in this document.
 
 
----Features
+---Features:
 	
-	- Customizable venn diagram circles (color, size, 
-	- 
+	- Customizable venn diagram circles (color, size)
+	- Text boxes can hold up to 25 characters
+	- Text boxes are fully enclosed within the circles
+	- Text boxes can be added via dropdown menu
 	
 ---Acceptance tests:
 	
