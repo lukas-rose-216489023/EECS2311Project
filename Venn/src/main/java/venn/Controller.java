@@ -1,28 +1,33 @@
 package venn;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Slider;
 import javafx.scene.shape.Circle;
 
 public class Controller {
 
-	private Circle circle1;
-	private ColorPicker cp1, cp2;
-	
-	public void insertClicked() {
-		System.out.println("Hi");
-	}
-	
-	
-	
-	public void colorSelected1() {
-		cp1.valueProperty().addListener(observable, oldValue, newValue) -> {
-			
-			int red = (int) (255 * newValue.getRed());
-			int green = (int) (255 * newValue.getGreen());
-			int blue = (int) (255 * newValue.getBlue());
-			
-			circle1.setFill(Color.rgb(red, green, blue,0.2));
-	}
-	
+    @FXML
+    private Circle circle2;
+
+    @FXML
+    private Circle circle1;
+
+    @FXML
+    private Slider slSize;
+
+    @FXML
+    private ColorPicker cp2;
+
+    @FXML
+    private ColorPicker cp1;
+
+    @FXML
+    void colorSelected1(ActionEvent event) {
+
+    }
+    
+    
+
 }

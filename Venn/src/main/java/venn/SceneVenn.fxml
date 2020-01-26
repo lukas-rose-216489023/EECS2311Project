@@ -11,14 +11,14 @@
    <children>
       <Pane prefHeight="441.0" prefWidth="705.0">
          <children>
-            <Circle fx:id="circle2" fill="#ff1f7d" layoutX="434.0" layoutY="221.0" opacity="0.4" radius="150.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="circle1" fill="DODGERBLUE" layoutX="270.0" layoutY="221.0" opacity="0.4" radius="150.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#ff1f7d" layoutX="434.0" layoutY="221.0" opacity="0.4" pickOnBounds="true" radius="150.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="270.0" layoutY="221.0" opacity="0.4" pickOnBounds="true" radius="150.0" stroke="BLACK" strokeType="INSIDE" />
             <HBox alignment="CENTER" layoutX="253.0" prefHeight="40.0" prefWidth="200.0" />
             <Pane layoutX="-1.0" layoutY="21.0" prefHeight="420.0" prefWidth="164.0">
                <children>
-                  <Slider fx:id="slSize" layoutX="14.0" layoutY="36.0" opacity="0.5" orientation="VERTICAL" prefHeight="274.0" prefWidth="24.0" value="50.0" />
-                  <ColorPicker fx:id="cp2" layoutX="7.0" layoutY="388.0" prefHeight="28.0" prefWidth="97.0" />
-                  <ColorPicker fx:id="cp1" layoutX="7.0" layoutY="360.0" onAction="#colorSelected1" prefHeight="28.0" prefWidth="97.0" />
+                  <Slider layoutX="14.0" layoutY="36.0" opacity="0.5" orientation="VERTICAL" prefHeight="274.0" prefWidth="24.0" value="50.0" />
+                  <ColorPicker layoutX="7.0" layoutY="388.0" prefHeight="28.0" prefWidth="97.0" />
+                  <ColorPicker layoutX="7.0" layoutY="360.0" prefHeight="28.0" prefWidth="97.0" />
                </children>
             </Pane>
          </children>
