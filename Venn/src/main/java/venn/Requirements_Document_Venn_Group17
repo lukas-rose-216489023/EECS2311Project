@@ -12,8 +12,6 @@ Members:
 	
 	Customers are in need of a system which categorizes their data sets into a two-set venn diagram. All essential features of the
 	system are described in this document.
->>>>>>> branch 'master' of https://github.com/lukas-rose-216489023/EECS2311Project
-
 
 ---Features:
 	
@@ -25,7 +23,8 @@ Members:
 ---Acceptance tests:
 	
 	- The dropdown menu will have a 'circles' menu which would contain options for customizing color, size and borders.
-	- When the color option is selected, users can choose 'left circle' or 'right circle', after which a number of colors options can be chosen from
+	- When the color option is selected, users can choose 'left circle' or 'right circle', after which a number of colors options
+	  can be chosen from
 	- 
 	
 	- If an object falls into a particular category, we want to test if our venn diagram contains the object. 
