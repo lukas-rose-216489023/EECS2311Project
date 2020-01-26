@@ -15,12 +15,16 @@ Members:
 
 ---Features:
 	
-	- Customizable venn diagram circles (color, size, contents)
+	- Customizable venn diagram circles (color, size, border, contents)
 	- Text boxes can hold up to 25 characters
 	- Text boxes are fully enclosed within the circles
 	- Text boxes can be added via dropdown menu
 	
 ---Acceptance tests:
+	
+	- The dropdown menu will have a 'circles' menu which would contain options for customizing color, size and borders.
+	- When the color option is selected, users can choose 'left circle' or 'right circle', after which a number of colors options can be chosen from
+	- 
 	
 	- If an object falls into a particular category, we want to test if our venn diagram contains the object. 
 	- If an object falls in two categories, we want to test if the objects exists in the intersection of the respective circles.
