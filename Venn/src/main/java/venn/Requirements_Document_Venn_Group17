@@ -4,17 +4,14 @@ Venn Diagram Tool
 Members:
 * Jawad Ahmed 216340309
 * 
-* Sarwat Shaheen (214677322)
+* Sarwat Shaheen 214677322
 
 *
 
 ---What is the tool?
+	
+	Customers are in need of a system which categorizes their data sets into a two-set venn diagram. All essential features of the system are described in this document.
 
-	This tool is a visual mathematical tool to categorize entities in a venn diagram format which makes use of the set base mathematics. 
-	The venn diagram are mainly a combination of two or more circular objects which is a composition of one or more objects.
-
----Uses cases?
-	- 
 
 ---Acceptance tests?
 	
@@ -28,9 +25,10 @@ Members:
 ***	- The object is a "dot" which when hovered over, will show the entry 
 	- The circles will be of different colors
 	- The object will be added via clicking options
+	
+		
+---Uses cases?
 	- 
-	
-	
 	
 	
 	
