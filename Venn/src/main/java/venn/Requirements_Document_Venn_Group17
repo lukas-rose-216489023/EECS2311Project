@@ -15,7 +15,7 @@ Members:
 
 ---Features:
 	
-	- Customizable venn diagram circles (color, size)
+	- Customizable venn diagram circles (color, size, contents)
 	- Text boxes can hold up to 25 characters
 	- Text boxes are fully enclosed within the circles
 	- Text boxes can be added via dropdown menu
