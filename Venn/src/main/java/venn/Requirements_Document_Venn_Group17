@@ -8,12 +8,18 @@ Members:
 
 *
 
----What is the tool?
+---What is the tool:
 	
-	Customers are in need of a system which categorizes their data sets into a two-set venn diagram. All essential features of the system are described in this document.
+	Customers are in need of a system which categorizes their data sets into a two-set venn diagram. All essential features of the
+	system are described in this document.
 
 
----Acceptance tests?
+---Features
+	
+	- Customizable venn diagram circles (color, size, 
+	- 
+	
+---Acceptance tests:
 	
 	- If an object falls into a particular category, we want to test if our venn diagram contains the object. 
 	- If an object falls in two categories, we want to test if the objects exists in the intersection of the respective circles.
@@ -22,7 +28,7 @@ Members:
 	- The different circles must be of the same radius
 	- The circle have an upper bound radius (due to screen size)
 	- The object will have a 25 character limit.
-***	- The object is a "dot" which when hovered over, will show the entry 
+***	- The object is a "dot" which when hovered over, will show the entry
 	- The circles will be of different colors
 	- The object will be added via clicking options
 	
