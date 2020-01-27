@@ -11,8 +11,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.ColorPicker;
+import javafx.event.Event;
 									
-public class VennBase extends Application	 {		//Comment
+public class VennBase extends Application	 {
 	
 	@Override 
 	public void start(Stage primaryStage) {
@@ -60,6 +62,9 @@ public class VennBase extends Application	 {		//Comment
 //		box1.heightProperty().bind(pane.heightProperty().divide(10.0));
 //		box1.setFill(green);
 		
+//		ColorPicker cp = new ColorPicker();
+		
+		
 		//Adds items to the window
 		pane.getChildren().add(circle);
 		pane.getChildren().add(circle2);
@@ -72,12 +77,6 @@ public class VennBase extends Application	 {		//Comment
 		
 		
 	}
-	
-	public EventHandler<? super MouseEvent> changeButtonText(Button b, String s) {
-		b.setText(s);
-		return null;
-	}
-	
 	
 	public static void main(String[] args) {
 		Application.launch(args);
