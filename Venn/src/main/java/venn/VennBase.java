@@ -14,7 +14,7 @@ public class VennBase extends Application	 {
 		
 		Stage stage = new Stage();
 		
-		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.75);		
+		Color blue = new Color(Color.$BLUE.get$red(), Color.$BLUE.get$green(), Color.$BLUE.get$blue(), 0.75);		
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.75);
 		
 		Pane pane = new Pane();
