@@ -67,7 +67,6 @@ public class VennBase extends Application	 {
 		
 	
 		
-		
 
 		pane.getChildren().addAll(circle, circle2, cp1, cp2);
 		
