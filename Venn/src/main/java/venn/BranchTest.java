@@ -14,6 +14,7 @@ public class BranchTest {
 		
 		System.out.println("test Branch2");
 		System.out.println("New statement from Branch!");
+		System.out.println("New statement from Branch!");
 
 
 	}
