@@ -2,12 +2,16 @@ package venn;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -15,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 									
 public class VennBase extends Application	 {
 	
@@ -24,7 +29,11 @@ public class VennBase extends Application	 {
 		
 		//sets window
 		stage.setMaximized(true);
+		StackPane root = new StackPane();
 		Pane pane = new Pane();
+		
+		//Get primary screen bounds
+	    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 		
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.25);		
@@ -61,48 +70,13 @@ public class VennBase extends Application	 {
 		circleL.setFill(blue);
 		
 		
-		//Text box prototype - 1st implementation
-		Button box1 = new Button("Insert text here 12345678");
-//		box1.layoutXProperty().bind(pane.widthProperty().divide(30.0/13.0));
-//		box1.layoutYProperty().bind(pane.heightProperty().divide(2.0));
-		box1.setLayoutX(1100);
-		box1.setLayoutY(200);
-		box1.prefWidthProperty().bind(pane.widthProperty().divide(8.0));
-		box1.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
-		box1.setStyle("-fx-background-color: #80b380");
-		box1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				box1.setText("It works!");
-			}
-		});
-		//changes cursor when moving text box and records distance moved
-		final Delta drag = new Delta();
-		box1.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                box1.setCursor(Cursor.MOVE);
-                drag.x = box1.getLayoutX() - mouseEvent.getSceneX();
-                drag.y = box1.getLayoutY() - mouseEvent.getSceneY();
-            }
-        });
-		//Moves text box when dragged
-		box1.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				box1.setLayoutX(mouseEvent.getSceneX() + drag.x);
-				box1.setLayoutY(mouseEvent.getSceneY() + drag.y);
-			}
-		});
-		
-		
 		//color picker setup
 		final ColorPicker cp1 = new ColorPicker(red);
 		final ColorPicker cp2 = new ColorPicker(blue);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(50));
-//		cp1("Right circle color");
-//		cp2.setAccessibleText("Left circle color");
+//		cp1("Right circle color");								need to change title
+//		cp2.setAccessibleText("Left circle color");				need to change title
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
@@ -135,11 +109,64 @@ public class VennBase extends Application	 {
 		textAdder.layoutYProperty().bind(pane.heightProperty().subtract(50));
 		textAdder.setPrefWidth(200);
 		textAdder.setPrefHeight(50);
-		box1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent arg0) {
+			public void handle(MouseEvent event) {
+				textAdder.setText("Not implemented yet..");
+				
+				
+				//Text box prototype - 1st implementation
+				Button box = new Button("Insert text here 123456789");
+				box.prefWidthProperty().bind(pane.widthProperty().divide(8.0));
+				box.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
+				box.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
+
+				box.setStyle("-fx-background-color: #80b380");
+
+				//Change contents
+				box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						if (event.getButton() == MouseButton.SECONDARY) {
+							TextInputDialog dialog = new TextInputDialog(box.getText());
+							dialog.setTitle("Change text");
+							dialog.setHeaderText("Enter to change text");
+							dialog.setContentText("25 character limit");
+							String result = dialog.showAndWait().get();
+							while (result.length()>25) {
+								dialog.setHeaderText("Character limit is 25!");
+								result = dialog.showAndWait().get();
+								}
+							box.setText(result);
+						}
+					}
+				});
+
+
+				//changes cursor when moving text box and records distance moved
+				final Delta drag = new Delta();
+				box.setOnMousePressed(new EventHandler<MouseEvent>() {
+				    @Override
+				    public void handle(MouseEvent mouseEvent) {
+				        box.setCursor(Cursor.MOVE);
+				        drag.x = box.getLayoutX() - mouseEvent.getSceneX();
+				        drag.y = box.getLayoutY() - mouseEvent.getSceneY();
+				    }
+				});
+
+				//Moves text box when dragged
+				box.setOnMouseDragged(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent mouseEvent) {
+						box.setLayoutX(mouseEvent.getSceneX() + drag.x);
+						box.setLayoutY(mouseEvent.getSceneY() + drag.y);
+					}
+				});
+
+				pane.getChildren().add(box);
 				
 			}
+
 		});
 		
 		
@@ -147,9 +174,25 @@ public class VennBase extends Application	 {
 		Text title = new Text("Title");
 		title.setFont(new Font(20));
 		title.setStroke(Color.BLACK);
-		title.setTextAlignment(TextAlignment.CENTER);
-		title.layoutXProperty().bind(pane.widthProperty().divide(2));
+		title.layoutXProperty().bind(pane.widthProperty().divide(2.0));
 		title.setLayoutY(25);
+		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.SECONDARY) {
+					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					dialog.setTitle("Change title");
+					dialog.setHeaderText("Enter to change title");
+					dialog.setContentText("Please enter the new title:");
+					String result = dialog.showAndWait().get();
+					while (result.length()>25) {
+						dialog.setHeaderText(title.getText());
+						result = dialog.showAndWait().get();
+						}
+					title.setText(result);
+				}
+			}
+		});
 		
 		Text left = new Text("left");
 		left.setFont(new Font(12));
@@ -157,6 +200,23 @@ public class VennBase extends Application	 {
 		left.setTextAlignment(TextAlignment.CENTER);
 		left.layoutXProperty().bind(pane.widthProperty().divide(5.0/2.0).subtract(25));
 		left.layoutYProperty().bind(pane.heightProperty().divide(2.0).subtract(circleL.radiusProperty()).subtract(5));
+		left.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.SECONDARY) {
+					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					dialog.setTitle("Change text");
+					dialog.setHeaderText("Enter to change text");
+					dialog.setContentText("Please enter some text:");
+					String result = dialog.showAndWait().get();
+					while (result.length()>25) {
+						dialog.setHeaderText(left.getText());
+						result = dialog.showAndWait().get();
+						}
+					left.setText(result);
+				}
+			}
+		});
 		
 		Text right = new Text("right");
 		right.setFont(new Font(12));
@@ -164,21 +224,40 @@ public class VennBase extends Application	 {
 		right.setTextAlignment(TextAlignment.CENTER);
 		right.layoutXProperty().bind(pane.widthProperty().divide(5.0/3.0).subtract(25));
 		right.layoutYProperty().bind(pane.heightProperty().divide(2.0).subtract(circleL.radiusProperty()).subtract(5));
+		right.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.SECONDARY) {
+					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					dialog.setTitle("Change text");
+					dialog.setHeaderText("Enter to change text");
+					dialog.setContentText("Please enter some text:");
+					String result = dialog.showAndWait().get();
+					while (result.length()>25) {
+						dialog.setHeaderText(right.getText());
+						result = dialog.showAndWait().get();
+						}
+					right.setText(result);
+				}
+			}
+		});
 		
 				
 		//Adds items to the window
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
-		pane.getChildren().add(box1);
 		pane.getChildren().addAll(cp1, cp2);
 		pane.getChildren().add(slider);
 		pane.getChildren().add(textAdder);
+		
+		//Adds titles to window
 		pane.getChildren().add(title);
 		pane.getChildren().add(left);
 		pane.getChildren().add(right);
-
 		
-		Scene scene2 = new Scene(pane);
+		
+		root.getChildren().addAll(pane);
+		Scene scene2 = new Scene(root);
 		stage.setTitle("Venn Application Demo");
 		stage.setScene(scene2);
 		stage.show();
@@ -186,7 +265,7 @@ public class VennBase extends Application	 {
 		
 	}
 	
-	//for recording mouse distance
+	//Class for recording mouse distance
 	static class Delta	{
 		double x;
 		double y;
