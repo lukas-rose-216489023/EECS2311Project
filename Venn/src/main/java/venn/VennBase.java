@@ -1,4 +1,4 @@
-package javaFX;
+package venn;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,7 +10,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -71,60 +70,13 @@ public class VennBase extends Application	 {
 		circleL.setFill(blue);
 		
 		
-		
-		
-//		//A second text box
-//				Button box2 = new Button("Another text here 12345678");
-////				box2.layoutXProperty().bind(pane.widthProperty().divide(30.0/13.0));
-////				box2.layoutYProperty().bind(pane.heightProperty().divide(2.0));
-//				box2.prefWidthProperty().bind(pane.widthProperty().divide(8.0));
-//				box2.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
-//				box2.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
-//				box2.setLayoutY(screenBounds.getHeight()/15);
-//				box2.setStyle("-fx-background-color: #80b380");
-//				box2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent event) {
-//						if (event.getButton() == MouseButton.SECONDARY) {
-//							TextInputDialog dialog = new TextInputDialog("25 character limit");
-//							dialog.setTitle("Change text");
-//							dialog.setHeaderText("Enter to change text");
-//							dialog.setContentText("Please enter some text:");
-//							String result = dialog.showAndWait().get();
-//							while (result.length()>25) {
-//								dialog.setHeaderText("Character limit is 25!");
-//								result = dialog.showAndWait().get();
-//								}
-//							box2.setText(result);
-//						}
-//					}
-//				});
-//				//changes cursor when moving text box and records distance moved
-//				box2.setOnMousePressed(new EventHandler<MouseEvent>() {
-//		            @Override
-//		            public void handle(MouseEvent mouseEvent) {
-//		                box2.setCursor(Cursor.MOVE);
-//		                drag.x = box2.getLayoutX() - mouseEvent.getSceneX();
-//		                drag.y = box2.getLayoutY() - mouseEvent.getSceneY();
-//		            }
-//		        });
-//				//Moves text box when dragged
-//				box2.setOnMouseDragged(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent mouseEvent) {
-//						box2.setLayoutX(mouseEvent.getSceneX() + drag.x);
-//						box2.setLayoutY(mouseEvent.getSceneY() + drag.y);
-//					}
-//				});
-		
-		
 		//color picker setup
 		final ColorPicker cp1 = new ColorPicker(red);
 		final ColorPicker cp2 = new ColorPicker(blue);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(50));
-//		cp1("Right circle color");
-//		cp2.setAccessibleText("Left circle color");
+//		cp1("Right circle color");								need to change title
+//		cp2.setAccessibleText("Left circle color");				need to change title
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
@@ -168,8 +120,6 @@ public class VennBase extends Application	 {
 				box.prefWidthProperty().bind(pane.widthProperty().divide(8.0));
 				box.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
 				box.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
-																				//		box1.layoutXProperty().bind(pane.widthProperty().divide(30.0/13.0));
-																				//		box1.layoutYProperty().bind(pane.heightProperty().divide(2.0));
 
 				box.setStyle("-fx-background-color: #80b380");
 
@@ -226,7 +176,6 @@ public class VennBase extends Application	 {
 		title.setStroke(Color.BLACK);
 		title.layoutXProperty().bind(pane.widthProperty().divide(2.0));
 		title.setLayoutY(25);
-//		title.setTextAlignment(TextAlignment.CENTER);
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -297,8 +246,6 @@ public class VennBase extends Application	 {
 		//Adds items to the window
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
-//		pane.getChildren().add(box1);
-//		pane.getChildren().add(box2);
 		pane.getChildren().addAll(cp1, cp2);
 		pane.getChildren().add(slider);
 		pane.getChildren().add(textAdder);
@@ -318,7 +265,7 @@ public class VennBase extends Application	 {
 		
 	}
 	
-	//for recording mouse distance
+	//Class for recording mouse distance
 	static class Delta	{
 		double x;
 		double y;
