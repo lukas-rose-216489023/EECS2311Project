@@ -1,4 +1,4 @@
-package venn;
+package javaFX;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,7 +10,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import venn.VennBase.Delta;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
