@@ -40,17 +40,6 @@ public class VennBase extends Application	 {
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.25);
 		@SuppressWarnings("unused")
 		Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 0.5);
-		
-		
-		//Size slider
-		//slider sets sizes small, medium, large, extra large	
-		Slider slider = new Slider();
-		slider.setMin(0);
-		slider.setMax(4);
-		slider.setValue(3);
-	    slider.setShowTickLabels(true);
-	    slider.setShowTickMarks(true);
-	    slider.setBlockIncrement(1);
 
 	    
 		//Right venn circle
@@ -111,15 +100,17 @@ public class VennBase extends Application	 {
 		textAdder.setPrefHeight(50);
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
-				textAdder.setText("Not implemented yet..");
-				
+			public void handle(MouseEvent event) {		
 				
 				//Text box prototype - 1st implementation
 				Button box = new Button("Insert text here 123456789");
+				Record.numBoxes++;
+				boolean moved = false;
 				box.prefWidthProperty().bind(pane.widthProperty().divide(8.0));
 				box.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
-				box.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
+//				box.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
+				box.setLayoutX(textAdder.getLayoutX());
+				box.setLayoutY(textAdder.getLayoutY()-(textAdder.getHeight()*(Record.numBoxes%12)));
 
 				box.setStyle("-fx-background-color: #80b380");
 
@@ -143,7 +134,7 @@ public class VennBase extends Application	 {
 				});
 
 
-				//changes cursor when moving text box and records distance moved
+				//changes cursor when moving text box  and  records distance moved
 				final Delta drag = new Delta();
 				box.setOnMousePressed(new EventHandler<MouseEvent>() {
 				    @Override
@@ -160,6 +151,7 @@ public class VennBase extends Application	 {
 					public void handle(MouseEvent mouseEvent) {
 						box.setLayoutX(mouseEvent.getSceneX() + drag.x);
 						box.setLayoutY(mouseEvent.getSceneY() + drag.y);
+//						if (!moved) {moved=true;Record.numBoxes--;}
 					}
 				});
 
@@ -247,7 +239,6 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
 		pane.getChildren().addAll(cp1, cp2);
-		pane.getChildren().add(slider);
 		pane.getChildren().add(textAdder);
 		
 		//Adds titles to window
@@ -269,6 +260,11 @@ public class VennBase extends Application	 {
 	static class Delta	{
 		double x;
 		double y;
+	}
+	
+	//Class for recording
+	static class Record {
+		static int numBoxes;
 	}
 	
 	public static void main(String[] args) {
