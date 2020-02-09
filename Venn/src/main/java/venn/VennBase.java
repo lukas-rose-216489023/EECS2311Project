@@ -29,7 +29,6 @@ public class VennBase extends Application	 {
 	public void start(Stage stage) {
 		
 		//sets window
-		stage.setMaximized(true);
 		StackPane root = new StackPane();
 		Pane pane = new Pane();
 		
@@ -267,10 +266,19 @@ public class VennBase extends Application	 {
 //		Line center = new Line(screenBounds.getWidth()/(5.0/3.0), 0, screenBounds.getWidth()/(5.0/3.0), 1000);
 //		pane.getChildren().add(center);
 		
+		pane.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (!stage.isFullScreen()) {stage.setMaximized(true);}
+			}
+		});
+		
 		root.getChildren().addAll(pane);
 		Scene scene2 = new Scene(root);
 		stage.setTitle("Venn Application Demo");
 		stage.setScene(scene2);
+		stage.setResizable(false);
+		stage.setMaximized(true);
 		stage.show();
 		
 	}
