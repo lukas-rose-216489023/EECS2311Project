@@ -14,7 +14,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Program Files/Java/json-simple-1.1.jar/json-simple-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx"/>
+=======
+>>>>>>> branch 'Jawad_Branch' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>
