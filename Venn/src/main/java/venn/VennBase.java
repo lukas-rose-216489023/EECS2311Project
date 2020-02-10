@@ -182,12 +182,12 @@ public class VennBase extends Application	 {
 		title.setLayoutX(((int) screenBounds.getWidth()/2)-title.getText().length()*8/2);			//does not support window resizing
 		title.setLayoutY(25);
 		
-		title.setOnMouseMoved(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {		
-				title.setText(""+textAdder.getHeight());
-			}
-		});
+//		title.setOnMouseMoved(new EventHandler<MouseEvent>() {
+//			@Override
+//			public void handle(MouseEvent event) {		
+//				title.setText(""+textAdder.getHeight());
+//			}
+//		});
 		
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
