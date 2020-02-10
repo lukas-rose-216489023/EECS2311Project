@@ -101,13 +101,12 @@ public class VennBase extends Application	 {
 		
 		
 		//text box adder
-		Button textAdder = new Button("Add new text box");
-		textAdder.layoutXProperty().bind(pane.widthProperty().subtract(200));
-		textAdder.layoutYProperty().bind(pane.heightProperty().subtract(50));
-//		textAdder.setPrefWidth(200);
-//		textAdder.setPrefHeight(50);
-		textAdder.prefWidthProperty().bind(pane.widthProperty().divide(6.4));
-		textAdder.prefHeightProperty().bind(pane.heightProperty().divide(14));
+		Button textAdder = new Button("Add new text box");		
+		textAdder.setPrefWidth(200);
+		textAdder.setPrefHeight(50);
+		textAdder.setLayoutX(screenBounds.getWidth()-200);
+		textAdder.setLayoutY(screenBounds.getHeight()-72);
+		
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {		
@@ -125,7 +124,7 @@ public class VennBase extends Application	 {
 				
 //				box.setStyle("-fx-background-color: "+Record.textBox);
 				box.setStyle("-fx-background-color: #80b380");
-
+				
 				//Change contents
 				box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
@@ -182,6 +181,14 @@ public class VennBase extends Application	 {
 		title.setStroke(Color.BLACK);
 		title.setLayoutX(((int) screenBounds.getWidth()/2)-title.getText().length()*8/2);			//does not support window resizing
 		title.setLayoutY(25);
+		
+		title.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {		
+				title.setText(""+textAdder.getHeight());
+			}
+		});
+		
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -274,6 +281,7 @@ public class VennBase extends Application	 {
 //		Line center = new Line(screenBounds.getWidth()/(5.0/3.0), 0, screenBounds.getWidth()/(5.0/3.0), 1000);
 //		pane.getChildren().add(center);
 		
+		//resizes to maximize screen
 		pane.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
