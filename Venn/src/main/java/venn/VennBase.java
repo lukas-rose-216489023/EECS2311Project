@@ -59,8 +59,8 @@ public class VennBase extends Application	 {
 		
 		
 		//color picker setup
-		final ColorPicker cp1 = new ColorPicker(Color.RED);
-		final ColorPicker cp2 = new ColorPicker(Color.BLUE);
+		final ColorPicker cp1 = new ColorPicker(Color.BLUE);
+		final ColorPicker cp2 = new ColorPicker(Color.RED);
 		final ColorPicker cp3 = new ColorPicker(Color.GREEN);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(50));
@@ -104,18 +104,21 @@ public class VennBase extends Application	 {
 		Button textAdder = new Button("Add new text box");
 		textAdder.layoutXProperty().bind(pane.widthProperty().subtract(200));
 		textAdder.layoutYProperty().bind(pane.heightProperty().subtract(50));
-		textAdder.setPrefWidth(200);
-		textAdder.setPrefHeight(50);
+//		textAdder.setPrefWidth(200);
+//		textAdder.setPrefHeight(50);
+		textAdder.prefWidthProperty().bind(pane.widthProperty().divide(6.4));
+		textAdder.prefHeightProperty().bind(pane.heightProperty().divide(14));
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {		
 				int stackable = Math.floorDiv((int) screenBounds.getHeight(), (int) textAdder.getHeight())-2;
-				//Text box prototype - 1st implementation
+				
+				//Text box properties
+				
 				Button box = new Button("New Text Box");
 //				boolean moved = false;
 				box.prefWidthProperty().bind(pane.widthProperty().divide(7.0));
-				box.prefHeightProperty().bind(pane.heightProperty().divide(15.0));
-//				box.setLayoutX(screenBounds.getWidth()-(screenBounds.getWidth()/8));
+				box.prefHeightProperty().bind(textAdder.heightProperty().subtract(15));
 				box.setLayoutX(textAdder.getLayoutX());
 				box.setLayoutY(textAdder.getLayoutY()-(textAdder.getHeight()*(Record.numBoxes%stackable)+textAdder.getHeight()));
 				Record.numBoxes++;
@@ -188,10 +191,6 @@ public class VennBase extends Application	 {
 					dialog.setHeaderText("Enter to change title");
 					dialog.setContentText("Please enter the new title:");
 					String result = dialog.showAndWait().get();
-					while (result.length()>25) {
-						dialog.setHeaderText(title.getText());
-						result = dialog.showAndWait().get();
-						}
 					title.setText(result);
 					title.setLayoutX(((int) screenBounds.getWidth()/2)-title.getText().length()*8/2);
 				}
@@ -214,10 +213,6 @@ public class VennBase extends Application	 {
 					dialog.setHeaderText("Enter to change text");
 					dialog.setContentText("Please enter some text:");
 					String result = dialog.showAndWait().get();
-					while (result.length()>25) {
-						dialog.setHeaderText(left.getText());
-						result = dialog.showAndWait().get();
-						}
 					left.setText(result);
 					left.setLayoutX(((int) screenBounds.getWidth()/2.5)-left.getText().length()*5/2);
 				}
@@ -240,15 +235,27 @@ public class VennBase extends Application	 {
 					dialog.setHeaderText("Enter to change text");
 					dialog.setContentText("Please enter some text:");
 					String result = dialog.showAndWait().get();
-					while (result.length()>25) {
-						dialog.setHeaderText(right.getText());
-						result = dialog.showAndWait().get();
-						}
 					right.setText(result);
 					right.setLayoutX(((int) screenBounds.getWidth()/(5.0/3.0))-right.getText().length()*5/2);
 				}
 			}
 		});
+		
+		//Right circle color picker label
+		Text cpR = new Text(": Right circle color");
+		cpR.setFont(new Font(12));
+		cpR.setStroke(Color.BLACK);
+		cpR.setTextAlignment(TextAlignment.CENTER);
+		cpR.layoutXProperty().bind(cp1.layoutXProperty().add(125));
+		cpR.layoutYProperty().bind(cp1.layoutYProperty().add(15));
+		
+		//Right circle color picker label
+		Text cpL = new Text(": Left circle color");
+		cpL.setFont(new Font(12));
+		cpL.setStroke(Color.BLACK);
+		cpL.setTextAlignment(TextAlignment.CENTER);
+		cpL.layoutXProperty().bind(cp2.layoutXProperty().add(125));
+		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 		
 				
 		//Adds items to the window
@@ -261,6 +268,7 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(title);
 		pane.getChildren().add(left);
 		pane.getChildren().add(right);
+		pane.getChildren().addAll(cpR, cpL);
 		
 		//Center line - use when you want to center nodes
 //		Line center = new Line(screenBounds.getWidth()/(5.0/3.0), 0, screenBounds.getWidth()/(5.0/3.0), 1000);
