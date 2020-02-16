@@ -1,11 +1,17 @@
 package venn;//this is LUKAS BRANCH, GET OFFF
 
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
@@ -130,18 +136,30 @@ public class VennBase extends Application	 {
 					@Override
 					public void handle(MouseEvent event) {
 //						box.setText(Record.textBox);
-						if (event.getButton() == MouseButton.SECONDARY) {
-							TextInputDialog dialog = new TextInputDialog(box.getText());
-							dialog.setTitle("Change text");
-							dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
-							dialog.setContentText("25 character limit");
-							String result = dialog.showAndWait().get();
-							while (result.length()>25) {
-								dialog.setHeaderText("Character limit is 25!");
-								result = dialog.showAndWait().get();
-								}
-							box.setText(result);
-							if (box.getText().equals("")) {pane.getChildren().remove(box);}
+						if (event.getButton().equals(MouseButton.PRIMARY)){
+				            if(event.getClickCount() == 2){
+				            	Alert alert = new Alert(AlertType.CONFIRMATION);
+				            	ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+				            	alert.setTitle("Delete Text Box");
+				            	alert.setContentText("Do you want to delete the text box?");
+
+				            	Optional<ButtonType> result = alert.showAndWait();
+				            	if (result.get() == ButtonType.OK){
+								pane.getChildren().remove(box);
+				            	}
+				            }
+				            else if (event.getButton() == MouseButton.PRIMARY) {
+				            	TextInputDialog dialog = new TextInputDialog(box.getText());
+				            	dialog.setTitle("Change text");
+				            	dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
+				            	dialog.setContentText("25 character limit");
+				            	String result = dialog.showAndWait().get();
+				            	while (result.length()>25) {
+				            		dialog.setHeaderText("Character limit is 25!");
+				            		result = dialog.showAndWait().get();
+									}
+				            	box.setText(result);
+				            }
 						}
 					}
 				});
@@ -192,7 +210,7 @@ public class VennBase extends Application	 {
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.SECONDARY) {
+				if (event.getButton() == MouseButton.PRIMARY) {
 					TextInputDialog dialog = new TextInputDialog("25 character limit");
 					dialog.setTitle("Change title");
 					dialog.setHeaderText("Enter to change title");
@@ -214,7 +232,7 @@ public class VennBase extends Application	 {
 		left.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.SECONDARY) {
+				if (event.getButton() == MouseButton.PRIMARY) {
 					TextInputDialog dialog = new TextInputDialog("25 character limit");
 					dialog.setTitle("Change text");
 					dialog.setHeaderText("Enter to change text");
@@ -236,7 +254,7 @@ public class VennBase extends Application	 {
 		right.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.SECONDARY) {
+				if (event.getButton() == MouseButton.PRIMARY) {
 					TextInputDialog dialog = new TextInputDialog("25 character limit");
 					dialog.setTitle("Change text");
 					dialog.setHeaderText("Enter to change text");
