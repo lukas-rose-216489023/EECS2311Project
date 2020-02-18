@@ -27,10 +27,19 @@ import javafx.scene.control.TextInputDialog;
 									
 @SuppressWarnings("unused")
 public class Main extends Application	 {
+	
+	
 	static boolean debug = false;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	//Main method
+	public static void main(String[] args) {
+		launch(args);   //launch method calls start method
+	}
+	
+	
 	@Override 
-	public void start(Stage stage) {
+	public void start(Stage stage) {    //Actual implementation method
 		
 		//sets window
 		StackPane root = new StackPane();
@@ -363,9 +372,6 @@ public class Main extends Application	 {
 		//Default text box color stored in this circle
 //		static String textBox = null;
 	}
-	
-	public static void main(String[] args) {
-		Application.launch(args);
-	}
+		
 
 }
