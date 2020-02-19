@@ -4,6 +4,7 @@ import java.awt.TextField;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -32,6 +33,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.TextFieldListCell;
 									
 @SuppressWarnings("unused")
 public class VennBase2 extends Application	 {
@@ -132,14 +134,32 @@ public class VennBase2 extends Application	 {
                 
                 Button addText = new Button("+");
                 
-                listView = new ListView<>();
-                listView.getItems().addAll("Hi","Hello","Whats up","ily");
+                listView = new ListView<>(FXCollections.observableArrayList("Item1", "Item2", "Item3", "Item4"));
+                listView.setEditable(true);
+
+                listView.setCellFactory(TextFieldListCell.forListView());		
+
+                listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
+        			@Override
+        			public void handle(ListView.EditEvent<String> t) {
+        				listView.getItems().set(t.getIndex(), t.getNewValue());
+        				System.out.println("setOnEditCommit");
+        			}
+        						
+        		});
+
+        		listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
+        			@Override
+        			public void handle(ListView.EditEvent<String> t) {
+        				System.out.println("setOnEditCancel");
+        			}
+        		});
                 listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
                 
                 layout.setPadding(new Insets(20,20,20,20));
                 layout.getChildren().add(addText);
                 layout.getChildren().add(listView);
-                layout.getChildren().add(textInput);
+               // layout.getChildren().add(textInput);
                 Scene dialogScene = new Scene(layout, 300, 500);
                 
                 dialog.setScene(dialogScene);
