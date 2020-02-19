@@ -28,7 +28,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextInputDialog;
 									
 @SuppressWarnings("unused")
-public class VennBase extends Application	 {
+public class VennBase2 extends Application	 {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
