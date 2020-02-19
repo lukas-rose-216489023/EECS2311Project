@@ -1,6 +1,7 @@
 package venn;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -120,9 +121,10 @@ public class VennBase extends Application	 {
 				//Text box properties
 				
 				Button box = new Button("New Text Box");
-				box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
-				box.prefHeightProperty().bind(textAdder.heightProperty().subtract(25));
-				box.setLayoutX(textAdder.getLayoutX());
+//				box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
+				box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
+				box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+				box.setLayoutX(textAdder.getLayoutX()+5);
 				box.setLayoutY(textAdder.getLayoutY()-((textAdder.getHeight()-15)*(Record.numBoxes%stackable)+(textAdder.getHeight()-15)));
 				Record.numBoxes++;
 				
@@ -150,7 +152,8 @@ public class VennBase extends Application	 {
 					}
 				});
 				
-
+				
+				
 				//changes cursor when moving text box  and  records distance moved
 				final Delta drag = new Delta();
 				box.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -161,13 +164,20 @@ public class VennBase extends Application	 {
 				        drag.y = box.getLayoutY() - mouseEvent.getSceneY();
 				    }
 				});
-
+				
+				//variables for use in resize detection
+				Record record = new Record();
+				record.percentX = box.getLayoutX() / pane.getWidth();
+				record.percentY = box.getLayoutY() / pane.getHeight();
+				
 				//Moves text box when dragged
 				box.setOnMouseDragged(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent mouseEvent) {
 						box.setLayoutX(mouseEvent.getSceneX() + drag.x);
 						box.setLayoutY(mouseEvent.getSceneY() + drag.y);
+						record.percentX = box.getLayoutX() / pane.getWidth();
+						record.percentY = box.getLayoutY() / pane.getHeight();
 					}
 				});
 				
@@ -175,6 +185,35 @@ public class VennBase extends Application	 {
 					@Override
 					public void handle(MouseEvent mouseEvent) {
 						if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
+					}
+				});
+				
+				
+				//resize detection:
+				pane.widthProperty().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
+////						System.out.println("oldX = "+ oldX+", newX = "+newX);
+//						double old = box.getLayoutX();
+//						box.setLayoutX(old + (newX.doubleValue() - oldX.doubleValue())/2.5);
+////						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
+						
+						box.setLayoutX(pane.getWidth() * record.percentX);
+						
+					}
+				});
+				
+				pane.heightProperty().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observable, Number oldY, Number newY) {
+////						System.out.println("oldY = "+ oldY+", newY = "+newY);
+//						double old = box.getLayoutY();
+//						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
+////						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
+						
+						box.setLayoutY(pane.getHeight() * record.percentY);
+						System.out.println("percent values 3: "+record.percentX+", "+record.percentY);
+						
 					}
 				});
 				
@@ -342,9 +381,9 @@ public class VennBase extends Application	 {
 		
 		
 		root.getChildren().addAll(pane);
-		Scene scene2 = new Scene(root);
-		stage.setTitle("Venn Application Demo");
-		stage.setScene(scene2);
+		stage.setTitle("Venn Application");
+		Scene scene = new Scene(root, screenBounds.getWidth()-100, screenBounds.getHeight()-100);
+		stage.setScene(scene);
 		stage.setMaximized(true);
 		stage.show();
 		
@@ -356,11 +395,14 @@ public class VennBase extends Application	 {
 		double y;
 	}
 	
-	//Class for recording
+	
 	static class Record {
 		static int numBoxes;
+		
 		//Default text box color stored in this circle
 //		static String textBox = null;
+		double percentX;
+		double percentY;
 	}
 	
 	public static void main(String[] args) {
