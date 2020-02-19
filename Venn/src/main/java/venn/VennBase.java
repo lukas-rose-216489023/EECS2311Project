@@ -155,29 +155,56 @@ public class VennBase extends Application	 {
 				
 				
 				//changes cursor when moving text box  and  records distance moved
-				final Delta drag = new Delta();
+				//variables for use in resize detection and position detection
+				Record record = new Record();
+				record.percentX = box.getLayoutX() / pane.getWidth();
+				record.percentY = box.getLayoutY() / pane.getHeight();
+				record.inCircleL = false;
+				record.inCircleR = false;
+				
 				box.setOnMousePressed(new EventHandler<MouseEvent>() {
 				    @Override
 				    public void handle(MouseEvent mouseEvent) {
 				        box.setCursor(Cursor.MOVE);
-				        drag.x = box.getLayoutX() - mouseEvent.getSceneX();
-				        drag.y = box.getLayoutY() - mouseEvent.getSceneY();
+				        record.x = box.getLayoutX() - mouseEvent.getSceneX();
+				        record.y = box.getLayoutY() - mouseEvent.getSceneY();
 				    }
 				});
 				
-				//variables for use in resize detection
-				Record record = new Record();
-				record.percentX = box.getLayoutX() / pane.getWidth();
-				record.percentY = box.getLayoutY() / pane.getHeight();
-				
-				//Moves text box when dragged
+				//Moves text box when dragged 
 				box.setOnMouseDragged(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent mouseEvent) {
-						box.setLayoutX(mouseEvent.getSceneX() + drag.x);
-						box.setLayoutY(mouseEvent.getSceneY() + drag.y);
+						box.setLayoutX(mouseEvent.getSceneX() + record.x);
+						box.setLayoutY(mouseEvent.getSceneY() + record.y);
 						record.percentX = box.getLayoutX() / pane.getWidth();
 						record.percentY = box.getLayoutY() / pane.getHeight();
+						
+						double x2 = box.getLayoutX()*box.getLayoutX();
+						double y2 = box.getLayoutY()*box.getLayoutY();
+						double Lr2 = circleL.getRadius()*circleL.getRadius();
+						double Rr2 = circleR.getRadius()*circleR.getRadius();
+						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
+						
+						if (x2+y2 < Lr2) {record.inCircleL=true;}
+						else {record.inCircleL=false;}
+						if (x2+y2 < Rr2) {record.inCircleR=true;}
+						else {record.inCircleR=false;}
+						
+//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
+						if (record.inCircleL && record.inCircleR) {
+							//box x and y are closest anchor points in the intersection
+							box.setText("Currently in intersection");
+						}
+						else if (record.inCircleL) {
+							//box x and y are closest anchor points in the left circle
+							box.setText("Currently in left circle");
+						}
+						else if (record.inCircleR) {
+							//box x and y are closest anchor points in the right circle
+							box.setText("Currently in right circle");
+						}
+						
 					}
 				});
 				
@@ -187,7 +214,6 @@ public class VennBase extends Application	 {
 						if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
 					}
 				});
-				
 				
 				//resize detection:
 				pane.widthProperty().addListener(new ChangeListener<Number>() {
@@ -211,9 +237,7 @@ public class VennBase extends Application	 {
 //						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
 ////						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
 						
-						box.setLayoutY(pane.getHeight() * record.percentY);
-						System.out.println("percent values 3: "+record.percentX+", "+record.percentY);
-						
+						box.setLayoutY(pane.getHeight() * record.percentY);						
 					}
 				});
 				
@@ -389,20 +413,25 @@ public class VennBase extends Application	 {
 		
 	}
 	
-	//Class for recording mouse distance
-	static class Delta	{
-		double x;
-		double y;
-	}
 	
-	
+	//Class for recording variables for each box; created for each box
 	static class Record {
 		static int numBoxes;
 		
+		double x;
+		double y;
+		
 		//Default text box color stored in this circle
 //		static String textBox = null;
+		
+		//resize detection variables
 		double percentX;
 		double percentY;
+		
+		//position detection variables
+		boolean inCircleR;
+		boolean inCircleL;
+		
 	}
 	
 	public static void main(String[] args) {
