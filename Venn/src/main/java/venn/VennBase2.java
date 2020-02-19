@@ -1,9 +1,11 @@
 package venn;//this is LUKAS' BRANCH, GET OFFF
 
+import java.awt.TextField;
 import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -14,10 +16,12 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -25,10 +29,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextInputDialog;
 									
 @SuppressWarnings("unused")
 public class VennBase2 extends Application	 {
+	
+	ListView<String> listView;
+	TextField textInput;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
@@ -105,20 +114,49 @@ public class VennBase2 extends Application	 {
 				}
         });
 		
+		//multiple text box adder
+		Button multAdder = new Button("Add mulitple new text boxes");		
+		multAdder.setPrefWidth(200);
+		multAdder.setPrefHeight(50);
+		multAdder.setLayoutX(screenBounds.getMinX());
+		multAdder.setLayoutY(screenBounds.getMinY());
+		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(stage);
+                VBox layout = new VBox(20);
+                
+                TextField textInput = new TextField();
+                
+                Button addText = new Button("+");
+                
+                listView = new ListView<>();
+                listView.getItems().addAll("Hi","Hello","Whats up","ily");
+                listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+                
+                layout.setPadding(new Insets(20,20,20,20));
+                layout.getChildren().add(addText);
+                layout.getChildren().add(listView);
+                layout.getChildren().add(textInput);
+                Scene dialogScene = new Scene(layout, 300, 500);
+                
+                dialog.setScene(dialogScene);
+                dialog.show();
+            }
+         });
 		
 		//text box adder
 		Button textAdder = new Button("Add new text box");		
 		textAdder.setPrefWidth(200);
 		textAdder.setPrefHeight(50);
 		textAdder.setLayoutX(screenBounds.getMinX());
-		textAdder.setLayoutY(screenBounds.getMinY());
+		textAdder.setLayoutY(screenBounds.getMinY() + 50);
 		
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {	
-				if (event.getButton() == MouseButton.SECONDARY) {
-					
-				}
+			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					int stackable = Math.floorDiv((int) screenBounds.getHeight(), (int) textAdder.getHeight())-2;
 				
@@ -288,6 +326,7 @@ public class VennBase2 extends Application	 {
 		pane.getChildren().add(circleL);
 		pane.getChildren().addAll(cp1, cp2);
 		pane.getChildren().add(textAdder);
+		pane.getChildren().add(multAdder);
 		
 		//Adds titles to window
 		pane.getChildren().add(title);
