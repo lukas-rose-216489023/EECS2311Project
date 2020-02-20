@@ -1,5 +1,7 @@
 package venn;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,13 +33,20 @@ public class VennBase extends Application	 {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
 	public void start(Stage stage) {
-		
+
+		//Get primary screen bounds
+	    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+	    
 		//sets window
 		StackPane root = new StackPane();
 		Pane pane = new Pane();
+		root.getChildren().addAll(pane);
+		stage.setTitle("Venn Application");
+		Scene scene = new Scene(root, screenBounds.getWidth()-100, screenBounds.getHeight()-100);
+		stage.setScene(scene);
+		stage.setMaximized(true);
+		stage.show();
 		
-		//Get primary screen bounds
-	    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 		
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.5);		
@@ -61,14 +70,88 @@ public class VennBase extends Application	 {
 		circleL.setStroke(Color.RED);
 		circleL.setFill(red);
 		
+		//Anchor points
+		Anchor leftCircle = new Anchor();
+		Anchor rightCircle = new Anchor();
+		Anchor intersection = new Anchor();
 		
+		double paneWidth = screenBounds.getWidth();
+		double paneHeight = screenBounds.getHeight()-62;
+		double cirlx = screenBounds.getWidth()/(5.0/2.0);
+		double cirly = (screenBounds.getHeight()-62)/2;
+		double radius = screenBounds.getWidth()/5.0;
+		
+		Points p = new Points();
+		
+		p.l1 = new Point(cirlx-(radius*0.51172)-3, cirly-(radius*0.8359));
+		p.l2 = new Point(cirlx-(radius*0.65625), p.l1.yValue+paneHeight*0.0608);
+		p.l3 = new Point(cirlx-(radius*0.78125), p.l2.yValue+paneHeight*0.0608);
+		p.l4 = new Point(cirlx-(radius*0.87890), p.l3.yValue+paneHeight*0.0608);
+		p.l5 = new Point(cirlx-(radius*0.92969), p.l4.yValue+paneHeight*0.0608);
+		p.l6 = new Point(cirlx-(radius*0.96875), p.l5.yValue+paneHeight*0.0608);
+		p.l7 = new Point(cirlx-(radius*0.92969), p.l6.yValue+paneHeight*0.0608);
+		p.l8 = new Point(cirlx-(radius*0.87890), p.l7.yValue+paneHeight*0.0608);
+		p.l9 = new Point(cirlx-(radius*0.78125), p.l8.yValue+paneHeight*0.0608);
+		p.l10 = new Point(cirlx-(radius*0.65625), p.l9.yValue+paneHeight*0.0608);
+		p.l11 = new Point(cirlx-(radius*0.51172), p.l10.yValue+paneHeight*0.0608);
+		
+		p.i1 = new Point(paneWidth*0.41875, (paneHeight*0.33739));
+		p.i2 = new Point(paneWidth*0.41875, p.i1.yValue+paneHeight*0.05471);
+		p.i3 = new Point(paneWidth*0.41875, p.i2.yValue+paneHeight*0.05471);
+		p.i4 = new Point(paneWidth*0.41875, p.i3.yValue+paneHeight*0.05471);
+		p.i5 = new Point(paneWidth*0.41875, p.i4.yValue+paneHeight*0.05471);
+		p.i6 = new Point(paneWidth*0.41875, p.i5.yValue+paneHeight*0.05471);
+		
+		p.r1 = new Point(p.l1.xValue+paneWidth*0.23984+10, p.l1.yValue);
+		p.r2 = new Point(p.l2.xValue+paneWidth*0.29609+5, p.l2.yValue);
+		p.r3 = new Point(p.l3.xValue+paneWidth*0.34375, p.l3.yValue);
+		p.r4 = new Point(p.l4.xValue+paneWidth*0.378125, p.l4.yValue);
+		p.r5 = new Point(p.l5.xValue+paneWidth*0.40156, p.l5.yValue);
+		p.r6 = new Point(p.l6.xValue+paneWidth*0.42109, p.l6.yValue);
+		p.r7 = new Point(p.l7.xValue+paneWidth*0.40156, p.l7.yValue);
+		p.r8 = new Point(p.l8.xValue+paneWidth*0.378125, p.l8.yValue);
+		p.r9 = new Point(p.l9.xValue+paneWidth*0.34375, p.l9.yValue);
+		p.r10 = new Point(p.l10.xValue+paneWidth*0.29609, p.l10.yValue);
+		p.r11 = new Point(p.l11.xValue+paneWidth*0.23984, p.l11.yValue);
+		
+		leftCircle.addPoint(p.l1);
+		leftCircle.addPoint(p.l2);
+		leftCircle.addPoint(p.l3);
+		leftCircle.addPoint(p.l4);
+		leftCircle.addPoint(p.l5);
+		leftCircle.addPoint(p.l6);
+		leftCircle.addPoint(p.l7);
+		leftCircle.addPoint(p.l8);
+		leftCircle.addPoint(p.l9);
+		leftCircle.addPoint(p.l10);
+		leftCircle.addPoint(p.l11);
+		
+		intersection.addPoint(p.i1);
+		intersection.addPoint(p.i2);
+		intersection.addPoint(p.i3);
+		intersection.addPoint(p.i4);
+		intersection.addPoint(p.i5);
+		intersection.addPoint(p.i6);
+		
+		rightCircle.addPoint(p.r1);
+		rightCircle.addPoint(p.r2);
+		rightCircle.addPoint(p.r3);
+		rightCircle.addPoint(p.r4);
+		rightCircle.addPoint(p.r5);
+		rightCircle.addPoint(p.r6);
+		rightCircle.addPoint(p.r7);
+		rightCircle.addPoint(p.r8);
+		rightCircle.addPoint(p.r9);
+		rightCircle.addPoint(p.r10);
+		rightCircle.addPoint(p.r11);
+				
 		//color picker setup ------------------------------------------------------------------------------------------------------------
 		final ColorPicker cp1 = new ColorPicker(Color.BLUE);
 		final ColorPicker cp2 = new ColorPicker(Color.RED);
 		final ColorPicker cp3 = new ColorPicker(Color.GREEN);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(50));
-		cp3.layoutYProperty().bind(pane.heightProperty().subtract(75));
+//		cp3.layoutYProperty().bind(pane.heightProperty().subtract(75));
 		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		
@@ -96,14 +179,14 @@ public class VennBase extends Application	 {
 				}
         });
 		
-		cp3.setOnAction(new EventHandler() {
-			@Override
-			public void handle(javafx.event.Event event) {
-				String textBo = Integer.toHexString(cp3.getValue().hashCode());//String.format("#%02X%02X%02X", ((int)cp3.getValue().getRed())*255, ((int)cp3.getValue().getGreen())*255, ((int)cp3.getValue().getBlue())*255);
-//				textBo = "-fx-background-color: #" + textBo;
-//				Record.textBox = textBo;
-				}
-        });
+//		cp3.setOnAction(new EventHandler() {
+//			@Override
+//			public void handle(javafx.event.Event event) {
+//				String textBo = Integer.toHexString(cp3.getValue().hashCode());//String.format("#%02X%02X%02X", ((int)cp3.getValue().getRed())*255, ((int)cp3.getValue().getGreen())*255, ((int)cp3.getValue().getBlue())*255);
+////				textBo = "-fx-background-color: #" + textBo;
+////				Record.textBox = textBo;
+//				}
+//        });
 		
 		
 		//text box adder ------------------------------------------------------------------------------------------------------------
@@ -179,32 +262,54 @@ public class VennBase extends Application	 {
 						box.setLayoutY(mouseEvent.getSceneY() + record.y);
 						record.percentX = box.getLayoutX() / pane.getWidth();
 						record.percentY = box.getLayoutY() / pane.getHeight();
-						
+					}
+				});
+				
+				//Anchoring
+				box.setOnMouseReleased(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent mouseEvent) {
+						//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
 						double x2 = box.getLayoutX()*box.getLayoutX();
 						double y2 = box.getLayoutY()*box.getLayoutY();
-						double Lr2 = circleL.getRadius()*circleL.getRadius();
+						double La = circleL.getCenterX();
+						double Lb = circleL.getCenterY();
+						double Ra = circleR.getCenterX();
+						double Rb = circleR.getCenterY();
 						double Rr2 = circleR.getRadius()*circleR.getRadius();
-						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
+						double Lr2 = Rr2;
+//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
 						
-						if (x2+y2 < Lr2) {record.inCircleL=true;}
+						if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
 						else {record.inCircleL=false;}
-						if (x2+y2 < Rr2) {record.inCircleR=true;}
+						if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
 						else {record.inCircleR=false;}
 						
 //						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
 						if (record.inCircleL && record.inCircleR) {
 							//box x and y are closest anchor points in the intersection
-							box.setText("Currently in intersection");
+							if (debug) {box.setText("Currently in intersection");}
+							box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
+							box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
+							record.percentX = box.getLayoutX() / pane.getWidth();
+							record.percentY = box.getLayoutY() / pane.getHeight();
 						}
 						else if (record.inCircleL) {
 							//box x and y are closest anchor points in the left circle
-							box.setText("Currently in left circle");
+							if (debug) {box.setText("Currently in left circle");}
+							box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
+							box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
+							record.percentX = box.getLayoutX() / pane.getWidth();
+							record.percentY = box.getLayoutY() / pane.getHeight();
 						}
 						else if (record.inCircleR) {
 							//box x and y are closest anchor points in the right circle
-							box.setText("Currently in right circle");
+							if (debug) {box.setText("Currently in right circle");}
+							box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
+							box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
+							record.percentX = box.getLayoutX() / pane.getWidth();
+							record.percentY = box.getLayoutY() / pane.getHeight();
 						}
-						
 					}
 				});
 				
@@ -225,6 +330,37 @@ public class VennBase extends Application	 {
 ////						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
 						
 						box.setLayoutX(pane.getWidth() * record.percentX);
+						
+						p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
+						p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
+						p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
+						p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
+						p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
+						p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
+						p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
+						p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
+						p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
+						p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
+						p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
+						
+						p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
+						p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
+						p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
+						p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
+						p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
+						p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
+						
+						p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
+						p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
+						p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
+						p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
+						p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
+						p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
+						p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
+						p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
+						p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
+						p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
+						p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
 						
 					}
 				});
@@ -404,12 +540,7 @@ public class VennBase extends Application	 {
 //		pane.getChildren().add(center);
 		
 		
-		root.getChildren().addAll(pane);
-		stage.setTitle("Venn Application");
-		Scene scene = new Scene(root, screenBounds.getWidth()-100, screenBounds.getHeight()-100);
-		stage.setScene(scene);
-		stage.setMaximized(true);
-		stage.show();
+		
 		
 	}
 	
@@ -433,6 +564,73 @@ public class VennBase extends Application	 {
 		boolean inCircleL;
 		
 	}
+	
+	//Anchor points in each circle
+	private class Anchor {
+		ArrayList<Point> points = new ArrayList<Point>();
+		
+		public void addPoint(Point p) {this.points.add(p);}
+		
+		public void removePoint(Point p) {if(this.points.contains(p)) {this.points.remove(p);}}
+		
+		public Point closest(double h) {
+			double closest = Double.MAX_VALUE;
+			Point found = null;
+			for (int i=0;i<points.size();i++) {
+				if (Math.abs(h-points.get(i).yValue)<closest) {closest = Math.abs(h-points.get(i).yValue);found=points.get(i);}
+			}
+			return found;
+		}
+		
+		public void printAll() {
+			for (Point p:points) {System.out.println(p.toString());}
+		}
+		
+	}
+	
+	private class Point {
+		double xValue;
+		double yValue;
+		
+		public Point(double x, double y) {this.xValue=x;this.yValue=y;}
+		
+		public String toString() {
+			return (this.xValue+", "+this.yValue);
+			
+		}
+	}
+	
+	static class Points{
+		Point l1;
+		Point l2;
+		Point l3;
+		Point l4;
+		Point l5;
+		Point l6;
+		Point l7;
+		Point l8;
+		Point l9;
+		Point l10;
+		Point l11;
+		Point i1;
+		Point i2;
+		Point i3;
+		Point i4;
+		Point i5;
+		Point i6;
+		Point r1;
+		Point r2;
+		Point r3;
+		Point r4;
+		Point r5;
+		Point r6;
+		Point r7;
+		Point r8;
+		Point r9;
+		Point r10;
+		Point r11;
+	}
+	
 	
 	public static void main(String[] args) {
 		Application.launch(args);
