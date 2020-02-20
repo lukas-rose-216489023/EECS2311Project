@@ -66,7 +66,7 @@ public class Main extends Application	 {
 				BufferedImage image = robot.createScreenCapture(rect);
 				Image myImage = SwingFXUtils.toFXImage(image, null);
 				ImageIO.write(image, "jpg", new File("VennScreenShot.jpg"));
-				display.setImage(myImage);
+				//display.setImage(myImage);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
