@@ -1,11 +1,21 @@
 package application;
 	
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
 import javafx.event.*;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -17,6 +27,8 @@ import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
@@ -40,6 +52,26 @@ public class Main extends Application	 {
 	
 	@Override 
 	public void start(Stage stage) {    //Actual implementation method
+		
+		//Screen-shot implementation
+		FlowPane flow = new FlowPane();
+		ImageView display = new ImageView();
+		Button capture = new Button("Take Screenshot of Venn Diagram!");
+		flow.getChildren().addAll(display, capture);
+		
+		capture.setOnAction(event -> {
+			try {
+				Robot robot = new Robot();
+				Rectangle rect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+				BufferedImage image = robot.createScreenCapture(rect);
+				Image myImage = SwingFXUtils.toFXImage(image, null);
+				ImageIO.write(image, "jpg", new File("VennScreenShot.jpg"));
+				display.setImage(myImage);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
 		
 		//sets window
 		StackPane root = new StackPane();
@@ -351,6 +383,8 @@ public class Main extends Application	 {
 //		pane.getChildren().add(center);
 		
 		
+		pane.getChildren().add(flow); //Adding screenshot feature to pane
+		
 		root.getChildren().addAll(pane);
 		Scene scene2 = new Scene(root);
 		stage.setTitle("Venn Application Demo");
@@ -372,6 +406,7 @@ public class Main extends Application	 {
 		//Default text box color stored in this circle
 //		static String textBox = null;
 	}
-		
+	
+	
 
 }
