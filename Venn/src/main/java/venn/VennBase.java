@@ -30,6 +30,7 @@ import javafx.scene.control.TextInputDialog;
 @SuppressWarnings("unused")
 public class VennBase extends Application	 {
 	static boolean debug = false;
+	static boolean anchor = false;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
 	public void start(Stage stage) {
@@ -189,6 +190,20 @@ public class VennBase extends Application	 {
 //        });
 		
 		
+		//Anchor option button
+		Button anchorOption = new Button("Anchoring off");
+		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
+		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		anchorOption.layoutXProperty().bind(pane.widthProperty().multiply(85.0/100.0));
+		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");}
+				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");}
+			}
+		});
+		
+		
 		//text box adder ------------------------------------------------------------------------------------------------------------
 		Button textAdder = new Button("Add new text box");		
 		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
@@ -199,7 +214,7 @@ public class VennBase extends Application	 {
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {		
-				int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10));
+				int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -1;
 				
 				//Text box properties
 				
@@ -269,46 +284,48 @@ public class VennBase extends Application	 {
 				box.setOnMouseReleased(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent mouseEvent) {
-						//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
-						double x2 = box.getLayoutX()*box.getLayoutX();
-						double y2 = box.getLayoutY()*box.getLayoutY();
-						double La = circleL.getCenterX();
-						double Lb = circleL.getCenterY();
-						double Ra = circleR.getCenterX();
-						double Rb = circleR.getCenterY();
-						double Rr2 = circleR.getRadius()*circleR.getRadius();
-						double Lr2 = Rr2;
-//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
-						
-						if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
-						else {record.inCircleL=false;}
-						if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
-						else {record.inCircleR=false;}
-						
-//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
-						if (record.inCircleL && record.inCircleR) {
-							//box x and y are closest anchor points in the intersection
-							if (debug) {box.setText("Currently in intersection");}
-							box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
-							box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
-						}
-						else if (record.inCircleL) {
-							//box x and y are closest anchor points in the left circle
-							if (debug) {box.setText("Currently in left circle");}
-							box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
-							box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
-						}
-						else if (record.inCircleR) {
-							//box x and y are closest anchor points in the right circle
-							if (debug) {box.setText("Currently in right circle");}
-							box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
-							box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
+						if (VennBase.anchor) {
+							//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
+							double x2 = box.getLayoutX()*box.getLayoutX();
+							double y2 = box.getLayoutY()*box.getLayoutY();
+							double La = circleL.getCenterX();
+							double Lb = circleL.getCenterY();
+							double Ra = circleR.getCenterX();
+							double Rb = circleR.getCenterY();
+							double Rr2 = circleR.getRadius()*circleR.getRadius();
+							double Lr2 = Rr2;
+	//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
+							
+							if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
+							else {record.inCircleL=false;}
+							if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
+							else {record.inCircleR=false;}
+							
+	//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
+							if (record.inCircleL && record.inCircleR) {
+								//box x and y are closest anchor points in the intersection
+								if (debug) {box.setText("Currently in intersection");}
+								box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
+								box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
+								record.percentX = box.getLayoutX() / pane.getWidth();
+								record.percentY = box.getLayoutY() / pane.getHeight();
+							}
+							else if (record.inCircleL) {
+								//box x and y are closest anchor points in the left circle
+								if (debug) {box.setText("Currently in left circle");}
+								box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
+								box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
+								record.percentX = box.getLayoutX() / pane.getWidth();
+								record.percentY = box.getLayoutY() / pane.getHeight();
+							}
+							else if (record.inCircleR) {
+								//box x and y are closest anchor points in the right circle
+								if (debug) {box.setText("Currently in right circle");}
+								box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
+								box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
+								record.percentX = box.getLayoutX() / pane.getWidth();
+								record.percentY = box.getLayoutY() / pane.getHeight();
+							}
 						}
 					}
 				});
@@ -392,13 +409,6 @@ public class VennBase extends Application	 {
 		title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length()*4));
 		title.setLayoutY(25);
 		
-//		title.setOnMouseMoved(new EventHandler<MouseEvent>() {
-//			@Override
-//			public void handle(MouseEvent event) {		
-//				title.setText(""+textAdder.getHeight());
-//			}
-//		});
-		
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -479,6 +489,7 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(circleL);
 		pane.getChildren().addAll(cp1, cp2);
 		pane.getChildren().add(textAdder);
+		pane.getChildren().add(anchorOption);
 		
 		//Adds titles to window
 		pane.getChildren().add(title);
@@ -535,11 +546,12 @@ public class VennBase extends Application	 {
 			}
         });
 		
-		//Center line - use when you want to center nodes
-//		Line center = new Line(screenBounds.getWidth()/(5.0/3.0), 0, screenBounds.getWidth()/(5.0/3.0), 1000);
-//		pane.getChildren().add(center);
-		
-		
+		pane.setOnMouseMoved(new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {		
+			if (VennBase.anchor) {stage.setMaximized(true);}
+		}
+	});
 		
 		
 	}
