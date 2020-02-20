@@ -88,7 +88,7 @@ public class VennBase extends Application	 {
 		circleL.setStroke(Color.RED);
 		circleL.setFill(red);
 		
-		//Anchor points
+		//Anchor points -----------------------------------------------------------------------------------------------------------------
 		Anchor leftCircle = new Anchor();
 		Anchor rightCircle = new Anchor();
 		Anchor intersection = new Anchor();
@@ -169,11 +169,10 @@ public class VennBase extends Application	 {
 		final ColorPicker cp3 = new ColorPicker(Color.GREEN);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(50));
-//		cp3.layoutYProperty().bind(pane.heightProperty().subtract(75));
 		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		cp1.layoutXProperty().bind(pane.widthProperty().subtract(225));//check out+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		cp2.layoutXProperty().bind(pane.widthProperty().subtract(225));//check out+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		cp1.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
+		cp2.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
@@ -227,503 +226,477 @@ public class VennBase extends Application	 {
 		Button textAdder = new Button("Add new text box");		
 		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		textAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
-		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(90.0/100.0));
-//		textAdder.setPrefWidth(200);                            //check out+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//		textAdder.setPrefHeight(50);
-//		textAdder.setLayoutX(screenBounds.getMinX());
-//		textAdder.setLayoutY(screenBounds.getMinY() + 50);
+		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
+		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(0));
 		
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {		
-				if (event.getButton() == MouseButton.PRIMARY) {                    //check out+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -1;
-			
-				
-				//Text box properties
-				
-				Button box = new Button("New Text Box");
-//				box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
-				box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
-				box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-				box.setLayoutX(textAdder.getLayoutX()+5);
-				box.setLayoutY(textAdder.getLayoutY()-((textAdder.getHeight()-15)*(Record.numBoxes%stackable)+(textAdder.getHeight()-15)));
-				Record.numBoxes++;
-				
-//				box.setStyle("-fx-background-color: "+Record.textBox);
-				box.setStyle("-fx-background-color: #80b380");
-				
-				//Change contents
-				box.setOnMouseClicked(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-//						box.setText(Record.textBox);
-						if (event.getButton().equals(MouseButton.SECONDARY)){
-							Alert alert = new Alert(AlertType.CONFIRMATION);
-							ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-							alert.setTitle("Delete Text Box");
-							alert.setContentText("Do you want to delete the text box?");
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;
 
-							Optional<ButtonType> result = alert.showAndWait();
-							if (result.get() == ButtonType.OK){
-								pane.getChildren().remove(box);
-							}
-						}
-						else if (event.getButton().equals(MouseButton.PRIMARY)) {
-							TextInputDialog dialog = new TextInputDialog(box.getText());
-							dialog.setTitle("Change text");
-							dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
-							dialog.setContentText("25 character limit");
-							String result = dialog.showAndWait().get();
-							while (result.length()>25) {
-								dialog.setHeaderText("Character limit is 25!");
-								result = dialog.showAndWait().get();
+
+					//Text box properties
+
+					Button box = new Button("New Text Box");
+//					box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
+					box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
+					box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+					box.setLayoutX(15);
+					box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+					Record.numBoxes++;
+
+					//				box.setStyle("-fx-background-color: "+Record.textBox);
+					box.setStyle("-fx-background-color: #80b380");
+
+					//Change contents
+					box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent event) {
+							if (event.getButton().equals(MouseButton.SECONDARY)) {
+								TextInputDialog dialog = new TextInputDialog(box.getText());
+								dialog.setTitle("Change text");
+								dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
+								dialog.setContentText("25 character limit");
+								String result = dialog.showAndWait().get();
+								while (result.length()>25) {
+									dialog.setHeaderText("Character limit is 25!");
+									result = dialog.showAndWait().get();
 								}
-							box.setText(result);
-						}
-					}
-				});
-				
-				
-				
-				//changes cursor when moving text box  and  records distance moved
-				//variables for use in resize detection and position detection
-				Record record = new Record();
-				record.percentX = box.getLayoutX() / pane.getWidth();
-				record.percentY = box.getLayoutY() / pane.getHeight();
-				record.inCircleL = false;
-				record.inCircleR = false;
-				
-				box.setOnMousePressed(new EventHandler<MouseEvent>() {
-				    @Override
-				    public void handle(MouseEvent mouseEvent) {
-				        box.setCursor(Cursor.MOVE);
-				        record.x = box.getLayoutX() - mouseEvent.getSceneX();
-				        record.y = box.getLayoutY() - mouseEvent.getSceneY();
-				    }
-				});
-				
-				//Moves text box when dragged 
-				box.setOnMouseDragged(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent mouseEvent) {
-						box.setLayoutX(mouseEvent.getSceneX() + record.x);
-						box.setLayoutY(mouseEvent.getSceneY() + record.y);
-						record.percentX = box.getLayoutX() / pane.getWidth();
-						record.percentY = box.getLayoutY() / pane.getHeight();
-					}
-				});
-				
-				//Anchoring
-				box.setOnMouseReleased(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent mouseEvent) {
-						if (VennBase.anchor) {
-							//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
-							double x2 = box.getLayoutX()*box.getLayoutX();
-							double y2 = box.getLayoutY()*box.getLayoutY();
-							double La = circleL.getCenterX();
-							double Lb = circleL.getCenterY();
-							double Ra = circleR.getCenterX();
-							double Rb = circleR.getCenterY();
-							double Rr2 = circleR.getRadius()*circleR.getRadius();
-							double Lr2 = Rr2;
-	//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
-							
-							if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
-							else {record.inCircleL=false;}
-							if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
-							else {record.inCircleR=false;}
-							
-	//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
-							if (record.inCircleL && record.inCircleR) {
-								//box x and y are closest anchor points in the intersection
-								if (debug) {box.setText("Currently in intersection");}
-								box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
-								box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
-								record.percentX = box.getLayoutX() / pane.getWidth();
-								record.percentY = box.getLayoutY() / pane.getHeight();
-							}
-							else if (record.inCircleL) {
-								//box x and y are closest anchor points in the left circle
-								if (debug) {box.setText("Currently in left circle");}
-								box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
-								box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
-								record.percentX = box.getLayoutX() / pane.getWidth();
-								record.percentY = box.getLayoutY() / pane.getHeight();
-							}
-							else if (record.inCircleR) {
-								//box x and y are closest anchor points in the right circle
-								if (debug) {box.setText("Currently in right circle");}
-								box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
-								box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
-								record.percentX = box.getLayoutX() / pane.getWidth();
-								record.percentY = box.getLayoutY() / pane.getHeight();
+								box.setText(result);
+								if (box.getText().equals("")) {pane.getChildren().remove(box);}
 							}
 						}
-					}
-				});
-				
-				box.setOnMouseEntered(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent mouseEvent) {
-						if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
-					}
-				});
-				
-				//resize detection:
-				pane.widthProperty().addListener(new ChangeListener<Number>() {
-					@Override
-					public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
-////						System.out.println("oldX = "+ oldX+", newX = "+newX);
-//						double old = box.getLayoutX();
-//						box.setLayoutX(old + (newX.doubleValue() - oldX.doubleValue())/2.5);
-////						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
-						
-						box.setLayoutX(pane.getWidth() * record.percentX);
-						
-						p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
-						p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
-						p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
-						p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
-						p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
-						p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
-						p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
-						p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
-						p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
-						p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
-						p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
-						
-						p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
-						p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
-						p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
-						p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
-						p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
-						p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
-						
-						p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
-						p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
-						p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
-						p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
-						p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
-						p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
-						p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
-						p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
-						p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
-						p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
-						p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
-						
-					}
-				});
-				
-				pane.heightProperty().addListener(new ChangeListener<Number>() {
-					@Override
-					public void changed(ObservableValue<? extends Number> observable, Number oldY, Number newY) {
-////						System.out.println("oldY = "+ oldY+", newY = "+newY);
-//						double old = box.getLayoutY();
-//						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
-////						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
-						
-						box.setLayoutY(pane.getHeight() * record.percentY);						
-					}
-				});
-				
-				pane.getChildren().add(box);
-				
+					});
+					
+					//changes cursor when moving text box  and  records distance moved
+
+					//variables for use in resize detection and position detection
+					Record record = new Record();
+					record.percentX = box.getLayoutX() / pane.getWidth();
+					record.percentY = box.getLayoutY() / pane.getHeight();
+					record.inCircleL = false;
+					record.inCircleR = false;
+
+					box.setOnMousePressed(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							box.setCursor(Cursor.MOVE);
+							record.x = box.getLayoutX() - mouseEvent.getSceneX();
+							record.y = box.getLayoutY() - mouseEvent.getSceneY();
+						}
+					});
+
+					//Moves text box when dragged 
+					box.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							box.setLayoutX(mouseEvent.getSceneX() + record.x);
+							box.setLayoutY(mouseEvent.getSceneY() + record.y);
+							record.percentX = box.getLayoutX() / pane.getWidth();
+							record.percentY = box.getLayoutY() / pane.getHeight();
+						}
+					});
+
+					//Anchoring
+					box.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							if (VennBase.anchor) {
+								//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
+								double x2 = box.getLayoutX()*box.getLayoutX();
+								double y2 = box.getLayoutY()*box.getLayoutY();
+								double La = circleL.getCenterX();
+								double Lb = circleL.getCenterY();
+								double Ra = circleR.getCenterX();
+								double Rb = circleR.getCenterY();
+								double Rr2 = circleR.getRadius()*circleR.getRadius();
+								double Lr2 = Rr2;
+								//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
+
+								if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
+								else {record.inCircleL=false;}
+								if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
+								else {record.inCircleR=false;}
+
+								//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
+								if (record.inCircleL && record.inCircleR) {
+									//box x and y are closest anchor points in the intersection
+									if (debug) {box.setText("Currently in intersection");}
+									box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
+									box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
+									record.percentX = box.getLayoutX() / pane.getWidth();
+									record.percentY = box.getLayoutY() / pane.getHeight();
+								}
+								else if (record.inCircleL) {
+									//box x and y are closest anchor points in the left circle
+									if (debug) {box.setText("Currently in left circle");}
+									box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
+									box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
+									record.percentX = box.getLayoutX() / pane.getWidth();
+									record.percentY = box.getLayoutY() / pane.getHeight();
+								}
+								else if (record.inCircleR) {
+									//box x and y are closest anchor points in the right circle
+									if (debug) {box.setText("Currently in right circle");}
+									box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
+									box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
+									record.percentX = box.getLayoutX() / pane.getWidth();
+									record.percentY = box.getLayoutY() / pane.getHeight();
+								}
+							}
+						}
+					});
+
+					box.setOnMouseEntered(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
+						}
+					});
+
+					//resize detection:
+					pane.widthProperty().addListener(new ChangeListener<Number>() {
+						@Override
+						public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
+							////						System.out.println("oldX = "+ oldX+", newX = "+newX);
+							//						double old = box.getLayoutX();
+							//						box.setLayoutX(old + (newX.doubleValue() - oldX.doubleValue())/2.5);
+							////						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
+
+							box.setLayoutX(pane.getWidth() * record.percentX);
+
+							p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
+							p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
+							p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
+							p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
+							p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
+							p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
+							p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
+							p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
+							p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
+							p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
+							p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
+
+							p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
+							p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
+							p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
+							p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
+							p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
+							p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
+
+							p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
+							p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
+							p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
+							p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
+							p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
+							p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
+							p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
+							p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
+							p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
+							p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
+							p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
+
+						}
+					});
+
+					pane.heightProperty().addListener(new ChangeListener<Number>() {
+						@Override
+						public void changed(ObservableValue<? extends Number> observable, Number oldY, Number newY) {
+							////						System.out.println("oldY = "+ oldY+", newY = "+newY);
+							//						double old = box.getLayoutY();
+							//						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
+							////						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
+
+							box.setLayoutY(pane.getHeight() * record.percentY);						
+						}
+					});
+
+					pane.getChildren().add(box);
+
+				}
 			}
-		}
-	});
-				//multiple text box adder
-				Button multAdder = new Button("Add mulitple new text boxes");		
-				multAdder.setPrefWidth(200);
-				multAdder.setPrefHeight(50);
-				multAdder.setLayoutX(screenBounds.getMinX());
-				multAdder.setLayoutY(screenBounds.getMinY());
-				multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		});
+		
+		//multiple text box adder ------------------------------------------------------------------------------------------------------------
+		Button multAdder = new Button("Add mulitple new text boxes");		
+		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
+		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
+		multAdder.layoutYProperty().bind(pane.heightProperty().multiply(10.0/100.0));
+		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				final Stage dialog = new Stage();
+				dialog.initModality(Modality.APPLICATION_MODAL);
+				dialog.initOwner(stage);
+				VBox layout = new VBox(20);
+
+				listView = new ListView<>(FXCollections.observableArrayList());
+				listView.setEditable(true);
+
+				listView.setCellFactory(TextFieldListCell.forListView());		
+
+				listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
+					@Override
+					public void handle(ListView.EditEvent<String> t) {
+						listView.getItems().set(t.getIndex(), t.getNewValue());
+						System.out.println("setOnEditCommit");
+					}
+
+				});
+
+				listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
+					@Override
+					public void handle(ListView.EditEvent<String> t) {
+						System.out.println("setOnEditCancel");
+					}
+				});
+				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+				//add cell to list button
+				Button addText = new Button("Add");
+				addText.setLayoutX(screenBounds.getMinX());
+				addText.setLayoutY(screenBounds.getMaxY());
+
+				addText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						final Stage dialog = new Stage();
-		                dialog.initModality(Modality.APPLICATION_MODAL);
-		                dialog.initOwner(stage);
-		                VBox layout = new VBox(20);
-		                
-		                listView = new ListView<>(FXCollections.observableArrayList());
-		                listView.setEditable(true);
+						String c = new String("Enter Text");
+						listView.getItems().add(listView.getItems().size(), c);
+						listView.scrollTo(c);
+						listView.edit(listView.getItems().size() - 1);
+					}
 
-		                listView.setCellFactory(TextFieldListCell.forListView());		
+				});
 
-		                listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
-		        			@Override
-		        			public void handle(ListView.EditEvent<String> t) {
-		        				listView.getItems().set(t.getIndex(), t.getNewValue());
-		        				System.out.println("setOnEditCommit");
-		        			}
-		        						
-		        		});
+				//delete cell from list button
+				Button deleteText = new Button("Delete Selected");
 
-		        		listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
-		        			@Override
-		        			public void handle(ListView.EditEvent<String> t) {
-		        				System.out.println("setOnEditCancel");
-		        			}
-		        		});
-		                listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		                
-		                //add cell to list button
-		                Button addText = new Button("Add");
-		                addText.setLayoutX(screenBounds.getMinX());
-		                addText.setLayoutY(screenBounds.getMaxY());
-		                
-		                addText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		                	@Override
-		                	public void handle(MouseEvent event) {
-		                		String c = new String("Enter Text");
-		                        listView.getItems().add(listView.getItems().size(), c);
-		                        listView.scrollTo(c);
-		                        listView.edit(listView.getItems().size() - 1);
-		                	}
-		                    
-		                });
-		                
-		                //delete cell from list button
-		                Button deleteText = new Button("Delete Selected");
-		                
-		                deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		                	@Override
-		                	public void handle(MouseEvent event) {
-		                		final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
-		                        if (selectedIdx != -1) {
-		                          String itemToRemove = listView.getSelectionModel().getSelectedItem();
-		                 
-		                          final int newSelectedIdx =
-		                            (selectedIdx == listView.getItems().size() - 1)
-		                               ? selectedIdx - 1
-		                               : selectedIdx;
-		                 
-		                          listView.getItems().remove(selectedIdx);
-		                          listView.getSelectionModel().select(newSelectedIdx);
-		                        }
-		                	}
-		                });
-		                	
-		                //make all cells text boxes button
-		                Button finish = new Button("Finish");
-		                finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		                	@Override
-		                	public void handle(MouseEvent event) {
-		                		ObservableList<String> topics;
-		                	    String list= "";
-		                	    topics = listView.getSelectionModel().getSelectedItems();
-		                	    		                	    
-		                	    for (int i = 0; i < topics.size(); i++) {
-		                	    	int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -1;
-		                			
-		            				
-		            				//Text box properties
-		            				
-		            				Button box = new Button("New Text Box");
-//		            				box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
-		            				box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
-		            				box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		            				box.setLayoutX(textAdder.getLayoutX()+5);
-		            				box.setLayoutY(textAdder.getLayoutY()-((textAdder.getHeight()-15)*(Record.numBoxes%stackable)+(textAdder.getHeight()-15)));
-		            				Record.numBoxes++;
-		            				
-//		            				box.setStyle("-fx-background-color: "+Record.textBox);
-		            				box.setStyle("-fx-background-color: #80b380");
-		            				
-		            				//Change contents
-		            				box.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		            					@Override
-		            					public void handle(MouseEvent event) {
-//		            						box.setText(Record.textBox);
-		            						if (event.getButton().equals(MouseButton.SECONDARY)){
-		            							Alert alert = new Alert(AlertType.CONFIRMATION);
-		            							ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-		            							alert.setTitle("Delete Text Box");
-		            							alert.setContentText("Do you want to delete the text box?");
+				deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
+						if (selectedIdx != -1) {
+							String itemToRemove = listView.getSelectionModel().getSelectedItem();
 
-		            							Optional<ButtonType> result = alert.showAndWait();
-		            							if (result.get() == ButtonType.OK){
-		            								pane.getChildren().remove(box);
-		            							}
-		            						}
-		            						else if (event.getButton().equals(MouseButton.PRIMARY)) {
-		            							TextInputDialog dialog = new TextInputDialog(box.getText());
-		            							dialog.setTitle("Change text");
-		            							dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
-		            							dialog.setContentText("25 character limit");
-		            							String result = dialog.showAndWait().get();
-		            							while (result.length()>25) {
-		            								dialog.setHeaderText("Character limit is 25!");
-		            								result = dialog.showAndWait().get();
-		            								}
-		            							box.setText(result);
-		            						}
-		            					}
-		            				});
-		            				
-		            				
-		            				
-		            				//changes cursor when moving text box  and  records distance moved
-		            				//variables for use in resize detection and position detection
-		            				Record record = new Record();
-		            				record.percentX = box.getLayoutX() / pane.getWidth();
-		            				record.percentY = box.getLayoutY() / pane.getHeight();
-		            				record.inCircleL = false;
-		            				record.inCircleR = false;
-		            				
-		            				box.setOnMousePressed(new EventHandler<MouseEvent>() {
-		            				    @Override
-		            				    public void handle(MouseEvent mouseEvent) {
-		            				        box.setCursor(Cursor.MOVE);
-		            				        record.x = box.getLayoutX() - mouseEvent.getSceneX();
-		            				        record.y = box.getLayoutY() - mouseEvent.getSceneY();
-		            				    }
-		            				});
-		            				
-		            				//Moves text box when dragged 
-		            				box.setOnMouseDragged(new EventHandler<MouseEvent>() {
-		            					@Override
-		            					public void handle(MouseEvent mouseEvent) {
-		            						box.setLayoutX(mouseEvent.getSceneX() + record.x);
-		            						box.setLayoutY(mouseEvent.getSceneY() + record.y);
-		            						record.percentX = box.getLayoutX() / pane.getWidth();
-		            						record.percentY = box.getLayoutY() / pane.getHeight();
-		            					}
-		            				});
-		            				
-		            				//Anchoring
-		            				box.setOnMouseReleased(new EventHandler<MouseEvent>() {
-		            					@Override
-		            					public void handle(MouseEvent mouseEvent) {
-		            						if (VennBase.anchor) {
-		            							//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
-		            							double x2 = box.getLayoutX()*box.getLayoutX();
-		            							double y2 = box.getLayoutY()*box.getLayoutY();
-		            							double La = circleL.getCenterX();
-		            							double Lb = circleL.getCenterY();
-		            							double Ra = circleR.getCenterX();
-		            							double Rb = circleR.getCenterY();
-		            							double Rr2 = circleR.getRadius()*circleR.getRadius();
-		            							double Lr2 = Rr2;
-		            	//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
-		            							
-		            							if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
-		            							else {record.inCircleL=false;}
-		            							if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
-		            							else {record.inCircleR=false;}
-		            							
-		            	//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
-		            							if (record.inCircleL && record.inCircleR) {
-		            								//box x and y are closest anchor points in the intersection
-		            								if (debug) {box.setText("Currently in intersection");}
-		            								box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
-		            								box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
-		            								record.percentX = box.getLayoutX() / pane.getWidth();
-		            								record.percentY = box.getLayoutY() / pane.getHeight();
-		            							}
-		            							else if (record.inCircleL) {
-		            								//box x and y are closest anchor points in the left circle
-		            								if (debug) {box.setText("Currently in left circle");}
-		            								box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
-		            								box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
-		            								record.percentX = box.getLayoutX() / pane.getWidth();
-		            								record.percentY = box.getLayoutY() / pane.getHeight();
-		            							}
-		            							else if (record.inCircleR) {
-		            								//box x and y are closest anchor points in the right circle
-		            								if (debug) {box.setText("Currently in right circle");}
-		            								box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
-		            								box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
-		            								record.percentX = box.getLayoutX() / pane.getWidth();
-		            								record.percentY = box.getLayoutY() / pane.getHeight();
-		            							}
-		            						}
-		            					}
-		            				});
-		            				
-		            				box.setOnMouseEntered(new EventHandler<MouseEvent>() {
-		            					@Override
-		            					public void handle(MouseEvent mouseEvent) {
-		            						if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
-		            					}
-		            				});
-		            				
-		            				//resize detection:
-		            				pane.widthProperty().addListener(new ChangeListener<Number>() {
-		            					@Override
-		            					public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
-////		            						System.out.println("oldX = "+ oldX+", newX = "+newX);
-//		            						double old = box.getLayoutX();
-//		            						box.setLayoutX(old + (newX.doubleValue() - oldX.doubleValue())/2.5);
-////		            						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
-		            						
-		            						box.setLayoutX(pane.getWidth() * record.percentX);
-		            						
-		            						p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
-		            						p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
-		            						p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
-		            						p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
-		            						p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
-		            						p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
-		            						p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
-		            						p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
-		            						p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
-		            						p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
-		            						p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
-		            						
-		            						p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
-		            						p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
-		            						p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
-		            						p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
-		            						p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
-		            						p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
-		            						
-		            						p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
-		            						p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
-		            						p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
-		            						p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
-		            						p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
-		            						p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
-		            						p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
-		            						p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
-		            						p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
-		            						p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
-		            						p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
-		            						
-		            					}
-		            				});
-		            				
-		            				pane.heightProperty().addListener(new ChangeListener<Number>() {
-		            					@Override
-		            					public void changed(ObservableValue<? extends Number> observable, Number oldY, Number newY) {
-////		            						System.out.println("oldY = "+ oldY+", newY = "+newY);
-//		            						double old = box.getLayoutY();
-//		            						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
-////		            						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
-		            						
-		            						box.setLayoutY(pane.getHeight() * record.percentY);						
-		            					}
-		            				});
-		            				
-		            				pane.getChildren().add(box);
-		        			
-		                	    }
-		                	dialog.close();
-		                	}
-		                	
-		                });
-			                
-		                layout.setPadding(new Insets(20,20,20,20));
-		                layout.getChildren().addAll(listView, addText, deleteText, finish);
-		                Scene dialogScene = new Scene(layout, 300, 500);
-		                
-		                dialog.setScene(dialogScene);
-		                dialog.show();
-		            }
-		         });
+							final int newSelectedIdx =
+									(selectedIdx == listView.getItems().size() - 1)
+									? selectedIdx - 1
+											: selectedIdx;
+
+							listView.getItems().remove(selectedIdx);
+							listView.getSelectionModel().select(newSelectedIdx);
+						}
+					}
+				});
+
+				//make all cells text boxes button
+				Button finish = new Button("Finish");
+				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						ObservableList<String> topics;
+						String list= "";
+						topics = listView.getSelectionModel().getSelectedItems();
+
+						for (int i = 0; i < topics.size(); i++) {
+							int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -1;
+
+
+							//Text box properties
+
+							Button box = new Button(topics.get(i));
+//		            		box.prefWidthProperty().bind(textAdder.widthProperty().multiply(75.0/100.0));
+							box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
+							box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+							box.setLayoutX(15);
+							box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+							Record.numBoxes++;
+
+//		            		box.setStyle("-fx-background-color: "+Record.textBox);
+							box.setStyle("-fx-background-color: #80b380");
+
+							//Change contents
+							box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent event) {
+									if (event.getButton().equals(MouseButton.SECONDARY)) {
+										TextInputDialog dialog = new TextInputDialog(box.getText());
+										dialog.setTitle("Change text");
+										dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
+										dialog.setContentText("25 character limit");
+										String result = dialog.showAndWait().get();
+										while (result.length()>25) {
+											dialog.setHeaderText("Character limit is 25!");
+											result = dialog.showAndWait().get();
+										}
+										box.setText(result);
+										if (box.getText().equals("")) {pane.getChildren().remove(box);}
+									}
+								}
+							});
+
+
+
+							//changes cursor when moving text box  and  records distance moved
+							//variables for use in resize detection and position detection
+							Record record = new Record();
+							record.percentX = box.getLayoutX() / pane.getWidth();
+							record.percentY = box.getLayoutY() / pane.getHeight();
+							record.inCircleL = false;
+							record.inCircleR = false;
+
+							box.setOnMousePressed(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent mouseEvent) {
+									box.setCursor(Cursor.MOVE);
+									record.x = box.getLayoutX() - mouseEvent.getSceneX();
+									record.y = box.getLayoutY() - mouseEvent.getSceneY();
+								}
+							});
+
+							//Moves text box when dragged 
+							box.setOnMouseDragged(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent mouseEvent) {
+									box.setLayoutX(mouseEvent.getSceneX() + record.x);
+									box.setLayoutY(mouseEvent.getSceneY() + record.y);
+									record.percentX = box.getLayoutX() / pane.getWidth();
+									record.percentY = box.getLayoutY() / pane.getHeight();
+								}
+							});
+
+							//Anchoring
+							box.setOnMouseReleased(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent mouseEvent) {
+									if (VennBase.anchor) {
+										//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
+										double x2 = box.getLayoutX()*box.getLayoutX();
+										double y2 = box.getLayoutY()*box.getLayoutY();
+										double La = circleL.getCenterX();
+										double Lb = circleL.getCenterY();
+										double Ra = circleR.getCenterX();
+										double Rb = circleR.getCenterY();
+										double Rr2 = circleR.getRadius()*circleR.getRadius();
+										double Lr2 = Rr2;
+										//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
+
+										if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
+										else {record.inCircleL=false;}
+										if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
+										else {record.inCircleR=false;}
+
+										//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
+										if (record.inCircleL && record.inCircleR) {
+											//box x and y are closest anchor points in the intersection
+											if (debug) {box.setText("Currently in intersection");}
+											box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);
+											box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);
+											record.percentX = box.getLayoutX() / pane.getWidth();
+											record.percentY = box.getLayoutY() / pane.getHeight();
+										}
+										else if (record.inCircleL) {
+											//box x and y are closest anchor points in the left circle
+											if (debug) {box.setText("Currently in left circle");}
+											box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);
+											box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);
+											record.percentX = box.getLayoutX() / pane.getWidth();
+											record.percentY = box.getLayoutY() / pane.getHeight();
+										}
+										else if (record.inCircleR) {
+											//box x and y are closest anchor points in the right circle
+											if (debug) {box.setText("Currently in right circle");}
+											box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);
+											box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);
+											record.percentX = box.getLayoutX() / pane.getWidth();
+											record.percentY = box.getLayoutY() / pane.getHeight();
+										}
+									}
+								}
+							});
+
+							box.setOnMouseEntered(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent mouseEvent) {
+									if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
+								}
+							});
+
+							//resize detection:
+							pane.widthProperty().addListener(new ChangeListener<Number>() {
+								@Override
+								public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
+									////		            						System.out.println("oldX = "+ oldX+", newX = "+newX);
+									//		            						double old = box.getLayoutX();
+									//		            						box.setLayoutX(old + (newX.doubleValue() - oldX.doubleValue())/2.5);
+									////		            						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
+
+									box.setLayoutX(pane.getWidth() * record.percentX);
+
+									p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
+									p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
+									p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
+									p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
+									p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
+									p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
+									p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
+									p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
+									p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
+									p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
+									p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
+
+									p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
+									p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
+									p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
+									p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
+									p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
+									p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
+
+									p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
+									p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
+									p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
+									p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
+									p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
+									p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
+									p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
+									p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
+									p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
+									p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
+									p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
+
+								}
+							});
+
+							pane.heightProperty().addListener(new ChangeListener<Number>() {
+								@Override
+								public void changed(ObservableValue<? extends Number> observable, Number oldY, Number newY) {
+									////		            						System.out.println("oldY = "+ oldY+", newY = "+newY);
+									//		            						double old = box.getLayoutY();
+									//		            						box.setLayoutY(old + (newY.doubleValue() - oldY.doubleValue())/2.5);
+									////		            						System.out.println("(newY-oldY)/2 = "+ ((newY.doubleValue()-oldY.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutY());
+
+									box.setLayoutY(pane.getHeight() * record.percentY);						
+								}
+							});
+
+							pane.getChildren().add(box);
+
+						}
+						dialog.close();
+					}
+
+				});
+
+				layout.setPadding(new Insets(20,20,20,20));
+				layout.getChildren().addAll(listView, addText, deleteText, finish);
+				Scene dialogScene = new Scene(layout, 300, 500);
+
+				dialog.setScene(dialogScene);
+				dialog.show();
+			}
+		});
 	
 		
 		//Texts ------------------------------------------------------------------------------------------------------------
@@ -794,18 +767,18 @@ public class VennBase extends Application	 {
 		});
 		
 		//Right circle color picker label
-		Text cpR = new Text(" : Right circle color");
+		Text cpR = new Text("Right circle color : ");
 		cpR.setFont(new Font(12));
 		cpR.setStroke(Color.BLACK);
-		cpR.layoutXProperty().bind(cp1.widthProperty());
+		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(100));
 		cpR.layoutYProperty().bind(cp1.layoutYProperty().add(15));
 		
 		//Right circle color picker label
-		Text cpL = new Text(" : Left circle color");
+		Text cpL = new Text("Left circle color : ");
 		cpL.setFont(new Font(12));
 		cpL.setStroke(Color.BLACK);
 		cpL.setTextAlignment(TextAlignment.CENTER);
-		cpL.layoutXProperty().bind(cp2.widthProperty());
+		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(100));
 		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 		
 				
