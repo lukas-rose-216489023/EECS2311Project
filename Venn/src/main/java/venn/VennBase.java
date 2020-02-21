@@ -224,7 +224,6 @@ public class VennBase extends Application	 {
 		        			@Override
 		        			public void handle(ListView.EditEvent<String> t) {
 		        				listView.getItems().set(t.getIndex(), t.getNewValue());
-		        				System.out.println("setOnEditCommit");
 		        			}
 		        						
 		        		});
@@ -232,7 +231,6 @@ public class VennBase extends Application	 {
 		        		listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
 		        			@Override
 		        			public void handle(ListView.EditEvent<String> t) {
-		        				System.out.println("setOnEditCancel");
 		        			}
 		        		});
 		                listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
