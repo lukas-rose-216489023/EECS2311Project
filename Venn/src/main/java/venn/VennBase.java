@@ -483,17 +483,18 @@ public class VennBase extends Application	 {
 					@Override
 					public void handle(MouseEvent event) {
 						final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
-						if (selectedIdx != -1) {
-							String itemToRemove = listView.getSelectionModel().getSelectedItem();
-
-							final int newSelectedIdx =
-									(selectedIdx == listView.getItems().size() - 1)
-									? selectedIdx - 1
-											: selectedIdx;
-
-							listView.getItems().remove(selectedIdx);
-							listView.getSelectionModel().select(newSelectedIdx);
-						}
+						listView.getItems().remove(selectedIdx);
+						
+						
+						//Still in process of integrating multiple selected deletes
+						
+						//ObservableList<Integer> selectedCells;
+						//selectedCells = listView.getSelectionModel().getSelectedIndices();
+						//System.out.println(selectedCells);
+						
+						//for (int i = 0; i <= selectedCells.size(); i++) {
+						//	listView.getItems().remove(i);
+						//}
 					}
 				});
 
