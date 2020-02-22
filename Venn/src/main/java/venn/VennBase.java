@@ -1,5 +1,11 @@
 package venn;
 
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import java.awt.TextField;
 import java.util.Optional;
 import java.util.ArrayList;
@@ -8,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -40,6 +48,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 									
 @SuppressWarnings("unused")
 public class VennBase extends Application	 {
@@ -69,7 +79,6 @@ public class VennBase extends Application	 {
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.5);		
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.5);
-		@SuppressWarnings("unused")
 		Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 0.5);
 	    
 		//Right venn circle
@@ -312,14 +321,12 @@ public class VennBase extends Application	 {
 								double Rb = circleR.getCenterY();
 								double Rr2 = circleR.getRadius()*circleR.getRadius();
 								double Lr2 = Rr2;
-								//						System.out.println("x2+y2="+(x2+y2)+", Lr2="+Lr2+", Rr2="+Rr2);
 
 								if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
 								else {record.inCircleL=false;}
 								if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
 								else {record.inCircleR=false;}
 
-								//						System.out.println("checking...\nL:"+record.inCircleL+", R:"+record.inCircleR);
 								if (record.inCircleL && record.inCircleR) {
 									//box x and y are closest anchor points in the intersection
 									if (debug) {box.setText("Currently in intersection");}
@@ -441,7 +448,6 @@ public class VennBase extends Application	 {
 					@Override
 					public void handle(ListView.EditEvent<String> t) {
 						listView.getItems().set(t.getIndex(), t.getNewValue());
-						System.out.println("setOnEditCommit");
 					}
 
 				});
@@ -449,7 +455,7 @@ public class VennBase extends Application	 {
 				listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
 					@Override
 					public void handle(ListView.EditEvent<String> t) {
-						System.out.println("setOnEditCancel");
+						//System.out.println("setOnEditCancel");
 					}
 				});
 				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -711,7 +717,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					TextInputDialog dialog = new TextInputDialog("Enter Venn diagram title");
 					dialog.setTitle("Change title");
 					dialog.setHeaderText("Enter to change title");
 					dialog.setContentText("Please enter the new title:");
@@ -733,7 +739,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					TextInputDialog dialog = new TextInputDialog("Enter left circle title");
 					dialog.setTitle("Change text");
 					dialog.setHeaderText("Enter to change text");
 					dialog.setContentText("Please enter some text:");
@@ -755,7 +761,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					TextInputDialog dialog = new TextInputDialog("25 character limit");
+					TextInputDialog dialog = new TextInputDialog("Enter right circle title");
 					dialog.setTitle("Change text");
 					dialog.setHeaderText("Enter to change text");
 					dialog.setContentText("Please enter some text:");
@@ -781,8 +787,31 @@ public class VennBase extends Application	 {
 		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(100));
 		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 		
-				
-		//Adds items to the window
+		
+		//Screen-shot implementation
+		FlowPane flow = new FlowPane();
+		ImageView display = new ImageView();
+		Button capture = new Button("Take Screenshot of Venn Diagram!");
+		flow.getChildren().addAll(display, capture);
+		capture.layoutXProperty().bind(pane.widthProperty().multiply(0));
+		capture.layoutYProperty().bind(pane.heightProperty().multiply(95.0/100.0));
+		capture.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		
+		capture.setOnAction(event -> {
+			try {
+				Robot robot = new Robot();
+				Rectangle rect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+				BufferedImage image = robot.createScreenCapture(rect);
+				Image myImage = SwingFXUtils.toFXImage(image, null);
+				ImageIO.write(image, "jpg", new File("VennScreenShot.jpg"));
+				//display.setImage(myImage);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		//Adds items to the window -----------------------------------------------------------------------------------------------
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
 		pane.getChildren().addAll(cp1, cp2);
@@ -796,6 +825,8 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(right);
 		pane.getChildren().addAll(cpR, cpL);
 		
+		//Adds screenshot to window
+//		pane.getChildren().add(flow);
 		
 		//debug data -------------------------------------------------------------------------------------------------------
 		Text screen_bounds = new Text();
@@ -818,13 +849,16 @@ public class VennBase extends Application	 {
 		cpLData.setLayoutY(225);
 		Text cpRData = new Text();
 		cpRData.setLayoutY(250);
+		Text captureButton = new Text();
+		captureButton.setLayoutY(275);
+		
 		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.F3) {
 					if (VennBase.debug) {
 						VennBase.debug=false;
-						pane.getChildren().removeAll(screen_bounds, pane_bounds, cp1data, cp2data, textAdderData, titleData, rightData, leftData, cpLData, cpRData);
+						pane.getChildren().removeAll(screen_bounds, pane_bounds, cp1data, cp2data, textAdderData, titleData, rightData, leftData, cpLData, cpRData, captureButton);
 					}
 					else {
 						screen_bounds.setText("screenBounds: "+screenBounds.getWidth()+", "+screenBounds.getHeight());
@@ -837,9 +871,10 @@ public class VennBase extends Application	 {
 						leftData.setText("left: "+left.getLayoutX()+", "+left.getLayoutY());
 						cpLData.setText("cpL: "+cpL.getLayoutX()+", "+cpL.getLayoutY());
 						cpRData.setText("cpR: "+cpR.getLayoutX()+", "+cpR.getLayoutY());
+						captureButton.setText("capture: "+capture.getLayoutX()+", "+capture.getLayoutY());
 						
 						VennBase.debug=true;
-						pane.getChildren().addAll(screen_bounds, pane_bounds, cp1data, cp2data, textAdderData, titleData, rightData, leftData, cpLData, cpRData);
+						pane.getChildren().addAll(screen_bounds, pane_bounds, cp1data, cp2data, textAdderData, titleData, rightData, leftData, cpLData, cpRData, captureButton);
 					}
 				}
 			}
