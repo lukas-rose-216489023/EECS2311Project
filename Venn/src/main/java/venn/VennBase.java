@@ -504,7 +504,7 @@ public class VennBase extends Application	 {
 					public void handle(MouseEvent event) {
 						ObservableList<String> topics;
 						String list= "";
-						topics = listView.getSelectionModel().getSelectedItems();
+						topics = listView.getItems();
 
 						for (int i = 0; i < topics.size(); i++) {
 							int stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -1;
