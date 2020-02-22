@@ -458,10 +458,10 @@ public class VennBase extends Application	 {
 						//System.out.println("setOnEditCancel");
 					}
 				});
-				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+				listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 				//add cell to list button
-				Button addText = new Button("Add");
+				Button addText = new Button("Add One Text to List");
 				addText.setLayoutX(screenBounds.getMinX());
 				addText.setLayoutY(screenBounds.getMaxY());
 
@@ -477,7 +477,7 @@ public class VennBase extends Application	 {
 				});
 
 				//delete cell from list button
-				Button deleteText = new Button("Delete Selected");
+				Button deleteText = new Button("Delete Selected Text from List");
 
 				deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
@@ -499,7 +499,7 @@ public class VennBase extends Application	 {
 				});
 
 				//make all cells text boxes button
-				Button finish = new Button("Finish");
+				Button finish = new Button("Make All Texts in List Text Boxes");
 				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
