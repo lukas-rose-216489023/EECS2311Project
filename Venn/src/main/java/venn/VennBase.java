@@ -232,7 +232,7 @@ public class VennBase extends Application	 {
 		
 		
 		//text box adder ------------------------------------------------------------------------------------------------------------
-		Button textAdder = new Button("Add new text box");		
+		Button textAdder = new Button("Add New Text Box");		
 		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		textAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
 		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
@@ -426,7 +426,7 @@ public class VennBase extends Application	 {
 		});
 		
 		//multiple text box adder ------------------------------------------------------------------------------------------------------------
-		Button multAdder = new Button("Add mulitple new text boxes");		
+		Button multAdder = new Button("Add Mulitple New Text Boxes");		
 		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
 		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
@@ -499,7 +499,7 @@ public class VennBase extends Application	 {
 				});
 
 				//make all cells text boxes button
-				Button finish = new Button("Make All Texts in List Text Boxes");
+				Button finish = new Button("Convert All Texts in List Into Text Boxes");
 				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
