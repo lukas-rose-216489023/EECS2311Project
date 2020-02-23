@@ -794,10 +794,10 @@ public class VennBase extends Application	 {
 		ImageView display = new ImageView();
 		Button capture = new Button("Take Screenshot of Venn Diagram!");
 		flow.getChildren().addAll(display, capture);
-		capture.layoutXProperty().bind(pane.widthProperty().multiply(0));
-		capture.layoutYProperty().bind(pane.heightProperty().multiply(95.0/100.0));
-		capture.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		//capture.layoutXProperty().bind(pane.widthProperty().multiply(0));
+		//capture.layoutYProperty().bind(pane.heightProperty().multiply(95.0/100.0));
+		//capture.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		//capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		
 		capture.setOnAction(event -> {
 			try {
@@ -806,7 +806,6 @@ public class VennBase extends Application	 {
 				BufferedImage image = robot.createScreenCapture(rect);
 				Image myImage = SwingFXUtils.toFXImage(image, null);
 				ImageIO.write(image, "jpg", new File("VennScreenShot.jpg"));
-				//display.setImage(myImage);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -827,7 +826,9 @@ public class VennBase extends Application	 {
 		pane.getChildren().addAll(cpR, cpL);
 		
 		//Adds screenshot to window
-//		pane.getChildren().add(flow);
+		flow.setLayoutX(0);
+		flow.setLayoutY(950);
+		pane.getChildren().add(flow);
 		
 		//debug data -------------------------------------------------------------------------------------------------------
 		Text screen_bounds = new Text();
