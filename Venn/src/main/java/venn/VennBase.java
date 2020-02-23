@@ -5,9 +5,12 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.TextField;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -61,7 +64,10 @@ public class VennBase extends Application	 {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
 	public void start(Stage stage) {
-
+		
+		//Create file
+		CreateFile();
+		
 		//Get primary screen bounds
 	    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	    
@@ -71,6 +77,7 @@ public class VennBase extends Application	 {
 		root.getChildren().addAll(pane);
 		stage.setTitle("Venn Application");
 		Scene scene = new Scene(root, screenBounds.getWidth()-100, screenBounds.getHeight()-100);
+		
 		stage.setScene(scene);
 		stage.setMaximized(true);
 		stage.show();
@@ -891,6 +898,38 @@ public class VennBase extends Application	 {
 		
 	}
 	
+	//Saving systems
+		public void CreateFile() {
+			try {
+				File vennMetaData = new File("VennApplicationSave.txt");
+				if (vennMetaData.createNewFile()) {System.out.println("File created!");}
+				else {System.out.println("File already exists!");}
+			}
+			catch(Exception e) {System.out.println("An error occurred when creaing the file!");}
+		}
+		
+		public void WriteToFile(String line) {
+			try {
+				FileWriter writer = new FileWriter("VennApplicationSave.txt");
+				writer.write(line+"\n");
+				writer.close();
+				System.out.println("Successfully wrote to file!");
+			} 
+				catch (IOException e) {System.out.println("An error occured!");e.printStackTrace();}
+		}
+		
+		public void ReadFromFile(String s) {
+			try {
+				File readFile = new File("VennApplicationSave.txt");
+				Scanner read = new Scanner(readFile);
+				while(read.hasNext()) {
+					String line = read.next();
+					System.out.println(line);
+				}
+				read.close();
+			}
+			catch(Exception e) {System.out.println("An error occured!");e.printStackTrace();}
+		}
 	
 	//Class for recording variables for each box; created for each box
 	static class Record {
