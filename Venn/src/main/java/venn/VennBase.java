@@ -791,13 +791,12 @@ public class VennBase extends Application	 {
 		
 		//Screen-shot implementation
 		FlowPane flow = new FlowPane();
+		flow.layoutYProperty().bind(pane.heightProperty().multiply(95.0/100.0));
 		ImageView display = new ImageView();
 		Button capture = new Button("Take Screenshot of Venn Diagram!");
 		flow.getChildren().addAll(display, capture);
-		//capture.layoutXProperty().bind(pane.widthProperty().multiply(0));
-		//capture.layoutYProperty().bind(pane.heightProperty().multiply(95.0/100.0));
-		//capture.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		//capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		capture.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+//		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		
 		capture.setOnAction(event -> {
 			try {
@@ -826,8 +825,6 @@ public class VennBase extends Application	 {
 		pane.getChildren().addAll(cpR, cpL);
 		
 		//Adds screenshot to window
-		flow.setLayoutX(0);
-		flow.setLayoutY(950);
 		pane.getChildren().add(flow);
 		
 		//debug data -------------------------------------------------------------------------------------------------------
