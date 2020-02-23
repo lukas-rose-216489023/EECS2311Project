@@ -1,39 +1,112 @@
-Requirements Document - Group 17 
-Venn Diagram Tool
+	Software Requirements Document  (Version 2.0)   -   Group 17
+================================================================================================================================
+Members:		Student IDs:
+	Jawad Ahmed 		216340309
+	Lukas Rose 		216489023
+	Sarwat Shaheen 		214677322
+	Wei Ming Yu		216665424
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Members:
-* Jawad Ahmed 		216340309
-* Lucas Rose 		21
-* Sarwat Shaheen 	214677322
-* Wei Ming Yu 		216665424
+
+Venn Diagram Visual Tool
+================================================================================================================================
 
 
----What is the tool:
-	
-	Customers are in need of a system which categorizes their data sets into a two-set venn diagram. All essential features of the
-	system are described in this document.
+Table of Contents
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.	System Purpose
+2.	System Features	
+3.	Acceptance Requirements
+4.	Use Cases
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
----Features:
+
+1.	System Purpose
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	The purpose of the Venn Diagram Visual Tool is to allow users to organise their information visually into three categories, 
+	consisting of sections of two circles and a section where the two circles overlap another. 
+	Users are able to see the relationships between the sets of imformation and identify similarities and differences.
+	All essential features of the system are described in this document.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.	System Features
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	- User is able to customize their venn diagram to their preference
+
+		- Customizable color of each circle
+		- Customizable size of the diagram
+		- Customizable title of the visual diagram
+
+
+	- User can add multiple text elements to the three segments of the venn diagram
+
+		- Text elements can be added via buttons 
+		- Text elements are able to be dragged and dropped to preferred diagram sections.
+		
+	- User can save their work 
 	
-	- Customizable venn diagram circles (color, size, border)
-	- Text boxes can hold up to 25 characters
-	- Text boxes are fully enclosed within the circles
-	- Text boxes can be added via dropdown menu
+	- User can take screenshots of their diagram
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+3.	Acceptance Requirements
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	The Acceptance Requirements met by the Venn Diagram Visual Tool.
+
+
+	- User interface includes a venn diagram visual with a title above it, and subtitles above each circle.
+
+	- Texts of titles are editable to user.
 	
----Acceptance tests:
+	- Venn Diagram allows user to add Text Boxes into three seperate conjunctions.
+
+	- Text boxes can be put in fixed places or according to the user's preference and the options can be toggled.
 	
-	- The dropdown menu will have a 'Customize Circles' menu which would contain options for customizing color, size and borders.
-	- When the color option is selected, users can choose 'left circle' or 'right circle', after which a number of preset colors options
-	  can be chosen from.
-	- When the size option is selected, users can choose between 10 preset sizes or set a custom, numerical radius size for the circles. 
-	  The circles will be of equal radius so one circle cannot be bigger than another.
-	- When the border option is selected, users will have two options given. The first will be stroke width, which after clicking will 
-	  allow the user to choose between a variety of widths. The second option will be stroke color, which after clicking will allow the 
-	  user to choose the border stroke color from a variety of preset colors options.
-	- Users can add text boxes by selecting a dropdown menu option 'Add Text Box'. Doing so will add a new text box in a list to at the 
-	  right side of the window. This list represents the text box being in none of the two sets.
-	- The contents of any text box can be renamed after clicking it. The text boxes can also be dragged into either circles or their 
-	  conjunction.
+	- The user interface includes operates by using buttons.
+	
+	- These buttons willallow the user to do the following:
+
+		- 'Circle Color' button
+
+				- Color button gives user ability to change the colors of either the left or right circle of the diagram.
+
+		- 'Add New Text Box' button
+
+			- Upon clicking, a new text box will be added to the left side of the user interface which will then
+			   be available for dragging into the diagram sets and renaming.
+
+			- The contents of any text box can be renamed after clicking it. The text boxes can also be dragged
+			   into either circles or their conjunction.
+			   
+		- 'Add Multiple New Text Boxes' button
+
+			- Upon clicking, a window will open with the following options:
+				
+				- 
+
+			- The contents of any text box can be renamed after clicking it. The text boxes can also be dragged
+			   into either circles or their conjunction.
+
+		- 'Exit'
+			- Will close the user interface upon selection.
+
+
+	- Text element is held in the section it is dropped into by user.
+  
+	- Text elements exist in a list on the right side of the interface prior to dragging into diagram.
+
+	- The different circles have same radius
+
+	- The circle have an upper bound radius (due to screen size)
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	
 		
 ---Uses cases?
@@ -53,6 +126,57 @@ Members:
 	- To change the text of a text box to "Won a game", click on the text box and then type and enter "Won a game".
 	- To move a text box from the universal set into the left circle, simply drag the text box into the circle.
 	
+	
+
+
+
+4.	Use Cases
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	The steps involved to perform the implementation of a user-personalized venn diagram are as listed below.
+	
+	
+	- Changing Circles Colors
+		1. Select 'Customize Circles' menu button located in the top left of the window.
+		2. Select 'Color' option from the drop down menu.
+		3. Select preferable color from color palet.
+
+	- Setting Size of Circles using Preset Sizes
+		1. Select 'Customize Circles' menu button located in the top left of the window.
+		2. Select 'Size' option from the drop down menu.
+		3. Select one of the three given options: 'small', 'medium', or 'large'.
+
+	- Setting Custom Size of Circles
+		1. Select 'Customize Circles' menu button located in the top left of the window.
+		2. Select 'Size' option from the drop down menu.
+		3. Enter pixel value into 'Custom Size' text field.
+
+	- Change Thickness of Circle Border
+		1. Select 'Customize Circles' menu button located in the top left of the window.
+		2. Select 'Border' option from the drop down menu.
+		3. Select 'Thickness' option.
+		4. Select one of the border thickness options given.
+
+	- Change Color of Circle Border
+		1. Select 'Customize Circles' menu button located in the top left of the window.
+		2. Select 'Border' option from the drop down menu.
+		3. Select 'Color' option.
+		4. Select preferable color from color palet.
+
+	- Add Text Box to Universal List (right side of the window)
+		1. Select 'Add Text Box' menu button located in the top left of the window.
+		2. Text Box is added to Universal List with default text.
+
+	- Changing Text in a Text Box
+		1. Select Text Box with cursor.
+		2. Modify Text to user preferance.
+
+	- Move Text Box to a Section of the Venn Diagram
+		1. Move mouse cursor above text field.
+		2. Click and drag the text field to a section of the diagram.
+		3. Drop the text field.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
 	
 	
