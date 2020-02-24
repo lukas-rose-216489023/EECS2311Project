@@ -8,9 +8,9 @@
   <img src="https://img.shields.io/badge/Code%20Style-Standard-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Version-1.2.0-blue" /></a>
  ---
-A desktop platform for creating customizable Venn Diagrams effectively and easily.
+A desktop platform for creating customizable Venn Diagrams effectively and easily. The purpose of the Venn Diagram Visual Tool is to allow users to organize their information visually into three categories, consisting of sections of two circles and a section where the two circles overlap another. Users are	able to see the relationships between the sets of information and identify similarities and differences.
 
-## Running 
+## Running the application
 
 ### Linux
 In terminal in proper directory where application is located:
