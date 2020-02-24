@@ -218,15 +218,15 @@ public class VennBase extends Application	 {
 		
 		
 		//Anchor option button
-		Button anchorOption = new Button("Anchoring off");
+		Button anchorOption = new Button("Anchoring: off");
 		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
 		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		anchorOption.layoutXProperty().bind(pane.widthProperty().multiply(85.0/100.0));
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");}
-				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");}
+				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring: off");}
+				else {VennBase.anchor = true;anchorOption.setText("Anchoring: on");}
 			}
 		});
 		
@@ -641,7 +641,7 @@ public class VennBase extends Application	 {
 									////		            						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
 
 									box.setLayoutX(pane.getWidth() * record.percentX);
-									
+
 									p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
 									p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
 									p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
