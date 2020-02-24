@@ -70,7 +70,7 @@ Table of Contents
 	
 	- The user interface includes operates by using buttons.
 	
-	- These buttons willallow the user to do the following:
+	- These buttons will allow the user to do the following:
 
 		- 'Circle Color' button
 
@@ -95,9 +95,9 @@ Table of Contents
 					
 				- 'Delete Selected Text from List'
 					
-					- Upon clicking, will remove all selcted texts in the window.
+					- Upon clicking, will remove selcted text in the window.
 				
-				- 'Convert All Texts in List Into Text Boxes'
+				- 'Convert All Texts in List into Text Boxes'
 					
 					- Upon clicking, all current texts in the window will become text boxes in the venn diagram.
 

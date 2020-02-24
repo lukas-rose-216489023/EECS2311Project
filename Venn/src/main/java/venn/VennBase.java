@@ -499,7 +499,7 @@ public class VennBase extends Application	 {
 				});
 
 				//make all cells text boxes button
-				Button finish = new Button("Convert All Texts in List Into Text Boxes");
+				Button finish = new Button("Convert All Texts in List into Text Boxes");
 				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -641,7 +641,7 @@ public class VennBase extends Application	 {
 									////		            						System.out.println("(newX-oldX)/2 = "+ ((newX.doubleValue()-oldX.doubleValue())/2.0)+"; old="+old+" ==> new="+box.getLayoutX());
 
 									box.setLayoutX(pane.getWidth() * record.percentX);
-
+									
 									p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
 									p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
 									p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
