@@ -75,7 +75,6 @@ public class VennBase extends Application	 {
 		stage.setMaximized(true);
 		stage.show();
 		
-		
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.5);		
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.5);
