@@ -206,7 +206,7 @@ public class VennBase extends Application	 {
 				}
         });
 		
-//		cp3.setOnAction(new EventHandler() {
+//		cp3.setOnAction(new EventHandler() { 
 //			@Override
 //			public void handle(javafx.event.Event event) {
 //				String textBo = Integer.toHexString(cp3.getValue().hashCode());//String.format("#%02X%02X%02X", ((int)cp3.getValue().getRed())*255, ((int)cp3.getValue().getGreen())*255, ((int)cp3.getValue().getBlue())*255);
