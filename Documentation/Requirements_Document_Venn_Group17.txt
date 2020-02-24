@@ -190,3 +190,29 @@ Table of Contents
 		The right circle title is now changed to 'Things I'm Good At'.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
+Things to add:
+
+  - Save files => Marco
+	- import
+	- export
+  - Better multiple adder => Lukas
+	- Delete selection
+	- Easier editting
+  - Anchoring resize => Jawad
+  - Better screenshot => Sarwat
+	- Save location
+	- Window only
+	- Multiple saves
+  - Deleting text boxes easier
+  - Text detection (if same text exists in right and left, add to intersection)
+  - Text box color
+  - Reset button
+  - Trademark icon
+	- Cool name
+	- Cool icon
+  - Move buttons to the left
+
+
+
