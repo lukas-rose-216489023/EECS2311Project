@@ -24,9 +24,9 @@ Table of Contents
 1.	System Purpose
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	The purpose of the Venn Diagram Visual Tool is to allow users to organise their information visually into three 
+	The purpose of the Venn Diagram Visual Tool is to allow users to organize their information visually into three 
 	categories, consisting of sections of two circles and a section where the two circles overlap another. Users are
-	able to see the relationships between the sets of imformation and identify similarities and differences.
+	able to see the relationships between the sets of information and identify similarities and differences.
 	
 	All essential features of the system are described in this document.
 
@@ -35,14 +35,14 @@ Table of Contents
 2.	System Features
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	- User is able to customize their venn diagram to their preference
+	- User is able to customize their Venn diagram to their preference
 
 		- Customizable color of each circle
 		- Customizable size of the diagram
 		- Customizable title of the visual diagram
 
 
-	- User can add multiple text elements to the three segments of the venn diagram
+	- User can add multiple text elements to the three segments of the Venn diagram
 
 		- Text elements can be added via buttons 
 		- Text elements are able to be dragged and dropped to preferred diagram sections.
@@ -60,11 +60,11 @@ Table of Contents
 	The Acceptance Requirements met by the Venn Diagram Visual Tool.
 
 
-	- User interface includes a venn diagram visual with a title above it, and subtitles above each circle.
+	- User interface includes a Venn diagram visual with a title above it, and subtitles above each circle.
 
 	- Texts of titles are editable to user.
 	
-	- Venn Diagram allows user to add Text Boxes into three seperate conjunctions.
+	- Venn Diagram allows user to add Text Boxes into three separate conjunctions.
 
 	- Text boxes can be put in fixed places or according to the user's preference and the options can be toggled.
 	
@@ -95,7 +95,7 @@ Table of Contents
 					
 				- 'Delete Selected Text from List'
 					
-					- Upon clicking, will remove selcted text in the window.
+					- Upon clicking, will remove selected text in the window.
 				
 				- 'Convert All Texts in List into Text Boxes'
 					
@@ -106,7 +106,7 @@ Table of Contents
 				- Upon clicking, will toggle text box anchoring on or off
 					
 					- When anchoring is on, text boxes will move to preprogrammed positions when dragged within the circles and
-					  the screen will stay maximized. This also means only a fixed amount of texboxes can be dragged into each 
+					  the screen will stay maximized. This also means only a fixed amount of text boxes can be dragged into each 
 					  region.
 					
 					- When anchoring is off, text boxes can be dragged anywhere the user prefers and the screen can be resized

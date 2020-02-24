@@ -50,7 +50,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-									
+
 @SuppressWarnings("unused")
 public class VennBase extends Application	 {
 	
