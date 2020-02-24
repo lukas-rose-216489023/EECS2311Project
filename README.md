@@ -43,7 +43,6 @@ This project exists thanks to all the people who contribute.
 * Wei ming yu
 * Lukas Rose
 
-#### Anything else that seems useful
 
 ## License
 
