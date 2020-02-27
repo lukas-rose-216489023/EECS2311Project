@@ -66,7 +66,7 @@ public class VennBase extends Application	 {
 	public void start(Stage stage) {
 		
 		//Create file
-		CreateFile();
+//		CreateFile();
 		
 		//Get primary screen bounds
 	    Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -898,38 +898,38 @@ public class VennBase extends Application	 {
 		
 	}
 	
-	//Saving systems
-		public void CreateFile() {
-			try {
-				File vennMetaData = new File("VennApplicationSave.txt");
-				if (vennMetaData.createNewFile()) {System.out.println("File created!");}
-				else {System.out.println("File already exists!");}
-			}
-			catch(Exception e) {System.out.println("An error occurred when creaing the file!");}
-		}
-		
-		public void WriteToFile(String line) {
-			try {
-				FileWriter writer = new FileWriter("VennApplicationSave.txt");
-				writer.write(line+"\n");
-				writer.close();
-				System.out.println("Successfully wrote to file!");
-			} 
-				catch (IOException e) {System.out.println("An error occured!");e.printStackTrace();}
-		}
-		
-		public void ReadFromFile(String s) {
-			try {
-				File readFile = new File("VennApplicationSave.txt");
-				Scanner read = new Scanner(readFile);
-				while(read.hasNext()) {
-					String line = read.next();
-					System.out.println(line);
-				}
-				read.close();
-			}
-			catch(Exception e) {System.out.println("An error occured!");e.printStackTrace();}
-		}
+//	//Saving systems
+//		public void CreateFile() {
+//			try {
+//				File vennMetaData = new File("VennApplicationSave.txt");
+//				if (vennMetaData.createNewFile()) {System.out.println("File created!");}
+//				else {System.out.println("File already exists!");}
+//			}
+//			catch(Exception e) {System.out.println("An error occurred when creaing the file!");}
+//		}
+//		
+//		public void WriteToFile(String line) {
+//			try {
+//				FileWriter writer = new FileWriter("VennApplicationSave.txt");
+//				writer.write(line+"\n");
+//				writer.close();
+//				System.out.println("Successfully wrote to file!");
+//			} 
+//				catch (IOException e) {System.out.println("An error occured!");e.printStackTrace();}
+//		}
+//		
+//		public void ReadFromFile(String s) {
+//			try {
+//				File readFile = new File("VennApplicationSave.txt");
+//				Scanner read = new Scanner(readFile);
+//				while(read.hasNext()) {
+//					String line = read.next();
+//					System.out.println(line);
+//				}
+//				read.close();
+//			}
+//			catch(Exception e) {System.out.println("An error occured!");e.printStackTrace();}
+//		}
 	
 	//Class for recording variables for each box; created for each box
 	static class Record {
