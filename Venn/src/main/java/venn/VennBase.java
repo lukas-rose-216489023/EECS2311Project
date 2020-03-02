@@ -237,17 +237,18 @@ public class VennBase extends Application	 {
 		//selection ----------------------------------------------------------------------------------------------------------------------------
 		Rectangle selection = new Rectangle();
 		selection.setFill(blue.desaturate().desaturate());
-		pane.setOnMousePressed(new EventHandler<MouseEvent>() {
+		
+		//Event handlers
+		EventHandler<MouseEvent> initSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				selection.setLayoutX(mouseEvent.getSceneX());
 				selection.setLayoutY(mouseEvent.getSceneY());
 				pane.getChildren().add(selection);
 			}
-		});
-
-		//Updates selection
-		pane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		};
+		
+		EventHandler<MouseEvent> updateSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				selection.setWidth(mouseEvent.getSceneX()-selection.getLayoutX());
@@ -255,10 +256,9 @@ public class VennBase extends Application	 {
 				if (selection.getWidth()<0) {selection.setLayoutX(selection.getLayoutX()+selection.getWidth());/*selection.setWidth(-1*selection.getWidth());*/}
 				if (selection.getHeight()<0) {selection.setLayoutY(selection.getLayoutX()+selection.getHeight());/*selection.setHeight(-1*selection.getHeight());*/}
 			}
-		});
-
-		//implement selection
-		pane.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		};
+		
+		EventHandler<MouseEvent> implementSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				pane.getChildren().remove(selection);
@@ -275,19 +275,67 @@ public class VennBase extends Application	 {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == moveButton){
 					// ... user chose "move"
-				} 
+					Rectangle selectionMove = new Rectangle();
+					selectionMove.setFill(blue.desaturate().desaturate());
+					selectionMove.setLayoutX(selection.getLayoutX());
+					selectionMove.setLayoutY(selection.getLayoutY());
+					selectionMove.setWidth(selection.getWidth());
+					selectionMove.setHeight(selection.getHeight());
+					
+					pane.getChildren().add(selectionMove);
+					//changes cursor when moving selection and records distance moved
+					selectionMove.setOnMousePressed(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							Record.moveX = mouseEvent.getSceneX();
+							Record.moveY = mouseEvent.getSceneY();
+							selectionMove.setCursor(Cursor.MOVE);
+							Record.selectX = selectionMove.getLayoutX() - mouseEvent.getSceneX();
+							Record.selectY = selectionMove.getLayoutY() - mouseEvent.getSceneY();
+						}
+					});
+
+					//Moves selection when dragged 
+					selectionMove.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							selectionMove.setLayoutX(mouseEvent.getSceneX() + Record.selectX);
+							selectionMove.setLayoutY(mouseEvent.getSceneY() + Record.selectY);
+						}
+					});
+					
+					//Moves all text boxes according to selection
+					selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							Record.moveX = mouseEvent.getSceneX() - Record.selectX;
+							Record.moveY = mouseEvent.getSceneY() - Record.selectY;
+							TextBox.moveSelection();
+							pane.getChildren().remove(selectionMove);
+						}
+					});
+
+				}
 				else if (result.get() == deleteButton) {
 					// ... user chose "delete"
 					Record.deleteSelection(pane);
-				} 
+				}
 				else if (result.get() == cancel) {
 					// ... user chose "cancel"
 				}
 				
-
 				selection.setWidth(0);selection.setHeight(0);
 			}
-		});
+		};
+		
+		//initiate selection
+		pane.setOnMousePressed(initSelection);
+
+		//Updates selection
+		pane.setOnMouseDragged(updateSelection);
+
+		//implement selection
+		pane.setOnMouseReleased(implementSelection);
 
 
 		//text box adder ------------------------------------------------------------------------------------------------------------

@@ -17,6 +17,10 @@ public class Record {
 
 	boolean inSelectionX = false;
 	boolean inSelectionY = false;
+	
+	static double moveX;
+	static double moveY;
+	static double selectX, selectY;
 
 	double x;
 	double y;
@@ -46,7 +50,7 @@ public class Record {
 	public static void deleteSelection(Pane pane) {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(tBoxes);
 		for (TextBox b:iterate) {
-			if (b.record.inSelectionX&&b.record.inSelectionY) {b.removeFromList(pane);System.out.println("Deleted "+b.toString());}
+			if (b.record.inSelectionX&&b.record.inSelectionY) {b.removeFromList(pane);}
 		}
 	}
 

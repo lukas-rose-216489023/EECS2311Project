@@ -1,11 +1,18 @@
 package venn;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -16,7 +23,8 @@ public class TextBox {
 	int stackable;
 	Button box;
 	Record record;
-
+	
+	//Text box constructor
 	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection){
 		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
 
@@ -42,19 +50,49 @@ public class TextBox {
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton().equals(MouseButton.SECONDARY)) {
-					TextInputDialog dialog = new TextInputDialog(box.getText());
-					dialog.setTitle("Change text");
-					dialog.setHeaderText("Enter to change text\nLeave empty to delete text box");
-					dialog.setContentText("25 character limit");
-					String result = dialog.showAndWait().get();
-					while (result.length()>25) {
-						dialog.setHeaderText("Character limit is 25!");
-						result = dialog.showAndWait().get();
+				if (event.getButton().equals(MouseButton.PRIMARY)) {
+					if (event.getClickCount()==2) {
+						TextInputDialog dialog = new TextInputDialog(box.getText());
+						dialog.setTitle("Change text");
+						dialog.setHeaderText("Enter to change text");
+						dialog.setContentText("25 character limit");
+						String result = dialog.showAndWait().get();
+						while (result.length()>25) {
+							dialog.setHeaderText("Character limit is 25!");
+							result = dialog.showAndWait().get();
+						}
+						box.setText(result);
+						if (box.getText().equals("")) {removeFromList(pane);}
 					}
-					box.setText(result);
-					if (box.getText().equals("")) {removeFromList(pane);}
+				}
+			}
+		});
+		
+		//Text box action options
+		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton().equals(MouseButton.SECONDARY)) {
+					pane.getChildren().remove(selection);
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Text Box Actions");
+					alert.setHeaderText("What would you like to do with this text box?");
+					
+					ButtonType deleteButton = new ButtonType("Delete");
+					ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
+					alert.getButtonTypes().setAll(deleteButton, cancel);
+
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == deleteButton) {
+						// ... user chose "delete"
+						removeFromList(pane);
+					}
+					else if (result.get() == cancel) {
+						// ... user chose "cancel"
+					}
+					
+					selection.setWidth(0);selection.setHeight(0);
 				}
 			}
 		});
@@ -212,16 +250,37 @@ public class TextBox {
 		addToList(pane);
 	}
 	
+	//method to add a text box
 	public void addToList(Pane pane) {
 		pane.getChildren().add(this.box);
 		Record.addTextBox(this);
 	}
-
+	
+	//method to delete a text box
 	public void removeFromList(Pane pane) {
 		pane.getChildren().remove(this.box);
 		Record.removeTextBox(this);
 	}
 	
+	//method to get a text box's text
 	public String toString() {return this.box.getText();}
+	
+	//method to delete selected text boxes
+	public static void moveSelection() {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			System.out.println(b.record.inSelectionX+", "+b.record.inSelectionY);
+			if (b.record.inSelectionX&&b.record.inSelectionY) {
+				b.box.setLayoutX(b.box.getLayoutX()+Record.moveX);
+				b.box.setLayoutY(b.box.getLayoutY()+Record.moveY);
+				System.out.println("Box moved");
+			}
+		}
+		
+	}
+	
+	//method to move a text box
+	public void moveBox(double moveX, double moveY) {
+	}
 	
 }
