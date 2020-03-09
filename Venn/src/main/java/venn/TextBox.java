@@ -269,7 +269,6 @@ public class TextBox {
 	public static void moveSelection() {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
 		for (TextBox b:iterate) {
-			System.out.println(b.record.inSelectionX+", "+b.record.inSelectionY);
 			if (b.record.inSelectionX&&b.record.inSelectionY) {
 				b.box.setLayoutX(b.box.getLayoutX()+Record.moveX);
 				b.box.setLayoutY(b.box.getLayoutY()+Record.moveY);
