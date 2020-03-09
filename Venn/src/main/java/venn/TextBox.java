@@ -23,8 +23,9 @@ public class TextBox {
 	int stackable;
 	Button box;
 	Record record;
-	
-	
+	String pos;
+
+
 	//Text box constructor
 	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection){
 		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
@@ -36,6 +37,7 @@ public class TextBox {
 		box.setLayoutX(15);
 		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
 		Record.numBoxes++;
+		pos="universal";
 
 		//variables for use in resize detection and position detection
 		record = new Record();
@@ -43,6 +45,7 @@ public class TextBox {
 		record.percentY = box.getLayoutY() / pane.getHeight();
 		record.inCircleL = false;
 		record.inCircleR = false;
+		Record.addToUniversal(box.getText());
 
 		//box.setStyle("-fx-background-color: "+Record.textBox);
 		box.setStyle("-fx-background-color: #80b380");
@@ -68,8 +71,8 @@ public class TextBox {
 				else if (event.getButton().equals(MouseButton.SECONDARY)) {
 					pane.getChildren().remove(selection);
 					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.setTitle("Text Box Actions");
-					alert.setHeaderText("What would you like to do with this text box?");
+					alert.setTitle("Delete Text Box");
+					alert.setHeaderText("Are you sure you want to delete this text box?");
 
 					ButtonType deleteButton = new ButtonType("Delete");
 					ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
@@ -129,9 +132,15 @@ public class TextBox {
 					if (VennBase.anchor) {box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);}
 					record.percentX = box.getLayoutX() / pane.getWidth();
 					record.percentY = box.getLayoutY() / pane.getHeight();
-					Record.removeFromLeft(box.getText());
-					Record.removeFromRight(box.getText());
-					record.addToIntersection(box.getText());
+					if (pos.equals("right")) {Record.removeFromRight(text);}
+					if (pos.equals("left")) {Record.removeFromLeft(text);}
+					if (Record.checkDataClash(box, "intersection")) {Record.addToIntersection(box.getText());pos="intersection";}
+					else {
+						box.setLayoutX(15);
+						box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+						record.percentX = box.getLayoutX() / pane.getWidth();
+						record.percentY = box.getLayoutY() / pane.getHeight();
+					}
 				}
 				else if (record.inCircleL) {
 					//box x and y are closest anchor points in the left circle
@@ -140,9 +149,16 @@ public class TextBox {
 					if (VennBase.anchor) {box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);}
 					record.percentX = box.getLayoutX() / pane.getWidth();
 					record.percentY = box.getLayoutY() / pane.getHeight();
-					Record.removeFromIntersetion(box.getText());
-					Record.removeFromRight(box.getText());
-					record.addToLeft(box.getText());
+					if (pos.equals("right")) {Record.removeFromRight(text);}
+					if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
+					if (Record.checkDataClash(box, "left")) {Record.addToLeft(box.getText());pos="left";}
+					else {
+						box.setLayoutX(15);
+						box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+						record.percentX = box.getLayoutX() / pane.getWidth();
+						record.percentY = box.getLayoutY() / pane.getHeight();
+					}
+					
 				}
 				else if (record.inCircleR) {
 					//box x and y are closest anchor points in the right circle
@@ -151,9 +167,20 @@ public class TextBox {
 					if (VennBase.anchor) {box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);}
 					record.percentX = box.getLayoutX() / pane.getWidth();
 					record.percentY = box.getLayoutY() / pane.getHeight();
-					Record.removeFromIntersetion(box.getText());
-					Record.removeFromLeft(box.getText());
-					record.addToRight(box.getText());
+					if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
+					if (pos.equals("left")) {Record.removeFromLeft(text);}
+					if (Record.checkDataClash(box, "right")) {Record.addToRight(box.getText());pos="right";}
+					else {
+						box.setLayoutX(15);
+						box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+						record.percentX = box.getLayoutX() / pane.getWidth();
+						record.percentY = box.getLayoutY() / pane.getHeight();
+					}
+				}
+				else {
+					if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
+					if (pos.equals("left")) {Record.removeFromLeft(text);}
+					if (pos.equals("right")) {Record.removeFromRight(text);}
 				}
 			}
 		});
@@ -237,83 +264,85 @@ public class TextBox {
 		});
 
 		addToList(pane);
-}
+	}
 
-//method to add this text box
-public void addToList(Pane pane) {
-	pane.getChildren().add(this.box);
-	Record.addTextBox(this);
-}
+	//method to add this text box
+	public void addToList(Pane pane) {
+		pane.getChildren().add(this.box);
+		Record.addTextBox(this);
+	}
 
-//method to delete a text box
-public void removeFromList(Pane pane) {
-	pane.getChildren().remove(this.box);
-	Record.removeTextBox(this);
-}
+	//method to delete a text box
+	public void removeFromList(Pane pane) {
+		pane.getChildren().remove(this.box);
+		Record.removeTextBox(this);
+	}
 
-//method to get a text box's text
-public String toString() {return this.box.getText();}
+	//method to get a text box's text
+	public String toString() {return this.box.getText();}
 
-//method to move selected text boxes
-public static void prepMoveSelection(double x, double y) {
-	ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
-	for (TextBox b:iterate) {
-		if (b.record.inSelectionX&&b.record.inSelectionY) {
-			b.record.moveX = b.box.getLayoutX() - x;
-			b.record.moveY = b.box.getLayoutY() - y;
+	//methods to move selected text boxes
+	public static void prepMoveSelection(double x, double y) {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			if (b.record.inSelectionX&&b.record.inSelectionY) {
+				b.record.moveX = b.box.getLayoutX() - x;
+				b.record.moveY = b.box.getLayoutY() - y;
+			}
 		}
 	}
-}
-public static void moveSelection(Rectangle selection, double x, double y) {
-	ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
-	for (TextBox b:iterate) {
-		if (b.record.inSelectionX&&b.record.inSelectionY) {
-			b.box.setLayoutX(x + b.record.moveX);
-			b.box.setLayoutY(y + b.record.moveY);
-		}
-	}
-}
-
-//method to move a text box
-public void moveBox(double moveX, double moveY) {
-}
-
-//event handler for box movement
-public EventHandler<MouseEvent> boxMovementHandler(Pane pane) {
-	EventHandler<MouseEvent> moveBox = new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent mouseEvent) {
-			box.setLayoutX(mouseEvent.getSceneX() + record.x);
-			box.setLayoutY(mouseEvent.getSceneY() + record.y);
-			record.percentX = box.getLayoutX() / pane.getWidth();
-			record.percentY = box.getLayoutY() / pane.getHeight();
-		}
-	};
-	return moveBox;
-}
-
-//method to turn off box movement event handler
-public static void turnOffBoxMovement() {
-	ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
-	for (TextBox b:iterate) {
-		b.box.setOnMouseDragged(null);
-	}
-}
-
-//method to turn on box movement event handler
-public static void turnOnBoxMovement(Pane pane) {
-	ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
-	for (TextBox b:iterate) {
-		b.box.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				b.box.setLayoutX(mouseEvent.getSceneX() + b.record.x);
-				b.box.setLayoutY(mouseEvent.getSceneY() + b.record.y);
+	public static void moveSelection(Pane pane, Rectangle selection, double x, double y) {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			if (b.record.inSelectionX&&b.record.inSelectionY) {
+				b.box.setLayoutX(x + b.record.moveX);
+				b.box.setLayoutY(y + b.record.moveY);
 				b.record.percentX = b.box.getLayoutX() / pane.getWidth();
 				b.record.percentY = b.box.getLayoutY() / pane.getHeight();
 			}
-		});
+		}
 	}
-}
+
+	//method to move a text box
+	public void moveBox(double moveX, double moveY) {
+	}
+
+	//event handler for box movement
+	public EventHandler<MouseEvent> boxMovementHandler(Pane pane) {
+		EventHandler<MouseEvent> moveBox = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				box.setLayoutX(mouseEvent.getSceneX() + record.x);
+				box.setLayoutY(mouseEvent.getSceneY() + record.y);
+				record.percentX = box.getLayoutX() / pane.getWidth();
+				record.percentY = box.getLayoutY() / pane.getHeight();
+			}
+		};
+		return moveBox;
+	}
+
+	//method to turn off box movement event handler
+	public static void turnOffBoxMovement() {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			b.box.setOnMouseDragged(null);
+		}
+	}
+
+	//method to turn on box movement event handler
+	public static void turnOnBoxMovement(Pane pane) {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			b.box.setOnMouseDragged(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					b.box.setLayoutX(mouseEvent.getSceneX() + b.record.x);
+					b.box.setLayoutY(mouseEvent.getSceneY() + b.record.y);
+					b.record.percentX = b.box.getLayoutX() / pane.getWidth();
+					b.record.percentY = b.box.getLayoutY() / pane.getHeight();
+				}
+			});
+		}
+	}
 
 }

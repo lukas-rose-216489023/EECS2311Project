@@ -301,7 +301,7 @@ public class VennBase extends Application	 {
 						public void handle(MouseEvent mouseEvent) {
 							selectionMove.setLayoutX(mouseEvent.getSceneX() + Record.selectX);
 							selectionMove.setLayoutY(mouseEvent.getSceneY() + Record.selectY);
-							TextBox.moveSelection(selection, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+							TextBox.moveSelection(pane, selection, mouseEvent.getSceneX(), mouseEvent.getSceneY());
 						}
 					});
 					

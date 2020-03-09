@@ -197,28 +197,40 @@ Things to add:
   	- Save files => Marco
 		- import
 		- export
+		
   	- Selection customization => Jawad
-  		- Delete selection			- Done
-  		- Move selection			- Done
+  		- Delete selection						- Done
+  		- Move selection						- Done
+  	
   	- Undo/Redo 
   		- Undo button
   		- Redo Button
+	
 	- Better multiple adder => Lukas
 		- Delete selection
-		- Easier editting
- 	 - Anchoring resize => Jawad
- 	 - Better screenshot => Sarwat
+		- Easier editing
+ 	
+ 	- Anchoring resize => Jawad
+ 	
+ 	- Better screenshot => Sarwat
 		- Save location
-		- Window only				- Done
+		- Window only							- Done
 		- Multiple saves
-	  - Deleting text boxes easier
-	  - Text detection (if same text exists in right and left, add to intersection)
- 	 - Text box color
- 	 - Reset button
- 	 - Trademark icon
+	
+	- Deleting text boxes easier => Jawad		- Done
+	
+	- Text detection => Jawad					- Done
+	  	- something like if same text exists in right and left, add to intersection
+ 	
+ 	- Text box color
+ 	
+ 	- Reset button
+ 	
+ 	- Trademark icon
 		- Cool name
 		- Cool icon
- 	 - Move buttons to the left		- Done
+ 	
+ 	- Move buttons to the left	=> Jawad		- Done
 
 
 
