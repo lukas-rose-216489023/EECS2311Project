@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import javax.imageio.ImageIO;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -61,9 +60,7 @@ public class VennBase extends Application	 {
 	@Override 
 	public void start(Stage stage) {
 
-		//Create file
-		//		CreateFile();
-
+		
 		//Get primary screen bounds
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -210,15 +207,6 @@ public class VennBase extends Application	 {
 			}
 		});
 
-		//		cp3.setOnAction(new EventHandler() {
-		//			@Override
-		//			public void handle(javafx.event.Event event) {
-		//				String textBo = Integer.toHexString(cp3.getValue().hashCode());//String.format("#%02X%02X%02X", ((int)cp3.getValue().getRed())*255, ((int)cp3.getValue().getGreen())*255, ((int)cp3.getValue().getBlue())*255);
-		////				textBo = "-fx-background-color: #" + textBo;
-		////				Record.textBox = textBo;
-		//				}
-		//        });
-
 
 		//Anchor option button
 		Button anchorOption = new Button("Anchoring off");
@@ -265,58 +253,14 @@ public class VennBase extends Application	 {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Selection Actions");
 				alert.setHeaderText("What would you like to do with the selected text boxes?");
-
-				ButtonType moveButton = new ButtonType("Move");
+				
 				ButtonType deleteButton = new ButtonType("Delete");
 				ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-				alert.getButtonTypes().setAll(moveButton, deleteButton, cancel);
+				alert.getButtonTypes().setAll(deleteButton, cancel);
 
 				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == moveButton){
-					// ... user chose "move"
-					Rectangle selectionMove = new Rectangle();
-					selectionMove.setFill(blue.desaturate().desaturate());
-					selectionMove.setLayoutX(selection.getLayoutX());
-					selectionMove.setLayoutY(selection.getLayoutY());
-					selectionMove.setWidth(selection.getWidth());
-					selectionMove.setHeight(selection.getHeight());
-					
-					pane.getChildren().add(selectionMove);
-					//changes cursor when moving selection and records distance moved
-					selectionMove.setOnMousePressed(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent mouseEvent) {
-							Record.moveX = mouseEvent.getSceneX();
-							Record.moveY = mouseEvent.getSceneY();
-							selectionMove.setCursor(Cursor.MOVE);
-							Record.selectX = selectionMove.getLayoutX() - mouseEvent.getSceneX();
-							Record.selectY = selectionMove.getLayoutY() - mouseEvent.getSceneY();
-						}
-					});
-
-					//Moves selection when dragged 
-					selectionMove.setOnMouseDragged(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent mouseEvent) {
-							selectionMove.setLayoutX(mouseEvent.getSceneX() + Record.selectX);
-							selectionMove.setLayoutY(mouseEvent.getSceneY() + Record.selectY);
-						}
-					});
-					
-					//Moves all text boxes according to selection
-					selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent mouseEvent) {
-							Record.moveX = mouseEvent.getSceneX() - Record.selectX;
-							Record.moveY = mouseEvent.getSceneY() - Record.selectY;
-							TextBox.moveSelection();
-							pane.getChildren().remove(selectionMove);
-						}
-					});
-
-				}
-				else if (result.get() == deleteButton) {
+				if (result.get() == deleteButton) {
 					// ... user chose "delete"
 					Record.deleteSelection(pane);
 				}
@@ -384,7 +328,7 @@ public class VennBase extends Application	 {
 				listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
 					@Override
 					public void handle(ListView.EditEvent<String> t) {
-						//System.out.println("setOnEditCancel");
+						//Do nothing
 					}
 				});
 				listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -404,7 +348,7 @@ public class VennBase extends Application	 {
 					}
 
 				});
-
+				
 				//delete cell from list button
 				Button deleteText = new Button("Delete Selected Text from List");
 
@@ -413,17 +357,6 @@ public class VennBase extends Application	 {
 					public void handle(MouseEvent event) {
 						final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
 						listView.getItems().remove(selectedIdx);
-
-
-						//Still in process of integrating multiple selected deletes
-
-						//ObservableList<Integer> selectedCells;
-						//selectedCells = listView.getSelectionModel().getSelectedIndices();
-						//System.out.println(selectedCells);
-
-						//for (int i = 0; i <= selectedCells.size(); i++) {
-						//	listView.getItems().remove(i);
-						//}
 					}
 				});
 
@@ -621,44 +554,8 @@ public class VennBase extends Application	 {
 		});
 
 	}
-
-	//	//Saving systems
-	//		public void CreateFile() {
-	//			try {
-	//				File vennMetaData = new File("VennApplicationSave.txt");
-	//				if (vennMetaData.createNewFile()) {System.out.println("File created!");}
-	//				else {System.out.println("File already exists!");}
-	//			}
-	//			catch(Exception e) {System.out.println("An error occurred when creaing the file!");}
-	//		}
-	//		
-	//		public void WriteToFile(String line) {
-	//			try {
-	//				FileWriter writer = new FileWriter("VennApplicationSave.txt");
-	//				writer.write(line+"\n");
-	//				writer.close();
-	//				System.out.println("Successfully wrote to file!");
-	//			} 
-	//				catch (IOException e) {System.out.println("An error occured!");e.printStackTrace();}
-	//		}
-	//		
-	//		public void ReadFromFile(String s) {
-	//			try {
-	//				File readFile = new File("VennApplicationSave.txt");
-	//				Scanner read = new Scanner(readFile);
-	//				while(read.hasNext()) {
-	//					String line = read.next();
-	//					System.out.println(line);
-	//				}
-	//				read.close();
-	//			}
-	//			catch(Exception e) {System.out.println("An error occured!");e.printStackTrace();}
-	//		}
-
-
-
-
-
+	
+	
 	//Code from https://code.makery.ch/blog/javafx-2-snapshot-as-png-image/
 	public void createScreenshot(Pane pane) {
 		WritableImage image = pane.snapshot(new SnapshotParameters(), null);
