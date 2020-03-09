@@ -198,8 +198,8 @@ Things to add:
 		- import
 		- export
   	- Selection customization => Jawad
-  		- Delete selection
-  		- Move selection
+  		- Delete selection			- Done
+  		- Move selection			- Done
   	- Undo/Redo 
   		- Undo button
   		- Redo Button
@@ -209,7 +209,7 @@ Things to add:
  	 - Anchoring resize => Jawad
  	 - Better screenshot => Sarwat
 		- Save location
-		- Window only
+		- Window only				- Done
 		- Multiple saves
 	  - Deleting text boxes easier
 	  - Text detection (if same text exists in right and left, add to intersection)
@@ -218,7 +218,7 @@ Things to add:
  	 - Trademark icon
 		- Cool name
 		- Cool icon
- 	 - Move buttons to the left
+ 	 - Move buttons to the left		- Done
 
 
 

@@ -245,6 +245,7 @@ public class VennBase extends Application	 {
 				selection.setLayoutX(mouseEvent.getSceneX());
 				selection.setLayoutY(mouseEvent.getSceneY());
 				pane.getChildren().add(selection);
+				TextBox.turnOffBoxMovement();
 			}
 		};
 		
@@ -253,15 +254,15 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent mouseEvent) {
 				selection.setWidth(mouseEvent.getSceneX()-selection.getLayoutX());
 				selection.setHeight(mouseEvent.getSceneY()-selection.getLayoutY());
-				if (selection.getWidth()<0) {selection.setLayoutX(selection.getLayoutX()+selection.getWidth());/*selection.setWidth(-1*selection.getWidth());*/}
-				if (selection.getHeight()<0) {selection.setLayoutY(selection.getLayoutX()+selection.getHeight());/*selection.setHeight(-1*selection.getHeight());*/}
+				if (selection.getWidth()<0) {selection.setLayoutX(mouseEvent.getSceneX());selection.setWidth(0);}
+				if (selection.getHeight()<0) {selection.setLayoutY(mouseEvent.getSceneY());selection.setHeight(0);}
 			}
 		};
 		
 		EventHandler<MouseEvent> implementSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				pane.getChildren().remove(selection);
+//				pane.getChildren().remove(selection);
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Selection Actions");
 				alert.setHeaderText("What would you like to do with the selected text boxes?");
@@ -275,23 +276,22 @@ public class VennBase extends Application	 {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == moveButton){
 					// ... user chose "move"
-					Rectangle selectionMove = new Rectangle();
-					selectionMove.setFill(blue.desaturate().desaturate());
+					Button selectionMove = new Button();
+					selectionMove.setStyle("-fx-background-color: #0000ff10");
 					selectionMove.setLayoutX(selection.getLayoutX());
 					selectionMove.setLayoutY(selection.getLayoutY());
-					selectionMove.setWidth(selection.getWidth());
-					selectionMove.setHeight(selection.getHeight());
-					
+					selectionMove.setPrefWidth(selection.getWidth());
+					selectionMove.setPrefHeight(selection.getHeight());
 					pane.getChildren().add(selectionMove);
+					
 					//changes cursor when moving selection and records distance moved
 					selectionMove.setOnMousePressed(new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent mouseEvent) {
-							Record.moveX = mouseEvent.getSceneX();
-							Record.moveY = mouseEvent.getSceneY();
 							selectionMove.setCursor(Cursor.MOVE);
 							Record.selectX = selectionMove.getLayoutX() - mouseEvent.getSceneX();
 							Record.selectY = selectionMove.getLayoutY() - mouseEvent.getSceneY();
+							TextBox.prepMoveSelection(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 						}
 					});
 
@@ -301,6 +301,7 @@ public class VennBase extends Application	 {
 						public void handle(MouseEvent mouseEvent) {
 							selectionMove.setLayoutX(mouseEvent.getSceneX() + Record.selectX);
 							selectionMove.setLayoutY(mouseEvent.getSceneY() + Record.selectY);
+							TextBox.moveSelection(selection, mouseEvent.getSceneX(), mouseEvent.getSceneY());
 						}
 					});
 					
@@ -308,10 +309,8 @@ public class VennBase extends Application	 {
 					selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent mouseEvent) {
-							Record.moveX = mouseEvent.getSceneX() - Record.selectX;
-							Record.moveY = mouseEvent.getSceneY() - Record.selectY;
-							TextBox.moveSelection();
 							pane.getChildren().remove(selectionMove);
+							selectionMove.setPrefSize(0, 0);
 						}
 					});
 
@@ -325,6 +324,10 @@ public class VennBase extends Application	 {
 				}
 				
 				selection.setWidth(0);selection.setHeight(0);
+				
+				TextBox.turnOnBoxMovement(pane);
+
+				pane.getChildren().remove(selection);
 			}
 		};
 		

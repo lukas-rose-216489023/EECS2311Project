@@ -18,8 +18,7 @@ public class Record {
 	boolean inSelectionX = false;
 	boolean inSelectionY = false;
 	
-	static double moveX;
-	static double moveY;
+	double moveX,moveY;
 	static double selectX, selectY;
 
 	double x;
