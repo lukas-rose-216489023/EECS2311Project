@@ -233,6 +233,7 @@ public class VennBase extends Application	 {
 				selection.setLayoutX(mouseEvent.getSceneX());
 				selection.setLayoutY(mouseEvent.getSceneY());
 				pane.getChildren().add(selection);
+				TextBox.turnOffBoxMovement();
 			}
 		};
 		
@@ -241,26 +242,68 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent mouseEvent) {
 				selection.setWidth(mouseEvent.getSceneX()-selection.getLayoutX());
 				selection.setHeight(mouseEvent.getSceneY()-selection.getLayoutY());
-				if (selection.getWidth()<0) {selection.setLayoutX(selection.getLayoutX()+selection.getWidth());/*selection.setWidth(-1*selection.getWidth());*/}
-				if (selection.getHeight()<0) {selection.setLayoutY(selection.getLayoutX()+selection.getHeight());/*selection.setHeight(-1*selection.getHeight());*/}
+				if (selection.getWidth()<0) {selection.setLayoutX(mouseEvent.getSceneX());selection.setWidth(0);}
+				if (selection.getHeight()<0) {selection.setLayoutY(mouseEvent.getSceneY());selection.setHeight(0);}
 			}
 		};
 		
 		EventHandler<MouseEvent> implementSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				pane.getChildren().remove(selection);
+//				pane.getChildren().remove(selection);
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Selection Actions");
 				alert.setHeaderText("What would you like to do with the selected text boxes?");
-				
+
+				ButtonType moveButton = new ButtonType("Move");
 				ButtonType deleteButton = new ButtonType("Delete");
 				ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-				alert.getButtonTypes().setAll(deleteButton, cancel);
+				alert.getButtonTypes().setAll(moveButton, deleteButton, cancel);
 
 				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == deleteButton) {
+				if (result.get() == moveButton){
+					// ... user chose "move"
+					Button selectionMove = new Button();
+					selectionMove.setStyle("-fx-background-color: #0000ff10");
+					selectionMove.setLayoutX(selection.getLayoutX());
+					selectionMove.setLayoutY(selection.getLayoutY());
+					selectionMove.setPrefWidth(selection.getWidth());
+					selectionMove.setPrefHeight(selection.getHeight());
+					pane.getChildren().add(selectionMove);
+					
+					//changes cursor when moving selection and records distance moved
+					selectionMove.setOnMousePressed(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							selectionMove.setCursor(Cursor.MOVE);
+							Record.selectX = selectionMove.getLayoutX() - mouseEvent.getSceneX();
+							Record.selectY = selectionMove.getLayoutY() - mouseEvent.getSceneY();
+							TextBox.prepMoveSelection(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+						}
+					});
+
+					//Moves selection when dragged 
+					selectionMove.setOnMouseDragged(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							selectionMove.setLayoutX(mouseEvent.getSceneX() + Record.selectX);
+							selectionMove.setLayoutY(mouseEvent.getSceneY() + Record.selectY);
+							TextBox.moveSelection(pane, selection, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+						}
+					});
+					
+					//Moves all text boxes according to selection
+					selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							pane.getChildren().remove(selectionMove);
+							selectionMove.setPrefSize(0, 0);
+						}
+					});
+
+				}
+				else if (result.get() == deleteButton) {
 					// ... user chose "delete"
 					Record.deleteSelection(pane);
 				}
@@ -269,6 +312,10 @@ public class VennBase extends Application	 {
 				}
 				
 				selection.setWidth(0);selection.setHeight(0);
+				
+				TextBox.turnOnBoxMovement(pane);
+
+				pane.getChildren().remove(selection);
 			}
 		};
 		
@@ -348,7 +395,7 @@ public class VennBase extends Application	 {
 					}
 
 				});
-				
+
 				//delete cell from list button
 				Button deleteText = new Button("Delete Selected Text from List");
 
