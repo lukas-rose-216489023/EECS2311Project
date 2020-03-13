@@ -1,0 +1,12 @@
+cp1 
+cp2 
+Anchoring off
+Title Title
+Left left
+Right right
+Record0 0.61640625 0.4253546099290779 true false
+Box0 8 Whats up right 789.0 279.88333333333327
+
+
+Record2 0.21171875 0.4496707193515703 false true
+Box2 5 Hello left 271.0 295.88333333333327

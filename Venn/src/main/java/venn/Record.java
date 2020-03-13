@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 public class Record {
 
 	static int numBoxes;
+	int recordNum;
 
 	static ArrayList<String> left = new ArrayList<String>();
 	static ArrayList<String> intersection = new ArrayList<String>();
@@ -41,6 +42,11 @@ public class Record {
 	//position detection variables
 	boolean inCircleR;
 	boolean inCircleL;
+	
+	public Record(FileHandling autoSaveFile) {
+		recordNum=numBoxes;
+		autoSaveFile.WriteToFile("Record"+recordNum+" "+percentX+" "+percentY+" "+inCircleR+" "+inCircleL);
+	}
 
 	public static void addToLeft(String text) {left.add(text);}
 	public static void addToIntersection(String text) {intersection.add(text);}
@@ -64,15 +70,15 @@ public class Record {
 	public static void addTextBox(TextBox b) {tBoxes.add(b);}
 	public static void removeTextBox(TextBox b) {tBoxes.remove(b);removeFromLeft(b.box.getText());removeFromIntersetion(b.box.getText());removeFromRight(b.box.getText());}
 
-	public static void deleteSelection(Pane pane) {
+	public static void deleteSelection(Pane pane, FileHandling autoSaveFile) {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(tBoxes);
 		for (TextBox b:iterate) {
 			if (b.record.inSelectionX&&b.record.inSelectionY) {b.removeFromList(pane);}
+			FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), "");
 		}
 	}
 	
 	public static boolean checkDataClash(Button box, String pos) {
-		System.out.println("\nchecking..");
 		boolean clash = false;
 		String clashPos = "";
 		if (pos.equals("intersection")&&Record.intersection.contains(box.getText())) {clash=true;clashPos="intersection";}
@@ -100,7 +106,6 @@ public class Record {
 			}
 		}
 		
-		System.out.println("still checking...\n");printAll();
 		clash=false;
 		if (pos.equals("intersection")) {
 			if (Record.right.contains(box.getText())){clash=true;clashPos="right";}
