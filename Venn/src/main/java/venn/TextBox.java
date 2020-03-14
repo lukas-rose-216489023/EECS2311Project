@@ -111,6 +111,9 @@ public class TextBox {
 				box.setCursor(Cursor.MOVE);
 				record.x = box.getLayoutX() - mouseEvent.getSceneX();
 				record.y = box.getLayoutY() - mouseEvent.getSceneY();
+				if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
+				if (pos.equals("left")) {Record.removeFromLeft(text);}
+				if (pos.equals("right")) {Record.removeFromRight(text);}
 			}
 		});
 

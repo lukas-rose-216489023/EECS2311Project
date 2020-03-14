@@ -77,6 +77,15 @@ public class Record {
 			FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), "");
 		}
 	}
+
+	public static void deleteAll(Pane pane, FileHandling autoSaveFile) {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(tBoxes);
+		for (TextBox b:iterate) {
+			b.removeFromList(pane);
+			FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), "");
+			FileHandling.saveChanges(autoSaveFile, ("Record"+b.record.recordNum), "");
+		}
+	}
 	
 	public static boolean checkDataClash(Button box, String pos) {
 		boolean clash = false;
