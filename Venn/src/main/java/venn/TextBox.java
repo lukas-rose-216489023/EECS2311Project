@@ -12,6 +12,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -55,9 +57,8 @@ public class TextBox {
 
 		//box.setStyle("-fx-background-color: "+Record.textBox);
 		box.setStyle("-fx-background-color: #80b380");
-
-		//Text box action options
-		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		
+		EventHandler<MouseEvent> customize = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -102,7 +103,10 @@ public class TextBox {
 					selection.setWidth(0);selection.setHeight(0);
 				}
 			}
-		});
+		};
+		
+		//Text box action options
+		box.setOnMouseClicked(customize);
 
 		//changes cursor when moving text box  and  records distance moved
 		box.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -279,6 +283,24 @@ public class TextBox {
 					else {record.inSelectionX = false;}
 				}
 			}
+		});
+		
+		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.CONTROL) {
+					box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent event) {
+							if (event.getButton().equals(MouseButton.PRIMARY)) {
+								record.inSelectionX=true;
+								record.inSelectionY=true;
+								box.setStyle("-fx-border-width: 10px;-fx-border-color: #0000ff75; -fx-background-color: #80b380");
+							}	
+						}
+					});
+				}
+			}	
 		});
 
 		addToList(pane);

@@ -4,7 +4,7 @@ Things to add:
 		- import								- Done
 		- export								- Done
 		
-  	- Selection customization => Jawad
+  	- Selection customization => Jawad			- Done
   		- Delete selection						- Done
   		- Move selection						- Done
   	
@@ -26,7 +26,10 @@ Things to add:
 	- Deleting text boxes easier => Jawad		- Done
 	
 	- Text detection => Jawad					- Done
-	  	- something like if same text exists in right and left, add to intersection
+	  	- something like if same 				- Done
+	  	  text exists in right 
+	  	  and left, add to 
+	  	  intersection
  	
  	- Text box color => Wei Ming
  	
@@ -44,5 +47,6 @@ Things to add:
  	
  	- Dark mode/ light mode => Jawad
  		- background  
+ 		
 
 
