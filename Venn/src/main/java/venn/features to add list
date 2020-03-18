@@ -25,8 +25,8 @@ Things to add:
 	
 	- Deleting text boxes easier => Jawad		- Done
 	
-	- Text detection => Jawad					- Done
-	  	- something like if same 				- Done
+	- Text detection => Jawad
+	  	- something like if same
 	  	  text exists in right 
 	  	  and left, add to 
 	  	  intersection
@@ -48,10 +48,13 @@ Things to add:
  	- Customizable background color => Jawad	- Done
  		- background 							- Done
  		
-Stakeholder requirements added on March 3!
+ 		
+Stakeholder requirements:
 
-1. Each element in the Venn diagram may have a longer description that is by default hidden, 
-   but the user must be able to display it.
+1. Each textbox is just a placeholder for the real thing. In other words a textbox is just a title and there could be other information that needs to be accessed.
    
-2. The app must support a mode where the user is asked to arrange a set of tags on the Venn diagram.
-   Once finished, the user can compare their arrangement to a previously hidden correct answer
+2. The app must support a compare feature where user can compare current diagram with a saved diagram.
+
+   
+   
+   
