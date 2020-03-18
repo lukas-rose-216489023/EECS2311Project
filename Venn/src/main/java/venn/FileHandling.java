@@ -73,13 +73,13 @@ public class FileHandling {
 	public void WriteToFile(String line) {
 		try {
 			if (first) {
-			FileWriter writer = new FileWriter("VennApplicationAutoSave.txt");
+			FileWriter writer = new FileWriter("DoNotOpen.txt");
 			writer.write(line+"\n");
 			writer.close();
 			first=false;
 			}
 			else {
-				FileWriter writer = new FileWriter("VennApplicationAutoSave.txt", true);
+				FileWriter writer = new FileWriter("DoNotOpen.txt", true);
 				writer.write(line+"\n");
 				writer.close();
 			}

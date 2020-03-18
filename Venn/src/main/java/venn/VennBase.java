@@ -70,7 +70,7 @@ public class VennBase extends Application	 {
 		
 		//Create file
 		autoSaveFile = new FileHandling();
-		autoSaveFile.CreateFile("VennApplicationAutoSave.txt");
+		autoSaveFile.CreateFile("DoNotOpen.txt");
 
 		//Get primary screen bounds
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
