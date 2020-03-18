@@ -87,13 +87,14 @@ public class Record {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	public static boolean checkDataClash(Button box, String pos) {
 		boolean clash = false;
 		String clashPos = "";
 		if (pos.equals("intersection")&&Record.intersection.contains(box.getText())) {clash=true;clashPos="intersection";}
 		else if (pos.equals("right")&&Record.right.contains(box.getText())) {clash=true;clashPos="right";}
 		else if (pos.equals("left")&&Record.left.contains(box.getText())) {clash=true;clashPos="left";}
-		if (clash&&!VennBase.debug) {
+		if (clash&&!VennBase.debug     &&     false) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Text Box Clash");
 			alert.setHeaderText("There already exists a text box with the same text in this "+clashPos+" section of the diagram.");
@@ -128,7 +129,7 @@ public class Record {
 			if (Record.left.contains(box.getText())){clash=true;clashPos="left";}
 			if (Record.intersection.contains(box.getText())){clash=true;clashPos="intersection";}
 		}
-		if (clash&&!VennBase.debug) {
+		if (clash&&!VennBase.debug     &&     false) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Text Box Clash");
 			alert.setHeaderText("There already exists a text box with the same text in the "+clashPos+" section of the diagram.");

@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -130,13 +132,12 @@ public class FileHandling {
 		}
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
+	
 	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection) {
 		//Read save data
 		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
 		BufferedReader reader = null;
-		FileWriter writer = null;
 
 		try
 		{
@@ -159,13 +160,20 @@ public class FileHandling {
 				String[] split= line.split(" ");
 				for (String indiv:split) {indivContent.add(indiv);}
 				
-				if (indivContent.get(0).equals("RColor")) {
-					System.out.println("Loading right circle color...");
-					System.out.println(indivContent.toString());
-					System.out.printf("col = %d, %d, %d, %d", Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
+				if (indivContent.get(0).equals("BColor")) {
+					System.out.println("Loading background color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
-					VennBase.autoSaveFile.overwriteLineInFile("Right color ", "Right color "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
+					BackgroundFill backgroundColor = new BackgroundFill(col, null, null);
+					Background background = new Background(backgroundColor);
+					pane.setBackground(background);
+					VennBase.autoSaveFile.overwriteLineInFile("BColor ", "BColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
+				}
+				
+				else if (indivContent.get(0).equals("RColor")) {
+					System.out.println("Loading right circle color...");
+					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					circleR.setFill(col);
+					VennBase.autoSaveFile.overwriteLineInFile("RColor ", "RColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
 					col.saturate();
 					col.saturate();
 					col.saturate();
@@ -175,8 +183,8 @@ public class FileHandling {
 				else if (indivContent.get(0).equals("LColor")) {
 					System.out.println("Loading left circle color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
-					VennBase.autoSaveFile.overwriteLineInFile("Left color ", "Right color "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
 					circleL.setFill(col);
+					VennBase.autoSaveFile.overwriteLineInFile("LColor ", "LColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
 					col.saturate();
 					col.saturate();
 					col.saturate();
@@ -185,8 +193,8 @@ public class FileHandling {
 				
 				else if (indivContent.get(0).equals("Anchoring")) {
 					System.out.println("Loading anchor state...");
-					if (indivContent.equals("off")) {VennBase.anchor = false;anchorOption.setText("Anchoring off");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
-					else if (indivContent.equals("on")){VennBase.anchor = true;anchorOption.setText("Anchoring on");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
+					if (indivContent.get(1).equals("off")) {VennBase.anchor = false;anchorOption.setText("Anchoring off");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
+					else if (indivContent.get(1).equals("on")){VennBase.anchor = true;anchorOption.setText("Anchoring on");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
 				}
 				
 				else if (indivContent.get(0).equals("Title")) {
@@ -240,7 +248,7 @@ public class FileHandling {
 				prevIndivContent = indivContent;
 			}
 			
-			System.out.println("Successfully loaded form file -<"+file.getName()+"!");
+			System.out.println("Successfully loaded form file -<"+file.getName()+">-!");
 		}
 		catch (IOException e){e.printStackTrace();System.out.println(e.getMessage());}
 
@@ -248,7 +256,6 @@ public class FileHandling {
 			try {
 				//Closing the resources
 				reader.close();
-				writer.close();
 			} 
 			catch (IOException e) {e.printStackTrace();}
 		}

@@ -12,8 +12,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -21,6 +19,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class TextBox {
+	static boolean ctrlSelection = false;
+	
 	int stackable;
 	Button box;
 	Record record;
@@ -61,7 +61,18 @@ public class TextBox {
 		EventHandler<MouseEvent> customize = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton().equals(MouseButton.PRIMARY)) {
+				if (ctrlSelection) {
+					if (record.inSelectionX&&record.inSelectionY) {
+						record.inSelectionX=false;record.inSelectionY=false;
+						box.setStyle("-fx-background-color: #80b380; -fx-border-width: 0px; -fx-border-color: #0000ff50");
+					}
+					else {
+						record.inSelectionX=true;record.inSelectionY=true;
+						box.setStyle("-fx-background-color: #80b380; -fx-border-width: 5px; -fx-border-color: #0000ff50");
+					}
+				}
+
+				else if (event.getButton().equals(MouseButton.PRIMARY)) {
 					if (event.getClickCount()==2) {
 						TextInputDialog dialog = new TextInputDialog(box.getText());
 						dialog.setTitle("Change text");
@@ -112,12 +123,15 @@ public class TextBox {
 		box.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				box.setCursor(Cursor.MOVE);
-				record.x = box.getLayoutX() - mouseEvent.getSceneX();
-				record.y = box.getLayoutY() - mouseEvent.getSceneY();
-				if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
-				if (pos.equals("left")) {Record.removeFromLeft(text);}
-				if (pos.equals("right")) {Record.removeFromRight(text);}
+				if (ctrlSelection) {TextBox.prepMoveSelection(mouseEvent.getSceneX(), mouseEvent.getSceneY());}
+				else {
+					box.setCursor(Cursor.MOVE);
+					record.x = box.getLayoutX() - mouseEvent.getSceneX();
+					record.y = box.getLayoutY() - mouseEvent.getSceneY();
+					if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
+					if (pos.equals("left")) {Record.removeFromLeft(text);}
+					if (pos.equals("right")) {Record.removeFromRight(text);}
+				}
 			}
 		});
 
@@ -218,39 +232,6 @@ public class TextBox {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
 				box.setLayoutX(pane.getWidth() * record.percentX);
-
-				p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
-				p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
-				p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
-				p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
-				p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
-				p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
-				p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
-				p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
-				p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
-				p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
-				p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
-
-				p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
-				p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
-				p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
-				p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
-				p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
-				p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
-
-				p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
-				p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
-				p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
-				p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
-				p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
-				p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
-				p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
-				p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
-				p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
-				p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
-				p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
-				
-				
 			}
 		});
 
@@ -268,8 +249,10 @@ public class TextBox {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldHeight, Number newHeight) {
 				if (!(selection.getHeight()==0.0)) {
-					if (box.getLayoutY()<(newHeight.doubleValue()+selection.getLayoutY()) && box.getLayoutY()>selection.getLayoutY()) {record.inSelectionY = true;}
-					else {record.inSelectionY = false;}
+					if (!ctrlSelection) {
+						if (box.getLayoutY()<(newHeight.doubleValue()+selection.getLayoutY()) && box.getLayoutY()>selection.getLayoutY()) {record.inSelectionY = true;}
+						else {record.inSelectionY = false;}
+					}
 				}
 			}
 		});
@@ -279,28 +262,12 @@ public class TextBox {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldWidth, Number newWidth) {
 				if (!(selection.getWidth()==0.0)) {
-					if (box.getLayoutX()<(newWidth.doubleValue()+selection.getLayoutX()) && box.getLayoutX()>selection.getLayoutX()) {record.inSelectionX = true;}
-					else {record.inSelectionX = false;}
+					if (!ctrlSelection) {
+						if (box.getLayoutX()<(newWidth.doubleValue()+selection.getLayoutX()) && box.getLayoutX()>selection.getLayoutX()) {record.inSelectionX = true;}
+						else {record.inSelectionX = false;}
+					}
 				}
 			}
-		});
-		
-		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.CONTROL) {
-					box.setOnMouseClicked(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent event) {
-							if (event.getButton().equals(MouseButton.PRIMARY)) {
-								record.inSelectionX=true;
-								record.inSelectionY=true;
-								box.setStyle("-fx-border-width: 10px;-fx-border-color: #0000ff75; -fx-background-color: #80b380");
-							}	
-						}
-					});
-				}
-			}	
 		});
 
 		addToList(pane);
@@ -331,7 +298,7 @@ public class TextBox {
 			}
 		}
 	}
-	public static void moveSelection(Pane pane, Rectangle selection, double x, double y, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Double textAdderHeight, FileHandling autoSaveFile) {
+	public static void moveSelection(Pane pane, double x, double y, FileHandling autoSaveFile) {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
 		for (TextBox b:iterate) {
 			if (b.record.inSelectionX&&b.record.inSelectionY) {
@@ -339,84 +306,21 @@ public class TextBox {
 				b.box.setLayoutY(y + b.record.moveY);
 				b.record.percentX = b.box.getLayoutX() / pane.getWidth();
 				b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-
-				//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
-//				double x2 = b.box.getLayoutX()*b.box.getLayoutX();
-//				double y2 = b.box.getLayoutY()*b.box.getLayoutY();
-//				double La = circleL.getCenterX();
-//				double Lb = circleL.getCenterY();
-//				double Ra = circleR.getCenterX();
-//				double Rb = circleR.getCenterY();
-//				double Rr2 = circleR.getRadius()*circleR.getRadius();
-//				double Lr2 = Rr2;
-//
-//				if ((x2-2*b.box.getLayoutX()*La)+(y2-2*b.box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {b.record.inCircleL=true;}
-//				else {b.record.inCircleL=false;}
-//				if ((x2-2*b.box.getLayoutX()*Ra)+(y2-2*b.box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {b.record.inCircleR=true;}
-//				else {b.record.inCircleR=false;}
-//
-//				if (b.record.inCircleL && b.record.inCircleR) {
-//					//b.box x and y are closest anchor points in the intersection
-//					if (VennBase.debug) {b.box.setText("Currently in intersection");}
-//					if (VennBase.anchor) {b.box.setLayoutX(intersection.closest(b.box.getLayoutY()).xValue);}
-//					if (VennBase.anchor) {b.box.setLayoutY(intersection.closest(b.box.getLayoutY()).yValue);}
-//					b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//					b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					if (b.pos.equals("right")) {Record.removeFromRight(b.box.getText());}
-//					if (b.pos.equals("left")) {Record.removeFromLeft(b.box.getText());}
-//					if (Record.checkDataClash(b.box, "intersection")) {Record.addToIntersection(b.box.getText());b.pos="intersection";}
-//					else {
-//						b.box.setLayoutX(15);
-//						b.box.setLayoutY(5+(textAdderHeight*2) + ((textAdderHeight-15)*(Record.numBoxes%b.stackable)));
-//						b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//						b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					}
-//				}
-//				else if (b.record.inCircleL) {
-//					//b.box x and y are closest anchor points in the left circle
-//					if (VennBase.debug) {b.box.setText("Currently in left circle");}
-//					if (VennBase.anchor) {b.box.setLayoutX(leftCircle.closest(b.box.getLayoutY()).xValue);}
-//					if (VennBase.anchor) {b.box.setLayoutY(leftCircle.closest(b.box.getLayoutY()).yValue);}
-//					b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//					b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					if (b.pos.equals("right")) {Record.removeFromRight(b.box.getText());}
-//					if (b.pos.equals("intersection")) {Record.removeFromIntersetion(b.box.getText());}
-//					if (Record.checkDataClash(b.box, "left")) {Record.addToLeft(b.box.getText());b.pos="left";}
-//					else {
-//						b.box.setLayoutX(15);
-//						b.box.setLayoutY(5+(textAdderHeight*2) + ((textAdderHeight-15)*(Record.numBoxes%b.stackable)));
-//						b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//						b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					}
-//
-//				}
-//				else if (b.record.inCircleR) {
-//					//b.box x and y are closest anchor points in the right circle
-//					if (VennBase.debug) {b.box.setText("Currently in right circle");}
-//					if (VennBase.anchor) {b.box.setLayoutX(rightCircle.closest(b.box.getLayoutY()).xValue);}
-//					if (VennBase.anchor) {b.box.setLayoutY(rightCircle.closest(b.box.getLayoutY()).yValue);}
-//					b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//					b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					if (b.pos.equals("intersection")) {Record.removeFromIntersetion(b.box.getText());}
-//					if (b.pos.equals("left")) {Record.removeFromLeft(b.box.getText());}
-//					if (Record.checkDataClash(b.box, "right")) {Record.addToRight(b.box.getText());b.pos="right";}
-//					else {
-//						b.box.setLayoutX(15);
-//						b.box.setLayoutY(5+(textAdderHeight*2) + ((textAdderHeight-15)*(Record.numBoxes%b.stackable)));
-//						b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-//						b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-//					}
-//				}
-//				else {
-//					if (b.pos.equals("intersection")) {Record.removeFromIntersetion(b.box.getText());}
-//					if (b.pos.equals("left")) {Record.removeFromLeft(b.box.getText());}
-//					if (b.pos.equals("right")) {Record.removeFromRight(b.box.getText());}
-//				}
-			
+				
 				FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), ("Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()));
 				FileHandling.saveChanges(autoSaveFile, ("Record"+b.record.recordNum), ("Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL));
 			}
 		}
+	}
+	public static void releaseSelection() {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			if (b.record.inSelectionX&&b.record.inSelectionY && ctrlSelection) {
+				b.record.inSelectionX=false;b.record.inSelectionY=false;
+				b.box.setStyle("-fx-background-color: #80b380; -fx-border-width: 0px; -fx-border-color: #0000ff50");
+			}
+		}
+		ctrlSelection=false;VennBase.ctrl.setText("Control Selection Mode: OFF");
 	}
 
 
@@ -426,10 +330,15 @@ public class TextBox {
 		EventHandler<MouseEvent> moveBox = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				box.setLayoutX(mouseEvent.getSceneX() + record.x);
-				box.setLayoutY(mouseEvent.getSceneY() + record.y);
-				record.percentX = box.getLayoutX() / pane.getWidth();
-				record.percentY = box.getLayoutY() / pane.getHeight();
+				if (ctrlSelection) {
+					TextBox.moveSelection(pane, mouseEvent.getSceneX(), mouseEvent.getSceneY(), VennBase.autoSaveFile);
+				}
+				else {
+					box.setLayoutX(mouseEvent.getSceneX() + record.x);
+					box.setLayoutY(mouseEvent.getSceneY() + record.y);
+					record.percentX = box.getLayoutX() / pane.getWidth();
+					record.percentY = box.getLayoutY() / pane.getHeight();
+				}
 			}
 		};
 		return moveBox;
