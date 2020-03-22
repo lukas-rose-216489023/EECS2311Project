@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import javax.imageio.ImageIO;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -146,7 +145,6 @@ public class VennBase extends Application	 {
 				col1.saturate();
 				col1.saturate();
 				circleR.setStroke(col1);
-				System.out.println(colorToHex(cp1.getValue()));
 			}
 		});
 		
@@ -339,13 +337,13 @@ public class VennBase extends Application	 {
 								TextBox.moveSelection(pane, mouseEvent.getSceneX(), mouseEvent.getSceneY(), autoSaveFile);
 							}
 						});
-
+						
 						//Moves all text boxes according to selection
 						selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
 							@Override
 							public void handle(MouseEvent mouseEvent) {
-								pane.getChildren().remove(selectionMove);
 								selectionMove.setPrefSize(0, 0);
+								pane.getChildren().remove(selectionMove);
 							}
 						});
 
@@ -373,9 +371,6 @@ public class VennBase extends Application	 {
 
 		//implement selection
 		pane.setOnMouseReleased(implementSelection);
-
-		
-		//Save button
 		
 		
 		//text box adder ------------------------------------------------------------------------------------------------------------
@@ -571,7 +566,7 @@ public class VennBase extends Application	 {
 		Text cpR = new Text("Right circle color : ");
 		cpR.setFont(new Font(12));
 		cpR.setStroke(Color.BLACK);
-		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(100));
+		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(110));
 		cpR.layoutYProperty().bind(cp1.layoutYProperty().add(15));
 
 		//Right circle color picker label
@@ -579,7 +574,7 @@ public class VennBase extends Application	 {
 		cpL.setFont(new Font(12));
 		cpL.setStroke(Color.BLACK);
 		cpL.setTextAlignment(TextAlignment.CENTER);
-		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(100));
+		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(110));
 		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 
 		//Background color picker label
@@ -587,7 +582,7 @@ public class VennBase extends Application	 {
 		cpB.setFont(new Font(12));
 		cpB.setStroke(Color.BLACK);
 		cpB.setTextAlignment(TextAlignment.CENTER);
-		cpB.layoutXProperty().bind(cp3.layoutXProperty().subtract(100));
+		cpB.layoutXProperty().bind(cp3.layoutXProperty().subtract(110));
 		cpB.layoutYProperty().bind(cp3.layoutYProperty().add(15));
 
 		//control selection mode label
@@ -615,6 +610,10 @@ public class VennBase extends Application	 {
 					title.setText("Title");
 					right.setText("right");
 					left.setText("left");
+					BackgroundFill backgroundColor = new BackgroundFill(black, null, null);
+					Background background = new Background(backgroundColor);
+					pane.setBackground(background);
+					Record.numBoxes=0;
 					Record.deleteAll(pane, autoSaveFile);
 				}
 			}
@@ -734,10 +733,13 @@ public class VennBase extends Application	 {
 		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				//control selection
 				if (event.getCode() == KeyCode.CONTROL) {
-					if (TextBox.ctrlSelection) {TextBox.releaseSelection();}
+					if (TextBox.ctrlSelection) {
+						TextBox.releaseSelection();}
 					else {TextBox.ctrlSelection=true;ctrl.setText("Control Selection Mode: ON");}
 				}
+				//debug
 				if (event.getCode() == KeyCode.F3) {
 					if (VennBase.debug) {
 						VennBase.debug=false;

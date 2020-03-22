@@ -17,13 +17,13 @@ public class FileHandling {
 	boolean reset=true;
 	File file;
 	boolean first;
-
+	
 	public void CreateFile(String fileName) {
 		first=true;
 		try {
 			file = new File(fileName);
-			if (file.createNewFile()) {System.out.println("File created!");}
-			else {System.out.println("File already exists!");}
+			if (file.createNewFile()) {System.out.println("File -<"+fileName+">- created!");}
+			else {System.out.println("File -<"+fileName+">- already exists!");}
 		}
 		catch(Exception e) {System.out.println("An error occurred when creaing the file"+fileName+"!");}
 	}

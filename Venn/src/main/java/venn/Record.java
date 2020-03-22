@@ -22,9 +22,10 @@ public class Record {
 	static ArrayList<String> universal = new ArrayList<String>();
 
 	static ArrayList<TextBox> tBoxes = new ArrayList<TextBox>();
-
+	
 	boolean inSelectionX = false;
 	boolean inSelectionY = false;
+	boolean ctrlSelected = false;
 
 	double moveX,moveY;
 	static double selectX, selectY;
@@ -73,8 +74,11 @@ public class Record {
 	public static void deleteSelection(Pane pane, FileHandling autoSaveFile) {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(tBoxes);
 		for (TextBox b:iterate) {
-			if (b.record.inSelectionX&&b.record.inSelectionY) {b.removeFromList(pane);}
-			FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), "");
+			if (b.record.inSelectionX&&b.record.inSelectionY) {
+				b.removeFromList(pane);
+				FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), "");
+				FileHandling.saveChanges(autoSaveFile, ("Record"+b.boxNum), "");
+			}
 		}
 	}
 
