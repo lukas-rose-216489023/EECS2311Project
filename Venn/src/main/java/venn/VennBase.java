@@ -524,6 +524,27 @@ public class VennBase extends Application	 {
 		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		capture.setOnAction(event -> createScreenshot(pane));
+		
+		
+		//Undo-redo implementation
+		Button undo = new Button("Undo");
+		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0/100.0));
+		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		undo.setStyle("-fx-background-color: #b3b3b3");
+		
+		
+		Button redo = new Button("Redo");
+		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0/100.0));
+		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		redo.setStyle("-fx-background-color: #b3b3b3");
+		
+		pane.getChildren().add(undo);
+		pane.getChildren().add(redo);
+		
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
 		pane.getChildren().add(circleR);
