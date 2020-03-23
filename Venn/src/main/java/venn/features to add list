@@ -9,7 +9,7 @@ Things to add:
   		- Delete selection						- Done
   		- Move selection						- Done
   	
-  	- Undo/Redo 
+  	- Undo/Redo  => Sarwat
   		- Undo button
   		- Redo Button
 	
@@ -29,11 +29,11 @@ Things to add:
 	- Text detection => Jawad					- Done
 	  	- something like if same text exists in right and left, add to intersection
  	
- 	- Text box color
+ 	- Text box color => Wei Ming
  	
- 	- Reset button
+ 	- Reset button => Jawad
  	
- 	- Trademark icon
+ 	- Trademark icon => Wei Ming
 		- Cool name
 		- Cool icon
  	
@@ -44,8 +44,16 @@ Things to add:
  	- All buttons hidden
  		- Hover over options
  	
- 	- Dark mode/ light mode
+ 	- Dark mode/ light mode => Jawad
  		- background  
+
+
+
+Stakeholder requirements:
+
+1. Each textbox is just a placeholder for the real thing. In other words a textbox is just a title and there could be other information that needs to be accessed.
+   
+2. The app must support a compare feature where user can compare current diagram with a saved diagram.
 
 
 
