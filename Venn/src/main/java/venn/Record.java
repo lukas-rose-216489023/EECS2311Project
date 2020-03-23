@@ -78,27 +78,27 @@ public class Record {
 		if (pos.equals("intersection")&&Record.intersection.contains(box.getText())) {clash=true;clashPos="intersection";}
 		else if (pos.equals("right")&&Record.right.contains(box.getText())) {clash=true;clashPos="right";}
 		else if (pos.equals("left")&&Record.left.contains(box.getText())) {clash=true;clashPos="left";}
-		if (clash&&!VennBase.debug) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Text Box Clash");
-			alert.setHeaderText("There already exists a text box with the same text in this "+clashPos+" section of the diagram.");
-			alert.setContentText("Would you like to continue placing the text box here?");
-
-			ButtonType yes = new ButtonType("Yes");
-			ButtonType no = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-
-			alert.getButtonTypes().setAll(yes, no);
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get().equals(yes)) {
-				// ... user chose "yes"
-				return true;
-			}
-			else if (result.get().equals(no)) {
-				// ... user chose "no"
-				return false;
-			}
-		}
+//		if (clash&&!VennBase.debug) {
+//			Alert alert = new Alert(AlertType.CONFIRMATION);
+//			alert.setTitle("Text Box Clash");
+//			alert.setHeaderText("There already exists a text box with the same text in this "+clashPos+" section of the diagram.");
+//			alert.setContentText("Would you like to continue placing the text box here?");
+//
+//			ButtonType yes = new ButtonType("Yes");
+//			ButtonType no = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+//
+//			alert.getButtonTypes().setAll(yes, no);
+//
+//			Optional<ButtonType> result = alert.showAndWait();
+//			if (result.get().equals(yes)) {
+//				// ... user chose "yes"
+//				return true;
+//			}
+//			else if (result.get().equals(no)) {
+//				// ... user chose "no"
+//				return false;
+//			}
+//		}
 		
 		System.out.println("still checking...\n");printAll();
 		clash=false;
@@ -114,27 +114,27 @@ public class Record {
 			if (Record.left.contains(box.getText())){clash=true;clashPos="left";}
 			if (Record.intersection.contains(box.getText())){clash=true;clashPos="intersection";}
 		}
-		if (clash&&!VennBase.debug) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Text Box Clash");
-			alert.setHeaderText("There already exists a text box with the same text in the "+clashPos+" section of the diagram.");
-			alert.setContentText("Would you like to continue placing the text box here?");
-
-			ButtonType yes = new ButtonType("Yes");
-			ButtonType no = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-
-			alert.getButtonTypes().setAll(yes, no);
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get().equals(yes)) {
-				// ... user chose "yes"
-				return true;
-			}
-			else if (result.get().equals(no)) {
-				// ... user chose "no"
-				return false;
-			}
-		}
+//		if (clash&&!VennBase.debug) {
+//			Alert alert = new Alert(AlertType.CONFIRMATION);
+//			alert.setTitle("Text Box Clash");
+//			alert.setHeaderText("There already exists a text box with the same text in the "+clashPos+" section of the diagram.");
+//			alert.setContentText("Would you like to continue placing the text box here?");
+//
+//			ButtonType yes = new ButtonType("Yes");
+//			ButtonType no = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+//
+//			alert.getButtonTypes().setAll(yes, no);
+//
+//			Optional<ButtonType> result = alert.showAndWait();
+//			if (result.get().equals(yes)) {
+//				// ... user chose "yes"
+//				return true;
+//			}
+//			else if (result.get().equals(no)) {
+//				// ... user chose "no"
+//				return false;
+//			}
+//		}
 		
 		return true;
 	}
