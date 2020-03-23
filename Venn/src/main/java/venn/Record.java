@@ -61,7 +61,7 @@ public class Record {
 		for (String t:right) {System.out.println(" - "+t);}
 	}
 
-	public static void addTextBox(TextBox b) {tBoxes.add(b);}
+	public static void addTextBox(TextBox b) { tBoxes.add(b);}
 	public static void removeTextBox(TextBox b) {tBoxes.remove(b);removeFromLeft(b.box.getText());removeFromIntersetion(b.box.getText());removeFromRight(b.box.getText());}
 
 	public static void deleteSelection(Pane pane) {
