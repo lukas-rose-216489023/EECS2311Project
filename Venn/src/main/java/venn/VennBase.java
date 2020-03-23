@@ -60,7 +60,7 @@ public class VennBase extends Application	 {
 	@Override 
 	public void start(Stage stage) {
 
-		
+
 		//Get primary screen bounds
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -182,7 +182,7 @@ public class VennBase extends Application	 {
 		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp1.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
 		cp2.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
-		
+
 		cp1.setOnAction(new EventHandler() {
 			@Override
 			public void handle(javafx.event.Event event) {
@@ -225,7 +225,7 @@ public class VennBase extends Application	 {
 		//selection ----------------------------------------------------------------------------------------------------------------------------
 		Rectangle selection = new Rectangle();
 		selection.setFill(blue.desaturate().desaturate());
-		
+
 		//Event handlers
 		EventHandler<MouseEvent> initSelection = new EventHandler<MouseEvent>() {
 			@Override
@@ -236,7 +236,7 @@ public class VennBase extends Application	 {
 				TextBox.turnOffBoxMovement();
 			}
 		};
-		
+
 		EventHandler<MouseEvent> updateSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -246,7 +246,7 @@ public class VennBase extends Application	 {
 				if (selection.getHeight()<0) {selection.setLayoutY(mouseEvent.getSceneY());selection.setHeight(0);}
 			}
 		};
-		
+
 		EventHandler<MouseEvent> implementSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -271,7 +271,7 @@ public class VennBase extends Application	 {
 					selectionMove.setPrefWidth(selection.getWidth());
 					selectionMove.setPrefHeight(selection.getHeight());
 					pane.getChildren().add(selectionMove);
-					
+
 					//changes cursor when moving selection and records distance moved
 					selectionMove.setOnMousePressed(new EventHandler<MouseEvent>() {
 						@Override
@@ -292,7 +292,7 @@ public class VennBase extends Application	 {
 							TextBox.moveSelection(pane, selection, mouseEvent.getSceneX(), mouseEvent.getSceneY());
 						}
 					});
-					
+
 					//Moves all text boxes according to selection
 					selectionMove.setOnMouseReleased(new EventHandler<MouseEvent>() {
 						@Override
@@ -310,15 +310,15 @@ public class VennBase extends Application	 {
 				else if (result.get() == cancel) {
 					// ... user chose "cancel"
 				}
-				
+
 				selection.setWidth(0);selection.setHeight(0);
-				
+
 				TextBox.turnOnBoxMovement(pane);
 
 				pane.getChildren().remove(selection);
 			}
 		};
-		
+
 		//initiate selection
 		pane.setOnMousePressed(initSelection);
 
@@ -331,10 +331,10 @@ public class VennBase extends Application	 {
 
 		//text box adder ------------------------------------------------------------------------------------------------------------
 		Button textAdder = new Button("Add New Text Box");		
-		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		textAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
+		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
+		textAdder.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
-		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(0));
+		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 
 		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -346,22 +346,23 @@ public class VennBase extends Application	 {
 		});
 
 		//multiple text box adder ------------------------------------------------------------------------------------------------------------
-		Button multAdder = new Button("Add Mulitple New Text Boxes");		
-		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0/100.0));
-		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
-		multAdder.layoutYProperty().bind(pane.heightProperty().multiply(10.0/100.0));
-		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				final Stage dialog = new Stage();
-				dialog.initModality(Modality.APPLICATION_MODAL);
-				dialog.initOwner(stage);
-				VBox layout = new VBox(20);
+//		Button multAdder = new Button("Add Mulitple New Text Boxes");		
+//		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
+//		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
+//		multAdder.layoutYProperty().bind(pane.heightProperty().multiply(0));
+//		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//			@Override
+//			public void handle(MouseEvent event) {
+//				final Stage dialog = new Stage();
+//				dialog.initModality(Modality.APPLICATION_MODAL);
+//				dialog.initOwner(stage);
+				VBox layout = new VBox(10);
 
 				listView = new ListView<>(FXCollections.observableArrayList());
 				listView.setEditable(true);
-
+				listView.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
+				listView.prefHeightProperty().bind(pane.widthProperty().multiply(15.0/100.0));
 				listView.setCellFactory(TextFieldListCell.forListView());		
 
 				listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
@@ -378,13 +379,13 @@ public class VennBase extends Application	 {
 						//Do nothing
 					}
 				});
-				listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 				//add cell to list button
-				Button addText = new Button("Add One Text to List");
-				addText.setLayoutX(screenBounds.getMinX());
+				Button addText = new Button("Add to List");
+				addText.setLayoutX(screenBounds.getMaxX());
 				addText.setLayoutY(screenBounds.getMaxY());
-
+				addText.setPrefWidth(listView.getPrefWidth());
 				addText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -397,8 +398,8 @@ public class VennBase extends Application	 {
 				});
 
 				//delete cell from list button
-				Button deleteText = new Button("Delete Selected Text from List");
-
+				Button deleteText = new Button("Delete");
+				deleteText.setPrefWidth(listView.getPrefWidth());
 				deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -407,8 +408,19 @@ public class VennBase extends Application	 {
 					}
 				});
 
+				//clear list button
+				Button clear = new Button("Clear");
+				clear.setPrefWidth(listView.getPrefWidth());
+				clear.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						listView.getItems().clear();
+					}
+				});
+
 				//make all cells text boxes button
-				Button finish = new Button("Convert All Texts in List Into Text Boxes");
+				Button finish = new Button("Convert All Into Text Boxes");
+				finish.setPrefWidth(listView.getPrefWidth());
 				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -419,19 +431,20 @@ public class VennBase extends Application	 {
 						for (int i = 0; i < topics.size(); i++) {
 							TextBox b = new TextBox(pane, textAdder, topics.get(i), circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
 						}
-						dialog.close();
+						listView.getItems().clear();
 					}
 
 				});
 
+
 				layout.setPadding(new Insets(20,20,20,20));
-				layout.getChildren().addAll(listView, addText, deleteText, finish);
+				layout.getChildren().addAll(listView, addText, deleteText, clear, finish);
 				Scene dialogScene = new Scene(layout, 300, 500);
 
-				dialog.setScene(dialogScene);
-				dialog.show();
-			}
-		});
+//				dialog.setScene(dialogScene);
+//				dialog.show();
+//			}
+//		});
 
 
 		//Texts ------------------------------------------------------------------------------------------------------------
@@ -532,7 +545,8 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(textAdder);
 		pane.getChildren().add(anchorOption);
 		pane.getChildren().add(capture);
-		pane.getChildren().add(multAdder);
+		pane.getChildren().add(layout);
+//		pane.getChildren().add(multAdder);
 
 		//Adds titles to window
 		pane.getChildren().add(title);
@@ -601,8 +615,8 @@ public class VennBase extends Application	 {
 		});
 
 	}
-	
-	
+
+
 	//Code from https://code.makery.ch/blog/javafx-2-snapshot-as-png-image/
 	public void createScreenshot(Pane pane) {
 		WritableImage image = pane.snapshot(new SnapshotParameters(), null);
