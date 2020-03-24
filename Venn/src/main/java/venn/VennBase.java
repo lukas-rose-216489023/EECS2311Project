@@ -328,6 +328,11 @@ public class VennBase extends Application	 {
 		//implement selection
 		pane.setOnMouseReleased(implementSelection);
 
+		
+		//History linear structure for undo-redo functionality
+		ArrayList<TextBox> undoList = new ArrayList<TextBox>();
+		ArrayList<TextBox> redoList = new ArrayList<TextBox>();
+		
 
 		//text box adder ------------------------------------------------------------------------------------------------------------
 		Button textAdder = new Button("Add New Text Box");		
@@ -341,6 +346,8 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					TextBox b = new TextBox(pane, textAdder, "New Text Box", circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
+					undoList.add(b);
+					redoList.add(b);
 				}
 			}
 		});
@@ -526,21 +533,45 @@ public class VennBase extends Application	 {
 		capture.setOnAction(event -> createScreenshot(pane));
 		
 		
-		//Undo-redo implementation
+		///Undo-redo implementation
+		
+		//Undo button implementation
 		Button undo = new Button("Undo");
 		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0/100.0));
 		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		undo.setStyle("-fx-background-color: #b3b3b3");
+		undo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if(!undoList.isEmpty()) {
+						pane.getChildren().remove(undoList.get(undoList.size() - 1).box);
+						undoList.remove(undoList.size() - 1);
+					}
+				}
+			}
+		});
 		
-		
+		//Redo button implementation
 		Button redo = new Button("Redo");
 		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0/100.0));
 		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		redo.setStyle("-fx-background-color: #b3b3b3");
+		redo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if(!redoList.isEmpty()) {
+						redoList.get(redoList.size() - 1).addToList(pane);
+						redoList.remove(redoList.size() - 1);
+					}
+				}
+			}
+		});
 		
 		pane.getChildren().add(undo);
 		pane.getChildren().add(redo);
