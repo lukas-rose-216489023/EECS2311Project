@@ -47,20 +47,19 @@ Things to add:
  	
  	- Customizable background color => Jawad	- Done
  		- background 							- Done
- 		
+ 	
+ 	- Have a list form as well 
+ 		- Option to switch to list view
+ 		- Option to switch back to venn
  		
 Stakeholder requirements:
 
-1. Each textbox is just a placeholder for the real text. In other words a textbox is just a title and there could be other text that needs to be accessed.
+1. 	Each text box is just a placeholder for the real text. In other words a textbox is just a title and there 
+	could be other text that needs to be accessed.
    
-2. The app must support a compare feature where user can compare current diagram with a saved diagram.
+2. 	The application must support a compare feature where user can compare current diagram with a saved diagram. 
+	The items to be compared can be anthing; the stakeholder is flexible. This can be done either visually or 
+	via text. 
 
-   
-   Questions:
-   
-   What will the text be in 1.?
-   ans.
-   
-   What exactly needs to be compared in specific? Title, text, color, position?
    
    
