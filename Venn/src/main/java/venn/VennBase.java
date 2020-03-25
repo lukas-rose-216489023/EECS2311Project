@@ -341,13 +341,13 @@ public class VennBase extends Application	 {
 		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
 		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(0));
 
-		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		extAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					TextBox b = new TextBox(pane, textAdder, "New Text Box", circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
 					undoList.add(b);
-					redoList.add(b);
+					//redoList.add(b);
 				}
 			}
 		});
@@ -425,6 +425,8 @@ public class VennBase extends Application	 {
 
 						for (int i = 0; i < topics.size(); i++) {
 							TextBox b = new TextBox(pane, textAdder, topics.get(i), circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
+							undoList.add(b);
+							//redoList.add(b);
 						}
 						dialog.close();
 					}
@@ -533,7 +535,7 @@ public class VennBase extends Application	 {
 		capture.setOnAction(event -> createScreenshot(pane));
 		
 		
-		///Undo-redo implementation
+		//Undo-redo implementation
 		
 		//Undo button implementation
 		Button undo = new Button("Undo");
@@ -547,8 +549,17 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if(!undoList.isEmpty()) {
-						pane.getChildren().remove(undoList.get(undoList.size() - 1).box);
-						undoList.remove(undoList.size() - 1);
+						if(undoList.get(undoList.size() - 1) instanceof TextBox) {
+							TextBox b = (TextBox) undoList.get(undoList.size() - 1);
+							pane.getChildren().remove(b.box);
+							redoList.add(undoList.get(undoList.size() - 1));
+							undoList.remove(undoList.size() - 1);
+						}
+					}else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error!");
+						alert.setHeaderText("Nothing left to undo!");
+						alert.show();
 					}
 				}
 			}
@@ -566,8 +577,17 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if(!redoList.isEmpty()) {
-						redoList.get(redoList.size() - 1).addToList(pane);
-						redoList.remove(redoList.size() - 1);
+						if(redoList.get(redoList.size() - 1) instanceof TextBox) {
+							TextBox b = (TextBox) redoList.get(redoList.size() - 1);
+							b.addToList(pane);
+							undoList.add(redoList.get(redoList.size() - 1));
+							redoList.remove(redoList.size() - 1);
+						}
+					}else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error!");
+						alert.setHeaderText("Nothing left to redo!");
+						alert.show();
 					}
 				}
 			}
