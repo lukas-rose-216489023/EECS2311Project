@@ -330,8 +330,8 @@ public class VennBase extends Application	 {
 
 		
 		//History linear structure for undo-redo functionality
-		ArrayList<TextBox> undoList = new ArrayList<TextBox>();
-		ArrayList<TextBox> redoList = new ArrayList<TextBox>();
+		ArrayList<Object> undoList = new ArrayList<Object>();
+		ArrayList<Object> redoList = new ArrayList<Object>();
 		
 
 		//text box adder ------------------------------------------------------------------------------------------------------------
