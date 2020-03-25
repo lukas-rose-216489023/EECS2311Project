@@ -55,6 +55,7 @@ public class TextBox {
 
 		//box.setStyle("-fx-background-color: "+Record.textBox);
 		//box.setStyle("-fx-background-color: " + background);
+		box.setStyle("-fx-background-radius: 5"); //going to make this user customizable
         BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
         Background background = new Background(background_fill);
         box.setBackground(background); 
