@@ -1,0 +1,8 @@
+BColor 0.6000000238418579 0.4000000059604645 0.0
+RColor 0.0 0.0 1.0
+LColor 1.0 0.0 0.0
+BuColor FFE666
+Anchoring off
+Title Enter Venn diagram title
+Right Enter right circle title
+Left Enter left circle title
