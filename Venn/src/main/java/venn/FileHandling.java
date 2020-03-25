@@ -2,8 +2,6 @@ package venn;
 
 import java.io.*;
 import java.util.ArrayList;
-
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.Background;
