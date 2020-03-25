@@ -40,9 +40,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -122,18 +124,23 @@ public class VennBase extends Application	 {
 		final ColorPicker cp1 = new ColorPicker(Color.BLUE);
 		final ColorPicker cp2 = new ColorPicker(Color.RED);
 		final ColorPicker cp3 = new ColorPicker(Color.BLACK);
+		final ColorPicker cp4 = new ColorPicker(Color.BLACK);
 		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
 		cp2.layoutYProperty().bind(pane.heightProperty().subtract(51));
 		cp3.layoutYProperty().bind(pane.heightProperty().subtract(77));
-		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		cp3.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		cp4.layoutYProperty().bind(pane.heightProperty().subtract(103));
 		cp1.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
 		cp2.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
 		cp3.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
+		cp4.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
+		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		cp3.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		cp4.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp1.setStyle("-fx-background-color: #b3b3b3");
 		cp2.setStyle("-fx-background-color: #b3b3b3");
 		cp3.setStyle("-fx-background-color: #b3b3b3");
+		cp4.setStyle("-fx-background-color: #b3b3b3");
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
@@ -171,7 +178,10 @@ public class VennBase extends Application	 {
 				pane.setBackground(background);
 			}
 		});
+		
 
+		autoSaveFile.WriteToFile("BuColor b3b3b3");
+		
 		//Anchor points -----------------------------------------------------------------------------------------------------------------
 		Anchor leftCircle = new Anchor();
 		Anchor rightCircle = new Anchor();
@@ -249,7 +259,7 @@ public class VennBase extends Application	 {
 
 		
 		//Anchor option button  ----------------------------------------------------------------------------------------------------------------------------
-		autoSaveFile.WriteToFile("Anchoring "+"off");
+		autoSaveFile.WriteToFile("Anchoring off");
 		Button anchorOption = new Button("Anchoring off");
 		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
@@ -258,7 +268,7 @@ public class VennBase extends Application	 {
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
+				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");Record.printAll();}
 				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
 			}
 		});
@@ -272,7 +282,7 @@ public class VennBase extends Application	 {
 		EventHandler<MouseEvent> initSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && !TextBox.ctrlSelection) {
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					selection.setLayoutX(mouseEvent.getSceneX());
 					selection.setLayoutY(mouseEvent.getSceneY());
 					pane.getChildren().add(selection);
@@ -284,19 +294,17 @@ public class VennBase extends Application	 {
 		EventHandler<MouseEvent> updateSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (!TextBox.ctrlSelection) {
 					selection.setWidth(mouseEvent.getSceneX()-selection.getLayoutX());
 					selection.setHeight(mouseEvent.getSceneY()-selection.getLayoutY());
 					if (selection.getWidth()<0) {selection.setLayoutX(mouseEvent.getSceneX());selection.setWidth(0);}
 					if (selection.getHeight()<0) {selection.setLayoutY(mouseEvent.getSceneY());selection.setHeight(0);}
-				}
 			}
 		};
 
 		EventHandler<MouseEvent> implementSelection = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && !TextBox.ctrlSelection) {
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Selection Actions");
 					alert.setHeaderText("What would you like to do with the selected text boxes?");
@@ -308,7 +316,7 @@ public class VennBase extends Application	 {
 					alert.getButtonTypes().setAll(moveButton, deleteButton, cancel);
 
 					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == moveButton){
+					if (result.get().equals(moveButton)){
 						Button selectionMove = new Button();
 						selectionMove.setStyle("-fx-background-color: #0000ff10");
 						selectionMove.setLayoutX(selection.getLayoutX());
@@ -344,9 +352,10 @@ public class VennBase extends Application	 {
 							public void handle(MouseEvent mouseEvent) {
 								selectionMove.setPrefSize(0, 0);
 								pane.getChildren().remove(selectionMove);
+								TextBox.releaseMultiSelection();
+								TextBox.releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 							}
 						});
-
 					}
 					else if (result.get() == deleteButton) {
 						Record.deleteSelection(pane, autoSaveFile);
@@ -585,6 +594,14 @@ public class VennBase extends Application	 {
 		cpB.layoutXProperty().bind(cp3.layoutXProperty().subtract(110));
 		cpB.layoutYProperty().bind(cp3.layoutYProperty().add(15));
 
+		//Button color picker label
+		Text cpBu = new Text("Button color : ");
+		cpBu.setFont(new Font(12));
+		cpBu.setStroke(Color.BLACK);
+		cpBu.setTextAlignment(TextAlignment.CENTER);
+		cpBu.layoutXProperty().bind(cp4.layoutXProperty().subtract(110));
+		cpBu.layoutYProperty().bind(cp4.layoutYProperty().add(15));
+
 		//control selection mode label
 		ctrl.setFont(new Font(12));
 		ctrl.setStroke(Color.BLACK);
@@ -621,6 +638,8 @@ public class VennBase extends Application	 {
 
 
 		//Import ------------------------------------------------------------------------------------------------------------
+		Button exportB = new Button("Export");
+		Button capture = new Button("Take Screenshot of Venn Diagram");
 		Button importB = new Button("Import");
 		importB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		importB.layoutYProperty().bind(pane.heightProperty().multiply(24.0/100.0));
@@ -638,7 +657,7 @@ public class VennBase extends Application	 {
 						File file = fc.showOpenDialog(stage);
 						fc.setInitialDirectory(file.getParentFile());
 						//loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection)
-						FileHandling.loadImport(file, pane, circleR, circleL, anchorOption, title, right, left, textAdder, intersection, leftCircle, rightCircle, p, selection);
+						FileHandling.loadImport(file, pane, circleR, circleL, anchorOption, title, right, left, textAdder, intersection, leftCircle, rightCircle, p, selection, cp1, cp2, cp3, cp4, multAdder, reset, importB, exportB, capture);
 					}
 					catch(Exception e){System.out.println(e);}
 				}
@@ -647,7 +666,6 @@ public class VennBase extends Application	 {
 
 
 		//Export ------------------------------------------------------------------------------------------------------------
-		Button exportB = new Button("Export");
 		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0/100.0));
 		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
@@ -675,19 +693,28 @@ public class VennBase extends Application	 {
 
 
 		//Screen-shot implementation -----------------------------------------------------------------------------------------------------------
-		Button capture = new Button("Take Screenshot of Venn Diagram");
 		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0/100.0));
 		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		capture.setStyle("-fx-background-color: #b3b3b3");
-		capture.setOnAction(event -> createScreenshot(pane, cp1, cp2, cp3, capture, multAdder, textAdder, anchorOption, exportB, importB, reset, cpR, cpL, cpB));
+		capture.setOnAction(event -> createScreenshot(pane, cp1, cp2, cp3, cp4, capture, multAdder, textAdder, anchorOption, exportB, importB, reset, cpR, cpL, cpB, cpBu, ctrl));
+		
+		//Button color picker event
+		cp4.setOnAction(new EventHandler() {
+			@Override
+			public void handle(javafx.event.Event event) {
+				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
+				String hex = colorToHex(col4);
+				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB, capture);
+			}
+		});
 
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
-		pane.getChildren().addAll(cp1, cp2, cp3);
+		pane.getChildren().addAll(cp1, cp2, cp3, cp4);
 		pane.getChildren().add(textAdder);
 		pane.getChildren().add(anchorOption);
 		pane.getChildren().add(capture);
@@ -700,7 +727,7 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(title);
 		pane.getChildren().add(left);
 		pane.getChildren().add(right);
-		pane.getChildren().addAll(cpR, cpL, cpB);
+		pane.getChildren().addAll(cpR, cpL, cpB, cpBu);
 		pane.getChildren().add(ctrl);
 
 
@@ -729,15 +756,27 @@ public class VennBase extends Application	 {
 		captureButton.setLayoutY(275);
 		Text resetButton = new Text();
 		resetButton.setLayoutY(300);
-
+		
 		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				//control selection
 				if (event.getCode() == KeyCode.CONTROL) {
 					if (TextBox.ctrlSelection) {
-						TextBox.releaseSelection();}
-					else {TextBox.ctrlSelection=true;ctrl.setText("Control Selection Mode: ON");}
+						TextBox.releaseCtrlSelection();
+						pane.setOnMouseMoved(maxScreen(stage));
+						pane.setOnMousePressed(initSelection);
+						pane.setOnMouseDragged(updateSelection);
+						pane.setOnMouseReleased(implementSelection);
+					}
+					else {
+						TextBox.ctrlSelection=true;
+						ctrl.setText("Control Selection Mode: ON");
+						pane.setOnMouseMoved(null);
+						pane.setOnMousePressed(null);
+						pane.setOnMouseDragged(null);
+						pane.setOnMouseReleased(null);
+					}
 				}
 				//debug
 				if (event.getCode() == KeyCode.F3) {
@@ -766,12 +805,7 @@ public class VennBase extends Application	 {
 			}
 		});
 
-		pane.setOnMouseMoved(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {		
-				if (VennBase.anchor) {stage.setMaximized(true);}
-			}
-		});
+		pane.setOnMouseMoved(maxScreen(stage));
 		
 		
 		
@@ -785,9 +819,10 @@ public class VennBase extends Application	 {
 	}
 	
 	
-	public void createScreenshot(Pane pane, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, Button textAdder, Button anchorOption, Button capture, Button multAdder, Button reset, Button importB, Button exportB, Text cpR, Text cpL, Text cpB) {
-		pane.getChildren().addAll(cpR, cpL, cpB);
-		pane.getChildren().removeAll(cp1, cp2, cp3);
+	public void createScreenshot(Pane pane, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button textAdder, Button anchorOption, Button capture, Button multAdder, Button reset, Button importB, Button exportB, Text cpR, Text cpL, Text cpB, Text cpBu, Text ctrl) {
+		System.out.println("Preparing screenshot..");
+		pane.getChildren().removeAll(cpR, cpL, cpB, cpBu);
+		pane.getChildren().removeAll(cp1, cp2, cp3, cp4);
 		pane.getChildren().remove(textAdder);
 		pane.getChildren().remove(anchorOption);
 		pane.getChildren().remove(capture);
@@ -795,6 +830,7 @@ public class VennBase extends Application	 {
 		pane.getChildren().remove(reset);;
 		pane.getChildren().remove(importB);
 		pane.getChildren().remove(exportB);
+		pane.getChildren().remove(ctrl);
 		
 		WritableImage image = pane.snapshot(new SnapshotParameters(), null);
 		
@@ -812,7 +848,7 @@ public class VennBase extends Application	 {
 		}
 		catch(Exception e){System.out.println(e);}
 		
-		pane.getChildren().addAll(cp1, cp2, cp3);
+		pane.getChildren().addAll(cp1, cp2, cp3, cp4);
 		pane.getChildren().add(textAdder);
 		pane.getChildren().add(anchorOption);
 		pane.getChildren().add(capture);
@@ -820,7 +856,8 @@ public class VennBase extends Application	 {
 		pane.getChildren().add(reset);;
 		pane.getChildren().add(importB);
 		pane.getChildren().add(exportB);
-		pane.getChildren().addAll(cpR, cpL, cpB);
+		pane.getChildren().addAll(cpR, cpL, cpB, cpBu);
+		pane.getChildren().add(ctrl);
 	}
 	
 	//code from https://stackoverflow.com/questions/17925318/how-to-get-hex-web-string-from-javafx-colorpicker-color/35814669
@@ -853,6 +890,30 @@ public class VennBase extends Application	 {
 	        hex2 = hex1.substring(0, 6);
 	    }
 	    return hex2;
+	}
+	
+	public EventHandler<MouseEvent> maxScreen(Stage st){
+		return new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {		
+				if (VennBase.anchor) {st.setMaximized(true);}
+			}
+		};
+	}
+	
+	public static void changeButtonColor(String hex, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button anchorOption, Button textAdder, Button multAdder, Button reset, Button importB, Button exportB, Button capture) {
+		cp1.setStyle("-fx-background-color: #"+hex);
+		cp2.setStyle("-fx-background-color: #"+hex);
+		cp3.setStyle("-fx-background-color: #"+hex);
+		cp4.setStyle("-fx-background-color: #"+hex);
+		anchorOption.setStyle("-fx-background-color: #"+hex);
+		textAdder.setStyle("-fx-background-color: #"+hex);
+		multAdder.setStyle("-fx-background-color: #"+hex);
+		reset.setStyle("-fx-background-color: #"+hex);
+		importB.setStyle("-fx-background-color: #"+hex);
+		exportB.setStyle("-fx-background-color: #"+hex);
+		capture.setStyle("-fx-background-color: #"+hex);
+		autoSaveFile.overwriteLineInFile("BuColor ", "BuColor "+hex);
 	}
 
 	public static void main(String[] args) {

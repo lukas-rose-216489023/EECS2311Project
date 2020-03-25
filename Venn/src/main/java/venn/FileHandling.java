@@ -3,7 +3,9 @@ package venn;
 import java.io.*;
 import java.util.ArrayList;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -23,7 +25,6 @@ public class FileHandling {
 		try {
 			file = new File(fileName);
 			if (file.createNewFile()) {System.out.println("File -<"+fileName+">- created!");}
-			else {System.out.println("File -<"+fileName+">- already exists!");}
 		}
 		catch(Exception e) {System.out.println("An error occurred when creaing the file"+fileName+"!");}
 	}
@@ -56,7 +57,7 @@ public class FileHandling {
 			writer = new FileWriter(file);
 
 			writer.write(updatedFileContents);
-			System.out.println("Successfully updated -<"+oldData+">- with -<"+newData+">-!");
+//			System.out.println("Successfully updated -<"+oldData+">- with -<"+newData+">-!");
 		}
 		catch (IOException e){e.printStackTrace();}
 
@@ -83,7 +84,7 @@ public class FileHandling {
 				writer.write(line+"\n");
 				writer.close();
 			}
-			System.out.println("Successfully wrote -<"+line+">- to file!");
+//			System.out.println("Successfully wrote -<"+line+">- to file!");
 		} 
 		catch (IOException e) {System.out.println("An error occured!");e.printStackTrace();}
 	}
@@ -118,7 +119,7 @@ public class FileHandling {
 			writer = new FileWriter(pasteTo.file);
 			
 			writer.write(contents);
-			System.out.println("Successfully copied -<"+copyFrom.file.getName()+">- and pasted to -<"+pasteTo.file.getName()+">-!");
+//			System.out.println("Successfully copied -<"+copyFrom.file.getName()+">- and pasted to -<"+pasteTo.file.getName()+">-!");
 		}
 		catch (IOException e){e.printStackTrace();}
 
@@ -133,18 +134,21 @@ public class FileHandling {
 	}
 	
 	
-	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection) {
+	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button multAdder, Button reset, Button importB, Button exportB, Button capture) {
 		//Read save data
-		System.out.println("Reading save data...");
+//		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
 		BufferedReader reader = null;
 
+		Record.numBoxes=0;
+		Record.deleteAll(pane, VennBase.autoSaveFile);
+		
 		try
 		{
 			reader = new BufferedReader(new FileReader(file));
 
 			//Reading all the lines of input text file into fileContents
-			System.out.println("Reading save data lines...");
+//			System.out.println("Reading save data lines...");
 			String nline = reader.readLine();
 			while (nline != null) 
 			{
@@ -153,7 +157,7 @@ public class FileHandling {
 			}
 			
 			//Load save data into nodes
-			System.out.println("Loading save data...");
+//			System.out.println("Loading save data...");
 			ArrayList<String> prevIndivContent = new ArrayList<String>();
 			for (String line:fileContents) {
 				ArrayList<String> indivContent = new ArrayList<String>();
@@ -161,7 +165,7 @@ public class FileHandling {
 				for (String indiv:split) {indivContent.add(indiv);}
 				
 				if (indivContent.get(0).equals("BColor")) {
-					System.out.println("Loading background color...");
+//					System.out.println("Loading background color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					BackgroundFill backgroundColor = new BackgroundFill(col, null, null);
 					Background background = new Background(backgroundColor);
@@ -170,7 +174,7 @@ public class FileHandling {
 				}
 				
 				else if (indivContent.get(0).equals("RColor")) {
-					System.out.println("Loading right circle color...");
+//					System.out.println("Loading right circle color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					circleR.setFill(col);
 					VennBase.autoSaveFile.overwriteLineInFile("RColor ", "RColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
@@ -181,7 +185,7 @@ public class FileHandling {
 				}
 				
 				else if (indivContent.get(0).equals("LColor")) {
-					System.out.println("Loading left circle color...");
+//					System.out.println("Loading left circle color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					circleL.setFill(col);
 					VennBase.autoSaveFile.overwriteLineInFile("LColor ", "LColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
@@ -192,13 +196,13 @@ public class FileHandling {
 				}
 				
 				else if (indivContent.get(0).equals("Anchoring")) {
-					System.out.println("Loading anchor state...");
+//					System.out.println("Loading anchor state...");
 					if (indivContent.get(1).equals("off")) {VennBase.anchor = false;anchorOption.setText("Anchoring off");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
 					else if (indivContent.get(1).equals("on")){VennBase.anchor = true;anchorOption.setText("Anchoring on");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
 				}
 				
 				else if (indivContent.get(0).equals("Title")) {
-					System.out.println("Loading title text...");
+//					System.out.println("Loading title text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					title.setText(text);
@@ -207,7 +211,7 @@ public class FileHandling {
 				}
 				
 				else if (indivContent.get(0).equals("Right")) {
-					System.out.println("Loading right text...");
+//					System.out.println("Loading right text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					right.setText(text);
@@ -216,7 +220,7 @@ public class FileHandling {
 				}
 				
 				else if (indivContent.get(0).equals("Left")) {
-					System.out.println("Loading left text...");
+//					System.out.println("Loading left text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					left.setText(text);
@@ -224,9 +228,24 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Left ", "Left "+left.getText());
 				}
 				
+				else if (indivContent.get(0).equals("BuColor")) {
+					cp1.setStyle("-fx-background-color: #"+indivContent.get(1));
+					cp2.setStyle("-fx-background-color: #"+indivContent.get(1));
+					cp3.setStyle("-fx-background-color: #"+indivContent.get(1));
+					cp4.setStyle("-fx-background-color: #"+indivContent.get(1));
+					anchorOption.setStyle("-fx-background-color: #"+indivContent.get(1));
+					textAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
+					multAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
+					reset.setStyle("-fx-background-color: #"+indivContent.get(1));
+					importB.setStyle("-fx-background-color: #"+indivContent.get(1));
+					exportB.setStyle("-fx-background-color: #"+indivContent.get(1));
+					capture.setStyle("-fx-background-color: #"+indivContent.get(1));
+					VennBase.autoSaveFile.overwriteLineInFile("BuColor ", "BuColor "+indivContent.get(1));
+				}
+				
 				else {
 					if (indivContent.get(0).contains("Box")) {
-						System.out.println("Loading "+indivContent.get(0)+"...");
+//						System.out.println("Loading "+indivContent.get(0)+"...");
 						String text="";
 						int letterCount=0;
 						int i = 2;
@@ -248,7 +267,7 @@ public class FileHandling {
 				prevIndivContent = indivContent;
 			}
 			
-			System.out.println("Successfully loaded form file -<"+file.getName()+">-!");
+//			System.out.println("Successfully loaded form file -<"+file.getName()+">-!");
 		}
 		catch (IOException e){e.printStackTrace();System.out.println(e.getMessage());}
 

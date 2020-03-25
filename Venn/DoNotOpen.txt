@@ -1,15 +1,8 @@
-BColor 0.0 0.0 0.0
+BColor 0.6000000238418579 0.4000000059604645 0.0
 RColor 0.0 0.0 1.0
 LColor 1.0 0.0 0.0
+BuColor FFE666
 Anchoring off
-Title Title
-Right right
-Left left
-Record0 0.20390625 0.34906788247213777 false false
-Box0 12 New Text Box universal 261.0 229.68666666666667
-Record1 0.20390625 0.42127152988855116 false false
-Box1 12 New Text Box universal 261.0 277.19666666666666
-Record2 0.01171875 0.34960486322188444 false false
-Box2 12 New Text Box universal 15.0 230.03999999999996
-Record3 0.25260416666666663 0.5623100303951368 false true
-Box3 12 New Text Box left 323.3333333333333 370.0
+Title Enter Venn diagram title
+Right Enter right circle title
+Left Enter left circle title

@@ -20,12 +20,11 @@ import javafx.scene.shape.Rectangle;
 
 public class TextBox {
 	static boolean ctrlSelection = false;
-	static boolean ctrlMoved = false;
 	
 	int stackable;
 	Button box;
 	Record record;
-	String pos;
+	String pos;		//can be: "universal", "intersection", "left", "right"
 	int boxNum;
 
 
@@ -49,7 +48,7 @@ public class TextBox {
 		record.percentY = box.getLayoutY() / pane.getHeight();
 		record.inCircleL = false;
 		record.inCircleR = false;
-		Record.addToUniversal(box.getText());
+		Record.addToUniversal(getThis());
 
 		Record.numBoxes++;
 
@@ -59,7 +58,8 @@ public class TextBox {
 		//box.setStyle("-fx-background-color: "+Record.textBox);
 		box.setStyle("-fx-background-color: #80b380");
 		
-		EventHandler<MouseEvent> customize = new EventHandler<MouseEvent>() {
+		//Text box action options
+		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (ctrlSelection) {
@@ -115,10 +115,8 @@ public class TextBox {
 					selection.setWidth(0);selection.setHeight(0);
 				}
 			}
-		};
+		});
 		
-		//Text box action options
-		box.setOnMouseClicked(customize);
 
 		//changes cursor when moving text box  and  records distance moved
 		box.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -129,9 +127,10 @@ public class TextBox {
 					box.setCursor(Cursor.MOVE);
 					record.x = box.getLayoutX() - mouseEvent.getSceneX();
 					record.y = box.getLayoutY() - mouseEvent.getSceneY();
-					if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
-					if (pos.equals("left")) {Record.removeFromLeft(text);}
-					if (pos.equals("right")) {Record.removeFromRight(text);}
+					if (pos.equals("intersection")) {Record.removeFromIntersetion(getThis());}
+					if (pos.equals("left")) {Record.removeFromLeft(getThis());}
+					if (pos.equals("right")) {Record.removeFromRight(getThis());}
+					if (pos.equals("universal")) {Record.removeFromUniversal(getThis());}
 				}
 			}
 		});
@@ -156,91 +155,18 @@ public class TextBox {
 		box.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (ctrlSelection&&ctrlMoved) {releaseSelection();}
-				else {
-					//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
-					double x2 = box.getLayoutX()*box.getLayoutX();
-					double y2 = box.getLayoutY()*box.getLayoutY();
-					double La = circleL.getCenterX();
-					double Lb = circleL.getCenterY();
-					double Ra = circleR.getCenterX();
-					double Rb = circleR.getCenterY();
-					double Rr2 = circleR.getRadius()*circleR.getRadius();
-					double Lr2 = Rr2;
+				if (ctrlSelection) {releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);}
+				releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 
-					if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
-					else {record.inCircleL=false;}
-					if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
-					else {record.inCircleR=false;}
-
-					if (record.inCircleL && record.inCircleR) {
-						//box x and y are closest anchor points in the intersection
-						if (VennBase.debug) {box.setText("Currently in intersection");}
-						if (VennBase.anchor) {box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);}
-						if (VennBase.anchor) {box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);}
-						record.percentX = box.getLayoutX() / pane.getWidth();
-						record.percentY = box.getLayoutY() / pane.getHeight();
-						if (pos.equals("right")) {Record.removeFromRight(text);}
-						if (pos.equals("left")) {Record.removeFromLeft(text);}
-						if (Record.checkDataClash(box, "intersection")) {Record.addToIntersection(box.getText());pos="intersection";}
-						else {
-							box.setLayoutX(15);
-							box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
-						}
-					}
-					else if (record.inCircleL) {
-						//box x and y are closest anchor points in the left circle
-						if (VennBase.debug) {box.setText("Currently in left circle");}
-						if (VennBase.anchor) {box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);}
-						if (VennBase.anchor) {box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);}
-						record.percentX = box.getLayoutX() / pane.getWidth();
-						record.percentY = box.getLayoutY() / pane.getHeight();
-						if (pos.equals("right")) {Record.removeFromRight(text);}
-						if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
-						if (Record.checkDataClash(box, "left")) {Record.addToLeft(box.getText());pos="left";}
-						else {
-							box.setLayoutX(15);
-							box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
-						}
-
-					}
-					else if (record.inCircleR) {
-						//box x and y are closest anchor points in the right circle
-						if (VennBase.debug) {box.setText("Currently in right circle");}
-						if (VennBase.anchor) {box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);}
-						if (VennBase.anchor) {box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);}
-						record.percentX = box.getLayoutX() / pane.getWidth();
-						record.percentY = box.getLayoutY() / pane.getHeight();
-						if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
-						if (pos.equals("left")) {Record.removeFromLeft(text);}
-						if (Record.checkDataClash(box, "right")) {Record.addToRight(box.getText());pos="right";}
-						else {
-							box.setLayoutX(15);
-							box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
-							record.percentX = box.getLayoutX() / pane.getWidth();
-							record.percentY = box.getLayoutY() / pane.getHeight();
-						}
-					}
-					else {
-						if (pos.equals("intersection")) {Record.removeFromIntersetion(text);}
-						if (pos.equals("left")) {Record.removeFromLeft(text);}
-						if (pos.equals("right")) {Record.removeFromRight(text);}
-					}
-
-					FileHandling.saveChanges(autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
-					FileHandling.saveChanges(autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
-				}
+				FileHandling.saveChanges(autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
+				FileHandling.saveChanges(autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});
 
 		box.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (VennBase.debug) {box.setText((int)box.getLayoutX()+", "+(int)box.getLayoutY());}
+				if (VennBase.debug) {box.setText(pos);}
 			}
 		});
 
@@ -296,6 +222,10 @@ public class TextBox {
 	public void removeFromList(Pane pane) {
 		pane.getChildren().remove(this.box);
 		Record.removeTextBox(this);
+		Record.removeFromIntersetion(this);
+		Record.removeFromLeft(this);
+		Record.removeFromRight(this);
+		Record.removeFromUniversal(this);
 	}
 
 	//method to get a text box's text
@@ -308,6 +238,10 @@ public class TextBox {
 			if ((b.record.inSelectionX&&b.record.inSelectionY)||b.record.ctrlSelected) {
 				b.record.moveX = b.box.getLayoutX() - x;
 				b.record.moveY = b.box.getLayoutY() - y;
+				if (b.pos.equals("intersection")) {Record.removeFromIntersetion(b);}
+				if (b.pos.equals("left")) {Record.removeFromLeft(b);}
+				if (b.pos.equals("right")) {Record.removeFromRight(b);}
+				if (b.pos.equals("universal")) {Record.removeFromUniversal(b);}
 			}
 		}
 	}
@@ -319,14 +253,13 @@ public class TextBox {
 				b.box.setLayoutY(y + b.record.moveY);
 				b.record.percentX = b.box.getLayoutX() / pane.getWidth();
 				b.record.percentY = b.box.getLayoutY() / pane.getHeight();
-				ctrlMoved=true;
 				
 				FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), ("Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()));
 				FileHandling.saveChanges(autoSaveFile, ("Record"+b.record.recordNum), ("Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL));
 			}
 		}
 	}
-	public static void releaseSelection() {
+	public static void releaseCtrlSelection() {
 		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
 		for (TextBox b:iterate) {
 			if (b.record.ctrlSelected) {
@@ -334,7 +267,17 @@ public class TextBox {
 				b.box.setStyle("-fx-background-color: #80b380; -fx-border-width: 0px; -fx-border-color: #0000ff50");
 			}
 		}
-		ctrlMoved=false; ctrlSelection=false; VennBase.ctrl.setText("Control Selection Mode: OFF");
+		ctrlSelection=false;
+		VennBase.ctrl.setText("Control Selection Mode: OFF");
+	}
+	public static void releaseMultiSelection() {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			if (b.record.inSelectionX&&b.record.inSelectionY) {
+				b.record.inSelectionX=false;
+				b.record.inSelectionY=false;
+			}
+		}
 	}
 	
 
@@ -353,12 +296,75 @@ public class TextBox {
 			b.box.setOnMouseDragged(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent mouseEvent) {
-					b.box.setLayoutX(mouseEvent.getSceneX() + b.record.x);
-					b.box.setLayoutY(mouseEvent.getSceneY() + b.record.y);
-					b.record.percentX = b.box.getLayoutX() / pane.getWidth();
-					b.record.percentY = b.box.getLayoutY() / pane.getHeight();
+					if (ctrlSelection) {
+						TextBox.moveSelection(pane, mouseEvent.getSceneX(), mouseEvent.getSceneY(), VennBase.autoSaveFile);
+					}
+					else {
+						b.box.setLayoutX(mouseEvent.getSceneX() + b.record.x);
+						b.box.setLayoutY(mouseEvent.getSceneY() + b.record.y);
+						b.record.percentX = b.box.getLayoutX() / pane.getWidth();
+						b.record.percentY = b.box.getLayoutY() / pane.getHeight();
+					}
 				}
 			});
+		}
+	}
+	
+	public TextBox getThis() {return this;}
+	
+	public void releaseCheck(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {
+		//Within circle formula => x^2-2xa + y^2-2yb < r^2-a^2-b^2 where a is horizontal distance from 0 to mid circle and b is vertical distance from 0 to mid circle
+		double x2 = box.getLayoutX()*box.getLayoutX();
+		double y2 = box.getLayoutY()*box.getLayoutY();
+		double La = circleL.getCenterX();
+		double Lb = circleL.getCenterY();
+		double Ra = circleR.getCenterX();
+		double Rb = circleR.getCenterY();
+		double Rr2 = circleR.getRadius()*circleR.getRadius();
+		double Lr2 = Rr2;
+
+		if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
+		else {record.inCircleL=false;}
+		if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
+		else {record.inCircleR=false;}
+
+		if (record.inCircleL && record.inCircleR) {
+			//box x and y are closest anchor points in the intersection
+			if (VennBase.debug) {box.setText("Currently in intersection");}
+			if (VennBase.anchor) {box.setLayoutX(intersection.closest(box.getLayoutY()).xValue);}
+			if (VennBase.anchor) {box.setLayoutY(intersection.closest(box.getLayoutY()).yValue);}
+			record.percentX = box.getLayoutX() / pane.getWidth();
+			record.percentY = box.getLayoutY() / pane.getHeight();
+			Record.addToIntersection(getThis());
+		}
+		else if (record.inCircleL) {
+			//box x and y are closest anchor points in the left circle
+			if (VennBase.debug) {box.setText("Currently in left circle");}
+			if (VennBase.anchor) {box.setLayoutX(leftCircle.closest(box.getLayoutY()).xValue);}
+			if (VennBase.anchor) {box.setLayoutY(leftCircle.closest(box.getLayoutY()).yValue);}
+			record.percentX = box.getLayoutX() / pane.getWidth();
+			record.percentY = box.getLayoutY() / pane.getHeight();
+			Record.addToLeft(getThis());
+
+		}
+		else if (record.inCircleR) {
+			//box x and y are closest anchor points in the right circle
+			if (VennBase.debug) {box.setText("Currently in right circle");}
+			if (VennBase.anchor) {box.setLayoutX(rightCircle.closest(box.getLayoutY()).xValue);}
+			if (VennBase.anchor) {box.setLayoutY(rightCircle.closest(box.getLayoutY()).yValue);}
+			record.percentX = box.getLayoutX() / pane.getWidth();
+			record.percentY = box.getLayoutY() / pane.getHeight();
+			Record.addToRight(getThis());
+		}
+		else {
+			Record.addToUniversal(getThis());
+		}
+	}
+	
+	public static void releaseCheckAll(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {
+		ArrayList<TextBox> iterate = new ArrayList<TextBox>(Record.tBoxes);
+		for (TextBox b:iterate) {
+			b.releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 		}
 	}
 

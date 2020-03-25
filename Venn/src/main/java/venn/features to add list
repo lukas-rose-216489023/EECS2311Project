@@ -25,8 +25,8 @@ Things to add:
 	
 	- Deleting text boxes easier => Jawad		- Done
 	
-	- Text detection => Jawad
-	  	- something like if same
+	- Text detection => Jawad					- Done
+	  	- something like if same				- Done
 	  	  text exists in right 
 	  	  and left, add to 
 	  	  intersection
@@ -51,10 +51,16 @@ Things to add:
  		
 Stakeholder requirements:
 
-1. Each textbox is just a placeholder for the real thing. In other words a textbox is just a title and there could be other information that needs to be accessed.
+1. Each textbox is just a placeholder for the real text. In other words a textbox is just a title and there could be other text that needs to be accessed.
    
 2. The app must support a compare feature where user can compare current diagram with a saved diagram.
 
    
+   Questions:
+   
+   What will the text be in 1.?
+   ans.
+   
+   What exactly needs to be compared in specific? Title, text, color, position?
    
    
