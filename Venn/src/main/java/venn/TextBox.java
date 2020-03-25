@@ -6,6 +6,7 @@ import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,7 +16,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -27,13 +32,14 @@ public class TextBox {
 
 
 	//Text box constructor
-	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection){
+	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, Color boxcol, Color fontcol){
 		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
 
 		//Text box properties
 		box = new Button(text);
-		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
-		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
+//		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		box.autosize();
 		box.setLayoutX(15);
 		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
 		Record.numBoxes++;
@@ -48,7 +54,11 @@ public class TextBox {
 		Record.addToUniversal(box.getText());
 
 		//box.setStyle("-fx-background-color: "+Record.textBox);
-		box.setStyle("-fx-background-color: #80b380");
+		//box.setStyle("-fx-background-color: " + background);
+        BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
+        Background background = new Background(background_fill);
+        box.setBackground(background); 
+		box.textFillProperty().set(fontcol);
 
 		//Text box action options
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -262,6 +272,9 @@ public class TextBox {
 				}
 			}
 		});
+		
+		//color detection
+		
 
 		addToList(pane);
 	}
