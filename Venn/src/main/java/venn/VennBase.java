@@ -25,6 +25,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
@@ -331,7 +332,7 @@ public class VennBase extends Application	 {
 		pane.setOnMouseReleased(implementSelection);
 
 
-		//text box adder ------------------------------------------------------------------------------------------------------------
+		//text box adder (useless invisible button, only need it for TextBox class)------------------------------------------------------------------------------------------------------------
 		Button textAdder = new Button("Add New Text Box");		
 		textAdder.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
 		textAdder.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
@@ -452,12 +453,17 @@ public class VennBase extends Application	 {
 		//New MultAdder ------------------------------------------------------------------------------------------------------------
 		
 		AnchorPane multAdd = new AnchorPane();
-		multAdd.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
-		//multAdd.setBackground(new Background);
+		multAdd.layoutXProperty().bind(pane.widthProperty().multiply(1.0/100.0));
+		multAdd.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
+		multAdd.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		multAdd.setStyle("-fx-background-color: linear-gradient(to right, #BBD2C5, #536976);" + 
+						 "-fx-background-radius: 5;" );
+		
+		
 		
 			//Color Pickers
 			ColorPicker boxcp = new ColorPicker(Color.GREY); 
-			ColorPicker fontcp = new ColorPicker(Color.WHITE);
+			ColorPicker fontcp = new ColorPicker(Color.BLACK);
 			boxcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 			fontcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 			
@@ -497,8 +503,8 @@ public class VennBase extends Application	 {
 		vb.setPadding(new Insets(10));
 		
 		multAdd.getChildren().addAll(vb);
+	
 		
-		//End------------
 		
 		//Texts ------------------------------------------------------------------------------------------------------------
 		Text title = new Text("Title");
