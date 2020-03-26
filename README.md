@@ -31,8 +31,9 @@ $ java -jar VennApplication.jar
 - [x] Text Box Anchoring in the Circle Sections
 - [x] Save Screenshot of Venn Diagram 
 - [x] Resizable Window
-- [ ] Saving the Process Option (Coming Soon)
-- [ ] 3-Circle Venn Diagrams (Coming Soon)
+- [x] Saving the Process Option
+- [x] Undo Option 
+- [x] Import/Export (Coming Soon)
 
 
 ## Credits
