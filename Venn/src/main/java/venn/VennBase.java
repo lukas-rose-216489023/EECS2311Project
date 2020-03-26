@@ -1,4 +1,3 @@
-//LUKAS ROSE'S BRANCH
 package venn;
 
 //imports
@@ -13,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -340,116 +340,6 @@ public class VennBase extends Application	 {
 		textAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
 		textAdder.layoutYProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		
-//		textAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//			@Override
-//			public void handle(MouseEvent event) {
-//				if (event.getButton() == MouseButton.PRIMARY) {
-//					TextBox b = new TextBox(pane, textAdder, "New Text Box", circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
-//				}
-//			}
-//		});
-
-		//multiple text box adder ------------------------------------------------------------------------------------------------------------
-//		Button multAdder = new Button("Add Mulitple New Text Boxes");		
-//		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
-//		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-//		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
-//		multAdder.layoutYProperty().bind(pane.heightProperty().multiply(0));
-//		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//			@Override
-//			public void handle(MouseEvent event) {
-//				final Stage dialog = new Stage();
-//				dialog.initModality(Modality.APPLICATION_MODAL);
-//				dialog.initOwner(stage);
-//				VBox layout = new VBox(10);
-
-//				listView = new ListView<>(FXCollections.observableArrayList());
-//				listView.setEditable(true);
-//				listView.prefWidthProperty().bind(pane.widthProperty().multiply(15.0/100.0));
-//				listView.prefHeightProperty().bind(pane.widthProperty().multiply(15.0/100.0));
-//				listView.setCellFactory(TextFieldListCell.forListView());		
-//
-//				listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
-//					@Override
-//					public void handle(ListView.EditEvent<String> t) {
-//						listView.getItems().set(t.getIndex(), t.getNewValue());
-//					}
-//
-//				});
-//
-//				listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
-//					@Override
-//					public void handle(ListView.EditEvent<String> t) {
-//						//Do nothing
-//					}
-//				});
-//				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//
-//				//add cell to list button
-//				Button addText = new Button("Add to List");
-//				addText.setLayoutX(screenBounds.getMaxX());
-//				addText.setLayoutY(screenBounds.getMaxY());
-//				addText.setPrefWidth(listView.getPrefWidth());
-//				addText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent event) {
-//						String c = new String("Enter Text");
-//						listView.getItems().add(listView.getItems().size(), c);
-//						listView.scrollTo(c);
-//						listView.edit(listView.getItems().size() - 1);
-//					}
-//
-//				});
-//
-//				//delete cell from list button
-//				Button deleteText = new Button("Delete");
-//				deleteText.setPrefWidth(listView.getPrefWidth());
-//				deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent event) {
-//						final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
-//						listView.getItems().remove(selectedIdx);
-//					}
-//				});
-//				
-//				//clear list button
-//				Button clear = new Button("Clear");
-//				clear.setPrefWidth(listView.getPrefWidth());
-//				clear.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent event) {
-//						listView.getItems().clear();
-//					}
-//				});
-//
-//				//make all cells text boxes button
-//				Button finish = new Button("Convert All Into Text Boxes");
-//				finish.setPrefWidth(listView.getPrefWidth());
-//				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//					@Override
-//					public void handle(MouseEvent event) {
-//						ObservableList<String> topics;
-//						String list= "";
-//						topics = listView.getItems();
-//
-//						for (int i = 0; i < topics.size(); i++) {
-//							TextBox b = new TextBox(pane, textAdder, topics.get(i), circleL, circleR, intersection, leftCircle, rightCircle, p, selection);
-//						}
-//						listView.getItems().clear();
-//					}
-//
-//				});
-//				
-//
-//				layout.setPadding(new Insets(20,20,20,20));
-//				layout.getChildren().addAll(listView, addText, deleteText, clear, finish);
-//				Scene dialogScene = new Scene(layout, 300, 500);
-
-//				dialog.setScene(dialogScene);
-//				dialog.show();
-//			}
-//		});
-
 
 		//New MultAdder ------------------------------------------------------------------------------------------------------------
 		
@@ -463,7 +353,7 @@ public class VennBase extends Application	 {
 		
 		
 			//Color Pickers
-			ColorPicker boxcp = new ColorPicker(Color.GREY); 
+			ColorPicker boxcp = new ColorPicker(Color.GREY);
 			ColorPicker fontcp = new ColorPicker(Color.BLACK);
 			boxcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 			fontcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
