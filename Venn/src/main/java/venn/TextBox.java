@@ -37,9 +37,9 @@ public class TextBox {
 
 		//Text box properties
 		box = new Button(text);
-//		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
-//		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		box.autosize();
+		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
+		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		box.autosize();
 		box.setLayoutX(15);
 		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
 		Record.numBoxes++;
@@ -56,6 +56,7 @@ public class TextBox {
 		//box.setStyle("-fx-background-color: "+Record.textBox);
 		//box.setStyle("-fx-background-color: " + background);
 		box.setStyle("-fx-background-radius: 5"); //going to make this user customizable
+		box.setStyle("-fx-background-radius: 5");
         BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
         Background background = new Background(background_fill);
         box.setBackground(background); 
@@ -273,8 +274,6 @@ public class TextBox {
 				}
 			}
 		});
-		
-		//color detection
 		
 
 		addToList(pane);
