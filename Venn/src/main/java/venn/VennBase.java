@@ -197,6 +197,8 @@ public class VennBase extends Application	 {
 				col1.saturate();
 				col1.saturate();
 				circleR.setStroke(col1);
+				undoList.add(circleR);
+				cList.add(0, col1);
 			}
 		});
 
@@ -209,6 +211,8 @@ public class VennBase extends Application	 {
 				col2.saturate();
 				col2.saturate();
 				circleL.setStroke(col2);
+				undoList.add(col2);
+				cList.add(1, col2);
 			}
 		});
 
@@ -554,12 +558,19 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if(!undoList.isEmpty()) {
-						if(undoList.get(undoList.size() - 1) instanceof TextBox) {
-							TextBox b = (TextBox) undoList.get(undoList.size() - 1);
-							pane.getChildren().remove(b.box);
-							redoList.add(undoList.get(undoList.size() - 1));
-							undoList.remove(undoList.size() - 1);
+						Object latest = undoList.get(undoList.size() - 1);
+						if(latest instanceof TextBox) {
+							TextBox b = (TextBox) latest;
+							pane.getChildren().remove(b.box);							
 						}
+						else if(latest instanceof Circle) {
+							circleR.setFill(blue);
+						}
+						else if(latest instanceof Color) {
+							circleL.setFill(red);
+						}
+						redoList.add(latest);
+						undoList.remove(undoList.size() - 1);
 					}else {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Error!");
@@ -581,13 +592,22 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
+					
 					if(!redoList.isEmpty()) {
-						if(redoList.get(redoList.size() - 1) instanceof TextBox) {
-							TextBox b = (TextBox) redoList.get(redoList.size() - 1);
+						Object latest = redoList.get(redoList.size() - 1);
+						if(latest instanceof TextBox) {
+							TextBox b = (TextBox) latest;
 							b.addToList(pane);
-							undoList.add(redoList.get(redoList.size() - 1));
+						}
+						else if(latest instanceof Circle) {
+							circleR.setFill(cList.get(0));
 							redoList.remove(redoList.size() - 1);
 						}
+						else if(latest instanceof Color) {
+							circleL.setFill(cList.get(1));
+						}
+						undoList.add(latest);
+						redoList.remove(redoList.size() - 1);
 					}else {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Error!");
