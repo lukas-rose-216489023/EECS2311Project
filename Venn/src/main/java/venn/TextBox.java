@@ -53,13 +53,14 @@ public class TextBox {
 		record.inCircleR = false;
 		Record.addToUniversal(box.getText());
 
-		//box.setStyle("-fx-background-color: "+Record.textBox);
-		//box.setStyle("-fx-background-color: " + background);
-		box.setStyle("-fx-background-radius: 5"); //going to make this user customizable
-		box.setStyle("-fx-background-radius: 5");
+		//styling box
         BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
         Background background = new Background(background_fill);
         box.setBackground(background); 
+
+//		box.setBackground(new Background(new BackgroundFill(Color.rgb((int)boxcol.getRed()*255,(int)boxcol.getGreen()*255,(int)boxcol.getBlue()*255), CornerRadii.EMPTY, Insets.EMPTY)));
+//		box.setStyle("-fx-background-radius: 5;"
+//					+ "-fx-background-color: rgb(" + (int)boxcol.getRed()*255 + "," + (int)boxcol.getGreen()*255 + "," + (int)boxcol.getBlue()*255 + ");"); 
 		box.textFillProperty().set(fontcol);
 
 		//Text box action options
