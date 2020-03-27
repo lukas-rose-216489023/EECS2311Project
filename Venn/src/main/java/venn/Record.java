@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 public class Record {
 
 	static int numBoxes;
+	static String prevStyle;
 	
 	int recordNum;
 
