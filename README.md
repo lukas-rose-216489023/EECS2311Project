@@ -33,7 +33,7 @@ $ java -jar VennApplication.jar
 - [x] Resizable Window
 - [x] Saving the Process Option
 - [x] Undo Option 
-- [x] Import/Export (Coming Soon)
+- [x] Import/Export
 
 
 ## Credits
