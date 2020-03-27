@@ -61,8 +61,6 @@ public class TextBox {
 
 		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY());
 
-		//box.setStyle("-fx-background-color: "+Record.textBox);
-		box.setStyle("-fx-background-color: #80b380");
 		
 		//styling box
         BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
