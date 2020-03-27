@@ -249,18 +249,18 @@ public class FileHandling {
 						int letterCount=0;
 						int i = 2;
 						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
-						
-						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, Color.ALICEBLUE, Color.ALICEBLUE);
+						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4));
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
-						b.box.setStyle((indivContent.get(i+3)));
 						
 						b.record.percentX = Double.parseDouble(prevIndivContent.get(1));
 						b.record.percentY = Double.parseDouble(prevIndivContent.get(2));
 						b.record.inCircleR = Boolean.parseBoolean(prevIndivContent.get(3));
 						b.record.inCircleL = Boolean.parseBoolean(prevIndivContent.get(4));
-						
+
+						FileHandling.saveChanges(VennBase.autoSaveFile, "Record"+b.record.recordNum, "Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL);
+						FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+b.boxNum, "Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()+" "+indivContent.get(i+3)+" "+indivContent.get(i+4));
 					}
 				}
 				

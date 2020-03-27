@@ -405,7 +405,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					TextBox b = new TextBox(pane, textAdder, "New Text Box", circleL, circleR, intersection, leftCircle, rightCircle, p, selection, grey, Color.BLACK);
+//					TextBox b = new TextBox(pane, textAdder, "New Text Box", circleL, circleR, intersection, leftCircle, rightCircle, p, selection, grey, Color.BLACK);
 				}
 			}
 		});
@@ -446,7 +446,7 @@ public class VennBase extends Application	 {
 			{
 				if (ke.getCode().equals(KeyCode.ENTER))
 				{
-					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, boxcp.getValue(), fontcp.getValue());
+					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()));
 					text.clear();
 				}
 			}
@@ -1004,7 +1004,7 @@ public class VennBase extends Application	 {
 	}
 	
 	//code from https://stackoverflow.com/questions/17925318/how-to-get-hex-web-string-from-javafx-colorpicker-color/35814669
-	public String colorToHex(Color color) {
+	public static String colorToHex(Color color) {
 	    String hex1;
 	    String hex2;
 

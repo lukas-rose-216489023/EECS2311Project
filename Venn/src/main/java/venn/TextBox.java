@@ -5,7 +5,6 @@ import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,11 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -31,12 +26,12 @@ public class TextBox {
 	Record record;
 	String pos;		//can be: "universal", "intersection", "left", "right"
 	int boxNum;
-	Color boxcol;
-	Color fontcol;
+	String boxCol;
+	String fontCol;
 
 
 	//Text box constructor
-	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, Color boxcol, Color fontcol){
+	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol){
 		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));
 
 		//Text box properties
@@ -61,16 +56,18 @@ public class TextBox {
 
 		
 		//styling box
-        BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
-        Background background = new Background(background_fill);
-        box.setBackground(background); 
-
-//		box.setBackground(new Background(new BackgroundFill(Color.rgb((int)boxcol.getRed()*255,(int)boxcol.getGreen()*255,(int)boxcol.getBlue()*255), CornerRadii.EMPTY, Insets.EMPTY)));
-//		box.setStyle("-fx-background-radius: 5;"
-//					+ "-fx-background-color: rgb(" + (int)boxcol.getRed()*255 + "," + (int)boxcol.getGreen()*255 + "," + (int)boxcol.getBlue()*255 + ");"); 
-		box.textFillProperty().set(fontcol);
+//        BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
+//        Background background = new Background(background_fill);
+//        box.setBackground(background); 
+//
+//		box.textFillProperty().set(fontcol);
 		
-		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle());
+		box.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
+		
+		boxCol = boxcol;
+		fontCol = fontcol;
+		
+		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 
 		//Text box action options
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -79,11 +76,11 @@ public class TextBox {
 				if (ctrlSelection) {
 					if (record.ctrlSelected) {
 						record.ctrlSelected=false;
-						box.setStyle("-fx-background-color: #80b380; -fx-border-width: 0px; -fx-border-color: #0000ff50");
+						box.setStyle("-fx-border-width: 0px; -fx-border-color: #0000ff50; -fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
 					}
 					else {
 						record.ctrlSelected=true;
-						box.setStyle("-fx-background-color: #80b380; -fx-border-width: 5px; -fx-border-color: #0000ff50");
+						box.setStyle("-fx-border-width: 5px; -fx-border-color: #0000ff50; -fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
 					}
 				}
 
@@ -99,7 +96,7 @@ public class TextBox {
 							result = dialog.showAndWait().get();
 						}
 						box.setText(result);
-						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle()));
+						FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 					}
 				}
@@ -172,7 +169,7 @@ public class TextBox {
 				if (ctrlSelection) {releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);}
 				releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 
-				FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle()));
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});
@@ -301,7 +298,7 @@ public class TextBox {
 				b.record.percentX = b.box.getLayoutX() / pane.getWidth();
 				b.record.percentY = b.box.getLayoutY() / pane.getHeight();
 				
-				FileHandling.saveChanges(autoSaveFile, ("Box"+b.boxNum), ("Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()));
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+b.boxNum, "Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()+" "+b.boxCol+" "+b.fontCol);
 				FileHandling.saveChanges(autoSaveFile, ("Record"+b.record.recordNum), ("Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL));
 			}
 		}
@@ -311,7 +308,7 @@ public class TextBox {
 		for (TextBox b:iterate) {
 			if (b.record.ctrlSelected) {
 				b.record.ctrlSelected=false;
-				b.box.setStyle("-fx-background-color: #80b380; -fx-border-width: 0px; -fx-border-color: #0000ff50");
+				b.box.setStyle("-fx-border-width: 0px; -fx-border-color: #0000ff50; -fx-background-color: #"+b.boxCol+"; -fx-text-fill: #"+b.fontCol);
 			}
 		}
 		ctrlSelection=false;
