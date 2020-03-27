@@ -1,14 +1,8 @@
 BColor 0.0 0.0 0.0
 RColor 0.0 0.0 1.0
 LColor 1.0 0.0 0.0
-BuColor b3b3b3
+BuColor FFFFFF
 Anchoring off
 Title Title
 Right right
 Left left
-Record0 0.0 0.0 false false
-Box0 0  universal 15.0 168.4
-Record1 0.0 0.0 false false
-Box1 0  universal 15.0 235.10000000000002
-Record2 0.0 0.0 false false
-Box2 5 Lukas universal 15.0 301.8
