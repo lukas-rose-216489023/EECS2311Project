@@ -34,6 +34,7 @@ $ java -jar VennApplication.jar
 - [x] Saving the Process Option
 - [x] Undo Option 
 - [x] Import/Export
+- [ ] 3 Circle Layout
 
 
 ## Credits
