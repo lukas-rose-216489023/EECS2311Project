@@ -263,13 +263,13 @@ public class VennBase extends Application	 {
 		rightCircle.addPoint(p.r11);
 
 		
-		//Anchor option button  ----------------------------------------------------------------------------------------------------------------------------
+		//Anchor option button  ----------------------------------------------------------------------------------------------------------------------------	
 		autoSaveFile.WriteToFile("Anchoring off");
 		Button anchorOption = new Button("Anchoring off");
-		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		anchorOption.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		anchorOption.setStyle("-fx-background-color: #b3b3b3");
+//		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+//		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		anchorOption.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+//		anchorOption.setStyle("-fx-background-color: #b3b3b3");
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -575,11 +575,11 @@ public class VennBase extends Application	 {
 
 		//Reset ------------------------------------------------------------------------------------------------------------
 		Button reset = new Button("Reset application");
-		reset.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		reset.layoutYProperty().bind(pane.heightProperty().multiply(16.0/100.0));
-		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		reset.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		reset.setStyle("-fx-background-color: #b3b3b3");
+//		reset.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+//		reset.layoutYProperty().bind(pane.heightProperty().multiply(16.0/100.0));
+//		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+//		reset.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		reset.setStyle("-fx-background-color: #b3b3b3");
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -604,11 +604,11 @@ public class VennBase extends Application	 {
 		Button exportB = new Button("Export");
 		Button capture = new Button("Take Screenshot of Venn Diagram");
 		Button importB = new Button("Import");
-		importB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		importB.layoutYProperty().bind(pane.heightProperty().multiply(24.0/100.0));
-		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		importB.setStyle("-fx-background-color: #b3b3b3");
+//		importB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+//		importB.layoutYProperty().bind(pane.heightProperty().multiply(24.0/100.0));
+//		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+//		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		importB.setStyle("-fx-background-color: #b3b3b3");
 		importB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -629,11 +629,11 @@ public class VennBase extends Application	 {
 
 
 		//Export ------------------------------------------------------------------------------------------------------------
-		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0/100.0));
-		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		exportB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		exportB.setStyle("-fx-background-color: #b3b3b3");
+//		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+//		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0/100.0));
+//		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+//		exportB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		exportB.setStyle("-fx-background-color: #b3b3b3");
 		exportB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -656,11 +656,11 @@ public class VennBase extends Application	 {
 
 
 		//Screen-shot implementation -----------------------------------------------------------------------------------------------------------
-		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0/100.0));
-		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		capture.setStyle("-fx-background-color: #b3b3b3");
+//		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+//		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0/100.0));
+//		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+//		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+//		capture.setStyle("-fx-background-color: #b3b3b3");
 		capture.setOnAction(event -> createScreenshot(pane, cp1, cp2, cp3, cp4, textAdder, anchorOption, capture, multAdd, reset, importB, exportB, cpR, cpL, cpB, cpBu, ctrl));
 		
 		//Button color picker event
@@ -673,19 +673,32 @@ public class VennBase extends Application	 {
 			}
 		});
 
+		//Right Side Panel
+		AnchorPane rightSide = new AnchorPane();
+		rightSide.layoutXProperty().bind(pane.widthProperty().multiply(83.0/100.0));
+		rightSide.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
+		rightSide.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		rightSide.setStyle("-fx-background-color: linear-gradient(to right, #BBD2C5, #536976);" + 
+						 "-fx-background-radius: 5;" );
+		VBox rsp = new VBox(anchorOption, capture, reset, importB, exportB);
+		rsp.setPadding(new Insets(10));
+
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
 		pane.getChildren().addAll(cp1, cp2, cp3, cp4);
 //		pane.getChildren().add(textAdder);
-		pane.getChildren().add(anchorOption);
-		pane.getChildren().add(capture);
+//		pane.getChildren().add(anchorOption);
+//		pane.getChildren().add(capture);
 //		pane.getChildren().add(layout);
 		pane.getChildren().add(multAdd);
-		pane.getChildren().add(reset);;
-		pane.getChildren().add(importB);
-		pane.getChildren().add(exportB);
+//		pane.getChildren().add(reset);;
+//		pane.getChildren().add(importB);
+//		pane.getChildren().add(exportB);
+		pane.getChildren().add(rightSide);
+		
+		rightSide.getChildren().addAll(rsp);
 
 		//Adds titles to window
 		pane.getChildren().add(title);
