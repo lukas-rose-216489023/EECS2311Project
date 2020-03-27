@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -132,7 +133,7 @@ public class FileHandling {
 	}
 	
 	
-	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button multAdder, Button reset, Button importB, Button exportB, Button capture) {
+	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
 		//Read save data
 //		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
@@ -233,7 +234,7 @@ public class FileHandling {
 					cp4.setStyle("-fx-background-color: #"+indivContent.get(1));
 					anchorOption.setStyle("-fx-background-color: #"+indivContent.get(1));
 					textAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
-					multAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
+					multAdd.setStyle("-fx-background-color: #"+indivContent.get(1));
 					reset.setStyle("-fx-background-color: #"+indivContent.get(1));
 					importB.setStyle("-fx-background-color: #"+indivContent.get(1));
 					exportB.setStyle("-fx-background-color: #"+indivContent.get(1));
@@ -249,7 +250,7 @@ public class FileHandling {
 						int i = 2;
 						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
 						
-						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, VennBase.autoSaveFile);
+						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, Color.ALICEBLUE, Color.ALICEBLUE);
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
