@@ -5,6 +5,7 @@ import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,7 +15,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -26,11 +31,12 @@ public class TextBox {
 	Record record;
 	String pos;		//can be: "universal", "intersection", "left", "right"
 	int boxNum;
+	Color boxcol;
+	Color fontcol;
 
 
 	//Text box constructor
-	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, FileHandling autoSaveFile){
-
+	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, Color boxcol, Color fontcol){
 		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
 
 		//Text box properties
@@ -38,12 +44,12 @@ public class TextBox {
 		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
 		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		box.setLayoutX(15);
-		box.setLayoutY(10+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
 		boxNum=Record.numBoxes;
 		pos="universal";
 
 		//variables for use in resize detection and position detection
-		record = new Record(autoSaveFile);
+		record = new Record(VennBase.autoSaveFile);
 		record.percentX = box.getLayoutX() / pane.getWidth();
 		record.percentY = box.getLayoutY() / pane.getHeight();
 		record.inCircleL = false;
@@ -53,11 +59,19 @@ public class TextBox {
 		Record.numBoxes++;
 
 
-		autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY());
+		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY());
 
-		//box.setStyle("-fx-background-color: "+Record.textBox);
-		box.setStyle("-fx-background-color: #80b380");
 		
+		//styling box
+        BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
+        Background background = new Background(background_fill);
+        box.setBackground(background); 
+
+//		box.setBackground(new Background(new BackgroundFill(Color.rgb((int)boxcol.getRed()*255,(int)boxcol.getGreen()*255,(int)boxcol.getBlue()*255), CornerRadii.EMPTY, Insets.EMPTY)));
+//		box.setStyle("-fx-background-radius: 5;"
+//					+ "-fx-background-color: rgb(" + (int)boxcol.getRed()*255 + "," + (int)boxcol.getGreen()*255 + "," + (int)boxcol.getBlue()*255 + ");"); 
+		box.textFillProperty().set(fontcol);
+
 		//Text box action options
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -85,8 +99,8 @@ public class TextBox {
 							result = dialog.showAndWait().get();
 						}
 						box.setText(result);
-						FileHandling.saveChanges(autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
-						FileHandling.saveChanges(autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
+						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 					}
 				}
 				else if (event.getButton().equals(MouseButton.SECONDARY)) {
@@ -104,8 +118,8 @@ public class TextBox {
 					if (result.get() == deleteButton) {
 						// ... user chose "delete"
 						removeFromList(pane);
-						FileHandling.saveChanges(autoSaveFile, ("Box"+boxNum), "");
-						FileHandling.saveChanges(autoSaveFile, ("Record"+record.recordNum), "");
+						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), "");
+						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), "");
 					}
 					else if (result.get() == cancel) {
 						// ... user chose "cancel"
@@ -158,8 +172,8 @@ public class TextBox {
 				if (ctrlSelection) {releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);}
 				releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 
-				FileHandling.saveChanges(autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
-				FileHandling.saveChanges(autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+				FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
+				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});
 
@@ -175,6 +189,38 @@ public class TextBox {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
 				box.setLayoutX(pane.getWidth() * record.percentX);
+//
+//				p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
+//				p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
+//				p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
+//				p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
+//				p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
+//				p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
+//				p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
+//				p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
+//				p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
+//				p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
+//				p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
+//
+//				p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
+//				p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
+//				p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
+//				p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
+//				p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
+//				p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
+//
+//				p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
+//				p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
+//				p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
+//				p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
+//				p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
+//				p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
+//				p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
+//				p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
+//				p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
+//				p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
+//				p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
+
 			}
 		});
 
@@ -209,6 +255,7 @@ public class TextBox {
 			}
 		});
 
+		
 		addToList(pane);
 	}
 

@@ -1,7 +1,11 @@
 BColor 0.0 0.0 0.0
 RColor 0.0 0.0 1.0
 LColor 1.0 0.0 0.0
+<<<<<<< HEAD
 BuColor cccccc
+=======
+BuColor FFFFFF
+>>>>>>> branch 'Developement_Branch' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 Anchoring off
 Title Title
 Right right
