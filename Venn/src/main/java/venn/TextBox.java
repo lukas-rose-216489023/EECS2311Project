@@ -37,14 +37,14 @@ public class TextBox {
 
 	//Text box constructor
 	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, Color boxcol, Color fontcol){
-		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
+		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));
 
 		//Text box properties
 		box = new Button(text);
 		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
 		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		box.setLayoutX(15);
-		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+		box.setLayoutY((pane.getHeight()*.2)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
 		boxNum=Record.numBoxes;
 		pos="universal";
 
@@ -59,8 +59,6 @@ public class TextBox {
 		Record.numBoxes++;
 
 
-		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY());
-
 		
 		//styling box
         BackgroundFill background_fill = new BackgroundFill(boxcol, CornerRadii.EMPTY, Insets.EMPTY); 
@@ -71,6 +69,8 @@ public class TextBox {
 //		box.setStyle("-fx-background-radius: 5;"
 //					+ "-fx-background-color: rgb(" + (int)boxcol.getRed()*255 + "," + (int)boxcol.getGreen()*255 + "," + (int)boxcol.getBlue()*255 + ");"); 
 		box.textFillProperty().set(fontcol);
+		
+		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle());
 
 		//Text box action options
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -99,7 +99,7 @@ public class TextBox {
 							result = dialog.showAndWait().get();
 						}
 						box.setText(result);
-						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
+						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle()));
 						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 					}
 				}
@@ -172,7 +172,7 @@ public class TextBox {
 				if (ctrlSelection) {releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);}
 				releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 
-				FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()));
+				FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), ("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+box.getStyle()));
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});

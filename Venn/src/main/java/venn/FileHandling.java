@@ -254,6 +254,7 @@ public class FileHandling {
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
+						b.box.setStyle((indivContent.get(i+3)));
 						
 						b.record.percentX = Double.parseDouble(prevIndivContent.get(1));
 						b.record.percentY = Double.parseDouble(prevIndivContent.get(2));

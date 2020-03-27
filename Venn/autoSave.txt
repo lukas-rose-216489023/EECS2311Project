@@ -1,12 +1,10 @@
 BColor 0.0 0.0 0.0
 RColor 0.0 0.0 1.0
 LColor 1.0 0.0 0.0
-<<<<<<< HEAD
-BuColor cccccc
-=======
-BuColor FFFFFF
->>>>>>> branch 'Developement_Branch' of https://github.com/lukas-rose-216489023/EECS2311Project.git
+BuColor 999999
 Anchoring off
 Title Title
 Right right
 Left left
+Record0 0.01171875 0.19999999999999998 false false
+Box0 0  universal 15.0 131.6 -fx-background-color: #80b380; -fx-border-width: 5px; -fx-border-color: #0000ff50
