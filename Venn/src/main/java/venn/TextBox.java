@@ -37,14 +37,14 @@ public class TextBox {
 
 	//Text box constructor
 	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, Color boxcol, Color fontcol){
-		this.stackable = (int) (pane.getHeight() / (textAdder.getHeight()-10)) -2;		
+		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));		
 
 		//Text box properties
 		box = new Button(text);
 		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
 		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		box.setLayoutX(15);
-		box.setLayoutY(5+(textAdder.getPrefHeight()*2) + ((textAdder.getPrefHeight()-15)*(Record.numBoxes%stackable)));
+		box.setLayoutY((pane.getHeight()*.2)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
 		boxNum=Record.numBoxes;
 		pos="universal";
 
