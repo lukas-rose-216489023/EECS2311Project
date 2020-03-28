@@ -133,7 +133,7 @@ public class FileHandling {
 	}
 	
 	
-	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
+	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
 		//Read save data
 //		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
@@ -233,7 +233,6 @@ public class FileHandling {
 					cp3.setStyle("-fx-background-color: #"+indivContent.get(1));
 					cp4.setStyle("-fx-background-color: #"+indivContent.get(1));
 					anchorOption.setStyle("-fx-background-color: #"+indivContent.get(1));
-					textAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
 					multAdd.setStyle("-fx-background-color: #"+indivContent.get(1));
 					reset.setStyle("-fx-background-color: #"+indivContent.get(1));
 					importB.setStyle("-fx-background-color: #"+indivContent.get(1));
@@ -249,7 +248,7 @@ public class FileHandling {
 						int letterCount=0;
 						int i = 2;
 						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
-						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4));
+						TextBox b = new TextBox(pane, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4));
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));

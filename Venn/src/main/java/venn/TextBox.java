@@ -31,7 +31,7 @@ public class TextBox {
 
 
 	//Text box constructor
-	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol){
+	public TextBox(Pane pane, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol){
 		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));
 
 		//Text box properties
@@ -398,6 +398,8 @@ public class TextBox {
 		else {
 			Record.addToUniversal(getThis());
 		}
+		FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+		FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 	}
 	
 	public static void releaseCheckAll(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {
