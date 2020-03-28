@@ -87,6 +87,14 @@ public class VennBase extends Application	 {
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.5);
 		Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 0.5);
 
+		cList.add(0, blue);
+		cList.add(1, blue);
+		
+		sList.add(0, "A");
+		sList.add(1, "A");
+		sList.add(2, "A");
+		
+		
 		//Right venn circle
 		Circle circleR = new Circle();
 		circleR.centerXProperty().bind(pane.widthProperty().divide(5.0/3.0));
@@ -217,6 +225,8 @@ public class VennBase extends Application	 {
 			}
 		});
 
+		
+		
 
 		//Anchor option button
 		Button anchorOption = new Button("Anchoring off");
@@ -226,6 +236,7 @@ public class VennBase extends Application	 {
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				undoList.add(anchorOption);
 				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");}
 				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");}
 			}
@@ -453,126 +464,388 @@ public class VennBase extends Application	 {
 		});
 
 
-		//Texts ------------------------------------------------------------------------------------------------------------
+		Button multAdder = new Button("Add Mulitple New Text Boxes");
+		multAdder.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		multAdder.prefHeightProperty().bind(pane.heightProperty().multiply(10.0 / 100.0));
+		multAdder.layoutXProperty().bind(pane.widthProperty().multiply(0));
+		multAdder.layoutYProperty().bind(pane.heightProperty().multiply(10.0 / 100.0));
+		multAdder.setStyle("-fx-background-color: #b3b3b3");
+		multAdder.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				final Stage dialog = new Stage();
+				dialog.initModality(Modality.APPLICATION_MODAL);
+				dialog.initOwner(stage);
+				VBox layout = new VBox(20);
+
+				listView = new ListView<>(FXCollections.observableArrayList());
+				listView.setEditable(true);
+
+				listView.setCellFactory(TextFieldListCell.forListView());
+
+				listView.setOnEditCommit(new EventHandler<ListView.EditEvent<String>>() {
+					@Override
+					public void handle(ListView.EditEvent<String> t) {
+						listView.getItems().set(t.getIndex(), t.getNewValue());
+					}
+
+				});
+
+				listView.setOnEditCancel(new EventHandler<ListView.EditEvent<String>>() {
+					@Override
+					public void handle(ListView.EditEvent<String> t) {
+					}
+				});
+				listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+				// add cell to list button
+				Button addText = new Button("Add One Text to List");
+				addText.setLayoutX(screenBounds.getMinX());
+				addText.setLayoutY(screenBounds.getMaxY());
+
+				addText.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						String c = new String("Enter Text");
+						listView.getItems().add(listView.getItems().size(), c);
+						listView.scrollTo(c);
+						listView.edit(listView.getItems().size() - 1);
+					}
+
+				});
+
+				// delete cell from list button
+				Button deleteText = new Button("Delete Selected Text from List");
+
+				deleteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						final int selectedIdx = listView.getSelectionModel().getSelectedIndex();
+						listView.getItems().remove(selectedIdx);
+
+						// Still in process of integrating multiple selected deletes
+
+						// ObservableList<Integer> selectedCells;
+						// selectedCells = listView.getSelectionModel().getSelectedIndices();
+						// System.out.println(selectedCells);
+
+						// for (int i = 0; i <= selectedCells.size(); i++) {
+						// listView.getItems().remove(i);
+						// }
+					}
+				});
+
+				// make all cells text boxes button
+				Button finish = new Button("Convert All Texts in List Into Text Boxes");
+				finish.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						ObservableList<String> topics;
+						String list = "";
+						topics = listView.getItems();
+
+						for (int i = 0; i < topics.size(); i++) {
+							TextBox b = new TextBox(pane, textAdder, topics.get(i), circleL, circleR, intersection,
+									leftCircle, rightCircle, p, selection, autoSaveFile);
+							undoList.add(b);
+						}
+						dialog.close();
+					}
+
+				});
+
+				layout.setPadding(new Insets(20, 20, 20, 20));
+				layout.getChildren().addAll(listView, addText, deleteText, finish);
+				Scene dialogScene = new Scene(layout, 300, 500);
+
+				dialog.setScene(dialogScene);
+				dialog.show();
+			}
+		});
+
+		// Texts
+		// ------------------------------------------------------------------------------------------------------------
+		autoSaveFile.WriteToFile("Title " + "Title");
 		Text title = new Text("Title");
 		title.setFont(new Font(20));
 		title.setStroke(Color.BLACK);
-		//title.getText().length()*4 : text half length
-		title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length()*4));
+		// title.getText().length()*4 : text half length
+		title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length() * 4));
 		title.setLayoutY(25);
 
 		title.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				if (event.getButton() == MouseButton.SECONDARY) {
 					TextInputDialog dialog = new TextInputDialog("Enter Venn diagram title");
 					dialog.setTitle("Change title");
 					dialog.setHeaderText("Enter to change title");
 					dialog.setContentText("Please enter the new title:");
 					String result = dialog.showAndWait().get();
 					title.setText(result);
-					title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length()*4));
+					title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length() * 4));
+					autoSaveFile.overwriteLineInFile("Title ", "Title " + title.getText());
+					undoList.add(new Character('a'));
+					sList.add(0, result);
 				}
 			}
 		});
 
-		Text left = new Text("left");
-		left.setFont(new Font(12));
-		left.setStroke(Color.BLACK);
-		left.setTextAlignment(TextAlignment.CENTER);
-		//left.getText().length()*5/2 : text half length
-		left.layoutXProperty().bind(pane.widthProperty().divide(5.0/2.0).subtract(left.getText().length()*5/2));
-		left.layoutYProperty().bind(pane.heightProperty().divide(2.0).subtract(circleL.radiusProperty()).subtract(5));
-		left.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					TextInputDialog dialog = new TextInputDialog("Enter left circle title");
-					dialog.setTitle("Change text");
-					dialog.setHeaderText("Enter to change text");
-					dialog.setContentText("Please enter some text:");
-					String result = dialog.showAndWait().get();
-					left.setText(result);
-					left.layoutXProperty().bind(pane.widthProperty().divide(5.0/2.0).subtract(left.getText().length()*5/2));
-				}
-			}
-		});
-
+		autoSaveFile.WriteToFile("Right " + "right");
 		Text right = new Text("right");
 		right.setFont(new Font(12));
 		right.setStroke(Color.BLACK);
 		right.setTextAlignment(TextAlignment.CENTER);
-		//right.getText().length()*5/2 : text half length
-		right.layoutXProperty().bind(pane.widthProperty().divide(5.0/3.0).subtract(right.getText().length()*5/2));
+		// right.getText().length()*5/2 : text half length
+		right.layoutXProperty().bind(pane.widthProperty().divide(5.0 / 3.0).subtract(right.getText().length() * 5 / 2));
 		right.layoutYProperty().bind(pane.heightProperty().divide(2.0).subtract(circleL.radiusProperty()).subtract(5));
 		right.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				if (event.getButton() == MouseButton.SECONDARY) {
 					TextInputDialog dialog = new TextInputDialog("Enter right circle title");
 					dialog.setTitle("Change text");
 					dialog.setHeaderText("Enter to change text");
 					dialog.setContentText("Please enter some text:");
 					String result = dialog.showAndWait().get();
 					right.setText(result);
-					right.layoutXProperty().bind(pane.widthProperty().divide(5.0/3.0).subtract(right.getText().length()*5/2));
+					right.layoutXProperty()
+							.bind(pane.widthProperty().divide(5.0 / 3.0).subtract(right.getText().length() * 5 / 2));
+					autoSaveFile.overwriteLineInFile("Right ", "Right " + right.getText());
+					undoList.add(new Integer(0));
+					sList.add(1, result);
 				}
 			}
 		});
 
-		//Right circle color picker label
+		autoSaveFile.WriteToFile("Left " + "left");
+		Text left = new Text("left");
+		left.setFont(new Font(12));
+		left.setStroke(Color.BLACK);
+		left.setTextAlignment(TextAlignment.CENTER);
+		// left.getText().length()*5/2 : text half length
+		left.layoutXProperty().bind(pane.widthProperty().divide(5.0 / 2.0).subtract(left.getText().length() * 5 / 2));
+		left.layoutYProperty().bind(pane.heightProperty().divide(2.0).subtract(circleL.radiusProperty()).subtract(5));
+		left.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.SECONDARY) {
+					TextInputDialog dialog = new TextInputDialog("Enter left circle title");
+					dialog.setTitle("Change text");
+					dialog.setHeaderText("Enter to change text");
+					dialog.setContentText("Please enter some text:");
+					String result = dialog.showAndWait().get();
+					left.setText(result);
+					left.layoutXProperty()
+							.bind(pane.widthProperty().divide(5.0 / 2.0).subtract(left.getText().length() * 5 / 2));
+					autoSaveFile.overwriteLineInFile("Left ", "Left " + left.getText());
+					undoList.add(new Text());
+					sList.add(2, result);
+				}
+			}
+		});
+
+		// Right circle color picker label
 		Text cpR = new Text("Right circle color : ");
 		cpR.setFont(new Font(12));
 		cpR.setStroke(Color.BLACK);
-		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(100));
+		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(110));
 		cpR.layoutYProperty().bind(cp1.layoutYProperty().add(15));
 
-		//Right circle color picker label
+		// Right circle color picker label
 		Text cpL = new Text("Left circle color : ");
 		cpL.setFont(new Font(12));
 		cpL.setStroke(Color.BLACK);
 		cpL.setTextAlignment(TextAlignment.CENTER);
-		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(100));
+		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(110));
 		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 
+		// Background color picker label
+		Text cpB = new Text("Background color : ");
+		cpB.setFont(new Font(12));
+		cpB.setStroke(Color.BLACK);
+		cpB.setTextAlignment(TextAlignment.CENTER);
+		cpB.layoutXProperty().bind(cp3.layoutXProperty().subtract(110));
+		cpB.layoutYProperty().bind(cp3.layoutYProperty().add(15));
 
-		//Screen-shot implementation -----------------------------------------------------------------------------------------------------------
-		Button capture = new Button("Take Screenshot of Venn Diagram!");
-		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0/100.0));
-		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		capture.setOnAction(event -> createScreenshot(pane));
-		
-		
-		//Undo-redo implementation
-		
-		//Undo button implementation
+		// Button color picker label
+		Text cpBu = new Text("Button color : ");
+		cpBu.setFont(new Font(12));
+		cpBu.setStroke(Color.BLACK);
+		cpBu.setTextAlignment(TextAlignment.CENTER);
+		cpBu.layoutXProperty().bind(cp4.layoutXProperty().subtract(110));
+		cpBu.layoutYProperty().bind(cp4.layoutYProperty().add(15));
+
+		// control selection mode label
+		ctrl.setFont(new Font(12));
+		ctrl.setStroke(Color.BLACK);
+		ctrl.setTextAlignment(TextAlignment.CENTER);
+		ctrl.layoutXProperty().bind(pane.widthProperty().multiply(0.0 / 100.0));
+		ctrl.layoutYProperty().bind(pane.heightProperty().multiply(98.0 / 100.0));
+
+		// Reset
+		// ------------------------------------------------------------------------------------------------------------
+		Button reset = new Button("Reset application");
+		reset.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		reset.layoutYProperty().bind(pane.heightProperty().multiply(16.0 / 100.0));
+		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		reset.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		reset.setStyle("-fx-background-color: #b3b3b3");
+		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					circleR.setFill(blue);
+					circleL.setFill(red);
+					if (Main.anchor) {
+						Main.anchor = false;
+						anchorOption.setText("Anchoring off");
+					}
+					title.setText("Title");
+					right.setText("right");
+					left.setText("left");
+					BackgroundFill backgroundColor = new BackgroundFill(black, null, null);
+					Background background = new Background(backgroundColor);
+					pane.setBackground(background);
+					Record.numBoxes = 0;
+					Record.deleteAll(pane, autoSaveFile);
+				}
+			}
+		});
+
+		// Import
+		// ------------------------------------------------------------------------------------------------------------
+		Button exportB = new Button("Export");
+		Button capture = new Button("Take Screenshot of Venn Diagram");
+		Button importB = new Button("Import");
+		importB.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		importB.layoutYProperty().bind(pane.heightProperty().multiply(24.0 / 100.0));
+		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		importB.setStyle("-fx-background-color: #b3b3b3");
+		importB.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FileChooser fc = new FileChooser();
+					fc.setTitle("Import Venn Diagram");
+					fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
+					try {
+						File file = fc.showOpenDialog(stage);
+						fc.setInitialDirectory(file.getParentFile());
+						// loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button
+						// anchorOption, Text title, Text right, Text left, Button textAdder, Anchor
+						// intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle
+						// selection)
+						FileHandling.loadImport(file, pane, circleR, circleL, anchorOption, title, right, left,
+								textAdder, intersection, leftCircle, rightCircle, p, selection, cp1, cp2, cp3, cp4,
+								multAdder, reset, importB, exportB, capture);
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+				}
+			}
+		});
+
+		// Export
+		// ------------------------------------------------------------------------------------------------------------
+		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0 / 100.0));
+		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		exportB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		exportB.setStyle("-fx-background-color: #b3b3b3");
+		exportB.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FileChooser fc = new FileChooser();
+					fc.setTitle("Export Venn Diagram");
+					fc.setInitialFileName("VennSave");
+					fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
+					try {
+						FileHandling fh = new FileHandling();
+						fh.file = fc.showSaveDialog(stage);
+						fc.setInitialDirectory(fh.file.getParentFile());
+						FileHandling.copyFiles(autoSaveFile, fh);
+						System.out.println("Created save file" + fh.file.getName() + "!");
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+				}
+			}
+		});
+
+		// Screen-shot implementation
+		// -----------------------------------------------------------------------------------------------------------
+		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0 / 100.0));
+		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		capture.setStyle("-fx-background-color: #b3b3b3");
+		capture.setOnAction(event -> createScreenshot(pane, cp1, cp2, cp3, cp4, capture, multAdder, textAdder,
+				anchorOption, exportB, importB, reset, cpR, cpL, cpB, cpBu, ctrl));
+
+		// Button color picker event
+		cp4.setOnAction(new EventHandler() {
+			@Override
+			public void handle(javafx.event.Event event) {
+				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(),
+						0.5);
+				String hex = colorToHex(col4);
+				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,
+						capture);
+				undoList.add(hex);
+			}
+		});
+
+		// Undo-redo implementation
+
+		// Undo button implementation
 		Button undo = new Button("Undo");
-		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0/100.0));
-		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0 / 100.0));
+		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
 		undo.setStyle("-fx-background-color: #b3b3b3");
 		undo.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					if(!undoList.isEmpty()) {
+					if (!undoList.isEmpty()) {
 						Object latest = undoList.get(undoList.size() - 1);
-						if(latest instanceof TextBox) {
+						if (latest instanceof TextBox) {
 							TextBox b = (TextBox) latest;
-							pane.getChildren().remove(b.box);							
-						}
-						else if(latest instanceof Circle) {
+							pane.getChildren().remove(b.box);
+						} else if (latest instanceof Circle) {
 							circleR.setFill(blue);
-						}
-						else if(latest instanceof Color) {
+						} else if (latest instanceof Color) {
 							circleL.setFill(red);
+						} else if (latest instanceof Button) {
+							if (Main.anchor) {
+								Main.anchor = false;
+								anchorOption.setText("Anchoring off");
+							} else {
+								Main.anchor = true;
+								anchorOption.setText("Anchoring on");
+							}
+						} else if(latest instanceof Background) {
+							pane.setBackground(background);
+						} else if (latest instanceof String) {
+							String s = colorToHex(grey);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,capture);
+						} else if(latest instanceof Character) {
+							title.setText("Title");
+						} else if(latest instanceof Integer) {
+							right.setText("right");
+						} else if(latest instanceof Text) {
+							left.setText("left");
+						} else if(latest instanceof Double) {
+							Button b = (Button) TextBox.list.get(1);
+							b.setText("New Text Box");
 						}
 						redoList.add(latest);
 						undoList.remove(undoList.size() - 1);
-					}else {
+					} else {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Error!");
 						alert.setHeaderText("Nothing left to undo!");
@@ -581,35 +854,56 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
-		
-		//Redo button implementation
+
+		// Redo button implementation
 		Button redo = new Button("Redo");
-		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0/100.0));
-		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0 / 100.0));
+		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
 		redo.setStyle("-fx-background-color: #b3b3b3");
 		redo.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					
-					if(!redoList.isEmpty()) {
+					if (!redoList.isEmpty()) {
 						Object latest = redoList.get(redoList.size() - 1);
-						if(latest instanceof TextBox) {
+						if (latest instanceof TextBox) {
 							TextBox b = (TextBox) latest;
 							b.addToList(pane);
-						}
-						else if(latest instanceof Circle) {
+						} else if (latest instanceof Circle) {
 							circleR.setFill(cList.get(0));
 							redoList.remove(redoList.size() - 1);
-						}
-						else if(latest instanceof Color) {
+						} else if (latest instanceof Color) {
 							circleL.setFill(cList.get(1));
+						} else if (latest instanceof Button) {
+							if (Main.anchor) {
+								Main.anchor = false;
+								anchorOption.setText("Anchoring off");
+							} else {
+								Main.anchor = true;
+								anchorOption.setText("Anchoring on");
+							}
+						} else if(latest instanceof Background) {
+							Background b = (Background) latest;
+							pane.setBackground(b);
+						} else if (latest instanceof String) {
+							String s = (String) latest;
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,
+									capture);
+						} else if(latest instanceof Character) {
+							title.setText(sList.get(0));
+						} else if(latest instanceof Integer) {
+							right.setText(sList.get(1));
+						} else if(latest instanceof Text) {
+							left.setText(sList.get(2));
+						} else if(TextBox.list.get(0) instanceof Double) {
+							Button b = (Button) TextBox.list.get(1);
+							b.setText((String)TextBox.list.get(2));
 						}
 						undoList.add(latest);
 						redoList.remove(redoList.size() - 1);
-					}else {
+					} else {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Error!");
 						alert.setHeaderText("Nothing left to redo!");
@@ -618,7 +912,7 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
-		
+
 		pane.getChildren().add(undo);
 		pane.getChildren().add(redo);
 		
