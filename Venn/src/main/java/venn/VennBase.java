@@ -75,10 +75,11 @@ public class VennBase extends Application	 {
 		stage.setMaximized(true);
 		stage.show();
 
-		//History linear structure for undo-redo functionality
+		// History linear structure for undo-redo functionality
 		ArrayList<Object> undoList = new ArrayList<Object>();
 		ArrayList<Object> redoList = new ArrayList<Object>();
-		ArrayList<Color> cList = new ArrayList<Color>();
+		ArrayList<Color> cList = new ArrayList<Color>(2);
+		ArrayList<String> sList = new ArrayList<String>(3);
 		
 		
 		//Custom colors
