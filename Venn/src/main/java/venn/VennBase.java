@@ -95,6 +95,15 @@ public class VennBase extends Application	 {
 		stage.setMaximized(true);
 		stage.show();
 		
+		
+		// History linear structure for undo-redo functionality
+		ArrayList<Object> undoList = new ArrayList<Object>();
+		ArrayList<Object> redoList = new ArrayList<Object>();
+		ArrayList<Color> cList = new ArrayList<Color>(2);
+		ArrayList<String> sList = new ArrayList<String>(3);
+		
+		
+		
 		//Right Side Panel
 //		Pane rightSide = new Pane();
 
@@ -104,6 +113,16 @@ public class VennBase extends Application	 {
 		Color green = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 0.5);
 		Color black = new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 0.5);
 		Color grey = new Color(179.0/255.0, 179.0/255.0, 179.0/255.0, 1);
+		
+		
+		//Temporary variables added to avoid compilation error for undo/redo
+		cList.add(0, blue);
+		cList.add(1, blue);
+		
+		sList.add(0, "A");
+		sList.add(1, "A");
+		sList.add(2, "A");
+		
 		
 		
 		//background
@@ -163,6 +182,8 @@ public class VennBase extends Application	 {
 				col1.saturate();
 				col1.saturate();
 				circleR.setStroke(col1);
+				undoList.add(circleR);
+				cList.add(0, col1);
 			}
 		});
 		
@@ -176,6 +197,8 @@ public class VennBase extends Application	 {
 				col2.saturate();
 				col2.saturate();
 				circleL.setStroke(col2);
+				undoList.add(col2);
+				cList.add(1, col2);
 			}
 		});
 
@@ -187,6 +210,7 @@ public class VennBase extends Application	 {
 				BackgroundFill backgroundColor = new BackgroundFill(col3, null, null);
 				Background background = new Background(backgroundColor);
 				pane.setBackground(background);
+				undoList.add(background);
 			}
 		});
 		
@@ -279,6 +303,7 @@ public class VennBase extends Application	 {
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				undoList.add(anchorOption);
 				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");Record.printAll();}
 				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
 			}
@@ -432,6 +457,7 @@ public class VennBase extends Application	 {
 					if (text.getText().length()<=25) {
 						TextBox b = new TextBox(pane, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()));
 						text.clear();
+						undoList.add(b);
 					}
 					else {
 						Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -481,6 +507,8 @@ public class VennBase extends Application	 {
 					title.setText(result);
 					title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length()*4));
 					autoSaveFile.overwriteLineInFile("Title ", "Title "+title.getText());
+					undoList.add(new Character('a'));
+					sList.add(0, result);
 				}
 			}
 		});
@@ -505,6 +533,8 @@ public class VennBase extends Application	 {
 					right.setText(result);
 					right.layoutXProperty().bind(pane.widthProperty().divide(5.0/3.0).subtract(right.getText().length()*5/2));
 					autoSaveFile.overwriteLineInFile("Right ", "Right "+right.getText());
+					undoList.add(new Integer(0));
+					sList.add(1, result);
 				}
 			}
 		});
@@ -529,6 +559,8 @@ public class VennBase extends Application	 {
 					left.setText(result);
 					left.layoutXProperty().bind(pane.widthProperty().divide(5.0/2.0).subtract(left.getText().length()*5/2));
 					autoSaveFile.overwriteLineInFile("Left ", "Left "+left.getText());
+					undoList.add(new Text());
+					sList.add(2, result);
 				}
 			}
 		});
@@ -667,8 +699,124 @@ public class VennBase extends Application	 {
 				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
 				String hex = colorToHex(col4);
 				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB, capture);
+				undoList.add(hex);
 			}
 		});
+		
+		
+		// Undo-redo implementation
+
+		// Undo button implementation
+		Button undo = new Button("Undo");
+		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0 / 100.0));
+		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		undo.setStyle("-fx-background-color: #b3b3b3");
+		undo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if (!undoList.isEmpty()) {
+						Object latest = undoList.get(undoList.size() - 1);
+						if (latest instanceof TextBox) {
+							TextBox b = (TextBox) latest;
+							pane.getChildren().remove(b.box);
+						} else if (latest instanceof Circle) {
+							circleR.setFill(blue);
+						} else if (latest instanceof Color) {
+							circleL.setFill(red);
+						} else if (latest instanceof Button) {
+							if (Main.anchor) {
+								Main.anchor = false;
+								anchorOption.setText("Anchoring off");
+							} else {
+								Main.anchor = true;
+								anchorOption.setText("Anchoring on");
+							}
+						} else if(latest instanceof Background) {
+							pane.setBackground(background);
+						} else if (latest instanceof String) {
+							String s = colorToHex(grey);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,capture);
+						} else if(latest instanceof Character) {
+							title.setText("Title");
+						} else if(latest instanceof Integer) {
+							right.setText("right");
+						} else if(latest instanceof Text) {
+							left.setText("left");
+						} 
+						redoList.add(latest);
+						undoList.remove(undoList.size() - 1);
+					} else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error!");
+						alert.setHeaderText("Nothing left to undo!");
+						alert.show();
+					}
+				}
+			}
+		});
+
+		// Redo button implementation
+		Button redo = new Button("Redo");
+		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
+		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0 / 100.0));
+		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
+		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
+		redo.setStyle("-fx-background-color: #b3b3b3");
+		redo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if (!redoList.isEmpty()) {
+						Object latest = redoList.get(redoList.size() - 1);
+						if (latest instanceof TextBox) {
+							TextBox b = (TextBox) latest;
+							b.addToList(pane);
+						} else if (latest instanceof Circle) {
+							circleR.setFill(cList.get(0));
+						} else if (latest instanceof Color) {
+							circleL.setFill(cList.get(1));
+						} else if (latest instanceof Button) {
+							if (Main.anchor) {
+								Main.anchor = false;
+								anchorOption.setText("Anchoring off");
+							} else {
+								Main.anchor = true;
+								anchorOption.setText("Anchoring on");
+							}
+						} else if(latest instanceof Background) {
+							Background b = (Background) latest;
+							pane.setBackground(b);
+						} else if (latest instanceof String) {
+							String s = (String) latest;
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,
+									capture);
+						} else if(latest instanceof Character) {
+							title.setText(sList.get(0));
+						} else if(latest instanceof Integer) {
+							right.setText(sList.get(1));
+						} else if(latest instanceof Text) {
+							left.setText(sList.get(2));
+						} 
+						undoList.add(latest);
+						redoList.remove(redoList.size() - 1);
+					} else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error!");
+						alert.setHeaderText("Nothing left to redo!");
+						alert.show();
+					}
+				}
+			}
+		});
+
+		pane.getChildren().add(undo);
+		pane.getChildren().add(redo);
+
+		
+
 		
 		//Sliding menu -------------------------------------------------------------------------------------------------------------------------
 		VBox menu = new VBox();
