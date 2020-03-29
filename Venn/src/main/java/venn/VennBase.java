@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import javax.imageio.ImageIO;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -80,7 +79,7 @@ public class VennBase extends Application	 {
 		//Create file
 		autoSaveFile = new FileHandling();
 		autoSaveFile.CreateFile("DoNotOpen.txt");
-
+		
 		//Get primary screen bounds
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 		
@@ -101,11 +100,6 @@ public class VennBase extends Application	 {
 		ArrayList<Object> redoList = new ArrayList<Object>();
 		ArrayList<Color> cList = new ArrayList<Color>(2);
 		ArrayList<String> sList = new ArrayList<String>(3);
-		
-		
-		
-		//Right Side Panel
-//		Pane rightSide = new Pane();
 
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.5);		
@@ -155,14 +149,6 @@ public class VennBase extends Application	 {
 		final ColorPicker cp2 = new ColorPicker(Color.RED);
 		final ColorPicker cp3 = new ColorPicker(Color.BLACK);
 		final ColorPicker cp4 = new ColorPicker(Color.BLACK);
-//		cp1.layoutYProperty().bind(pane.heightProperty().subtract(25));
-//		cp2.layoutYProperty().bind(pane.heightProperty().subtract(51));
-//		cp3.layoutYProperty().bind(pane.heightProperty().subtract(77));
-//		cp4.layoutYProperty().bind(pane.heightProperty().subtract(103));
-//		cp1.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
-//		cp2.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
-//		cp3.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
-//		cp4.layoutXProperty().bind(pane.widthProperty().multiply(90.0/100.0));
 		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp3.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
@@ -298,7 +284,6 @@ public class VennBase extends Application	 {
 		Button anchorOption = new Button("Anchoring off");
 		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-//		anchorOption.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 		anchorOption.setStyle("-fx-background-color: #999999");
 		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -569,32 +554,24 @@ public class VennBase extends Application	 {
 		Text cpR = new Text("  Right circle color");
 		cpR.setFont(new Font(12));
 		cpR.setStroke(Color.BLACK);
-//		cpR.layoutXProperty().bind(cp1.layoutXProperty().subtract(110));
-//		cpR.layoutYProperty().bind(cp1.layoutYProperty().add(15));
 
 		//Right circle color picker label
 		Text cpL = new Text("  Left circle color");
 		cpL.setFont(new Font(12));
 		cpL.setStroke(Color.BLACK);
 		cpL.setTextAlignment(TextAlignment.CENTER);
-//		cpL.layoutXProperty().bind(cp2.layoutXProperty().subtract(110));
-//		cpL.layoutYProperty().bind(cp2.layoutYProperty().add(15));
 
 		//Background color picker label
 		Text cpB = new Text("  Background color");
 		cpB.setFont(new Font(12));
 		cpB.setStroke(Color.BLACK);
 		cpB.setTextAlignment(TextAlignment.CENTER);
-//		cpB.layoutXProperty().bind(cp3.layoutXProperty().subtract(110));
-//		cpB.layoutYProperty().bind(cp3.layoutYProperty().add(15));
 
 		//Button color picker label
 		Text cpBu = new Text("  Button color");
 		cpBu.setFont(new Font(12));
 		cpBu.setStroke(Color.BLACK);
 		cpBu.setTextAlignment(TextAlignment.CENTER);
-//		cpBu.layoutXProperty().bind(cp4.layoutXProperty().subtract(110));
-//		cpBu.layoutYProperty().bind(cp4.layoutYProperty().add(15));
 
 		//control selection mode label
 		ctrl.setFont(new Font(12));
@@ -606,8 +583,6 @@ public class VennBase extends Application	 {
 
 		//Reset ------------------------------------------------------------------------------------------------------------
 		Button reset = new Button("Reset");
-//		reset.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-//		reset.layoutYProperty().bind(pane.heightProperty().multiply(16.0/100.0));
 		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		reset.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		reset.setStyle("-fx-background-color: #999999");
@@ -635,8 +610,6 @@ public class VennBase extends Application	 {
 		Button exportB = new Button("Export");
 		Button capture = new Button("Screenshot");
 		Button importB = new Button("Import");
-//		importB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-//		importB.layoutYProperty().bind(pane.heightProperty().multiply(24.0/100.0));
 		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		importB.setStyle("-fx-background-color: #999999");
@@ -659,8 +632,6 @@ public class VennBase extends Application	 {
 
 
 		//Export ------------------------------------------------------------------------------------------------------------
-//		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-//		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0/100.0));
 		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		exportB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		exportB.setStyle("-fx-background-color: #999999");
@@ -683,36 +654,43 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
+		
+		
+		//Compare ------------------------------------------------------------------------------------------------------------
+		Button compare = new Button("Compare");
+		compare.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		compare.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		compare.setStyle("-fx-background-color: #999999");
+		compare.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FileChooser fc = new FileChooser();
+					fc.setTitle("Which venn diagram would you like to compare?");
+					fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
+					try {
+						File file = fc.showOpenDialog(stage);
+						fc.setInitialDirectory(file.getParentFile());
+						FileHandling.compareFiles(autoSaveFile.file, file, stage);
+					}
+					catch(Exception e){System.out.println(e);}
+				}
+			}
+		});
 
 
 		//Screen-shot implementation -----------------------------------------------------------------------------------------------------------
-//		capture.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
-//		capture.layoutYProperty().bind(pane.heightProperty().multiply(8.0/100.0));
 		capture.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		capture.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		capture.setStyle("-fx-background-color: #999999");
 		
-		//Button color picker event
-		cp4.setOnAction(new EventHandler() {
-			@Override
-			public void handle(javafx.event.Event event) {
-				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
-				String hex = colorToHex(col4);
-				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB, capture);
-				undoList.add(hex);
-			}
-		});
 		
-		
-		// Undo-redo implementation
-
-		// Undo button implementation
+		// Undo button implementation ----------------------------------------------------------------------------------------------------
 		Button undo = new Button("Undo");
-		undo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
-		undo.layoutYProperty().bind(pane.heightProperty().multiply(40.0 / 100.0));
+		Button redo = new Button("Redo");
 		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
 		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
-		undo.setStyle("-fx-background-color: #b3b3b3");
+		undo.setStyle("-fx-background-color: #999999");
 		undo.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -738,7 +716,7 @@ public class VennBase extends Application	 {
 							pane.setBackground(background);
 						} else if (latest instanceof String) {
 							String s = colorToHex(grey);
-							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,capture);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,capture, undo, redo);
 						} else if(latest instanceof Character) {
 							title.setText("Title");
 						} else if(latest instanceof Integer) {
@@ -758,13 +736,10 @@ public class VennBase extends Application	 {
 			}
 		});
 
-		// Redo button implementation
-		Button redo = new Button("Redo");
-		redo.layoutXProperty().bind(pane.widthProperty().multiply(80.0 / 100.0));
-		redo.layoutYProperty().bind(pane.heightProperty().multiply(48.0 / 100.0));
+		// Redo button implementation -----------------------------------------------------------------------------------------------------------
 		redo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
 		redo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
-		redo.setStyle("-fx-background-color: #b3b3b3");
+		redo.setStyle("-fx-background-color: #999999");
 		redo.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -791,8 +766,7 @@ public class VennBase extends Application	 {
 							pane.setBackground(b);
 						} else if (latest instanceof String) {
 							String s = (String) latest;
-							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, textAdder, multAdder, reset, importB, exportB,
-									capture);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,	capture, undo, redo);
 						} else if(latest instanceof Character) {
 							title.setText(sList.get(0));
 						} else if(latest instanceof Integer) {
@@ -811,11 +785,18 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
-
-		pane.getChildren().add(undo);
-		pane.getChildren().add(redo);
-
 		
+		
+		//Button color picker event
+		cp4.setOnAction(new EventHandler() {
+			@Override
+			public void handle(javafx.event.Event event) {
+				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
+				String hex = colorToHex(col4);
+				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB, capture, undo, redo);
+				undoList.add(hex);
+			}
+		});
 
 		
 		//Sliding menu -------------------------------------------------------------------------------------------------------------------------
@@ -823,8 +804,7 @@ public class VennBase extends Application	 {
 	    menu.prefHeightProperty().bind(pane.heightProperty());
 	    menu.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 	    menu.setLayoutX(pane.getWidth()*.8);
-//	    menu.layoutXProperty().bind(root.widthProperty().multiply(80.0/100.0)); //gets error message
-	    menu.setStyle("-fx-background-color: #b3b3b3; -fx-spacing: 35");
+	    menu.setStyle("-fx-background-color: #b3b3b3; -fx-spacing: 25");
 	    
 	    HBox rc = new HBox();
 	    rc.getChildren().addAll(cp1, cpR);
@@ -835,7 +815,7 @@ public class VennBase extends Application	 {
 	    HBox bu = new HBox();
 	    bu.getChildren().addAll(cp4, cpBu);
 	    
-	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, rc, lc, ba, bu);
+	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu);
 	    
 	    menu.setTranslateX(pane.getWidth()*.18);
 	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
@@ -922,6 +902,45 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				exportB.setStyle(Record.prevStyle);
+			}
+		});
+	    undo.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Record.prevStyle=undo.getStyle();
+				undo.setStyle("-fx-background-color: #ffffff");
+			}
+		});
+	    undo.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				undo.setStyle(Record.prevStyle);
+			}
+		});
+	    redo.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Record.prevStyle=redo.getStyle();
+				redo.setStyle("-fx-background-color: #ffffff");
+			}
+		});
+	    redo.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				redo.setStyle(Record.prevStyle);
+			}
+		});
+	    compare.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Record.prevStyle=compare.getStyle();
+				compare.setStyle("-fx-background-color: #ffffff");
+			}
+		});
+	    compare.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				compare.setStyle(Record.prevStyle);
 			}
 		});
 	    cp1.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1171,7 +1190,7 @@ public class VennBase extends Application	 {
 		};
 	}
 	
-	public static void changeButtonColor(String hex, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button anchorOption, Button reset, Button importB, Button exportB, Button capture) {
+	public static void changeButtonColor(String hex, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button anchorOption, Button reset, Button importB, Button exportB, Button capture, Button undo, Button redo) {
 		cp1.setStyle("-fx-background-color: #"+hex);
 		cp2.setStyle("-fx-background-color: #"+hex);
 		cp3.setStyle("-fx-background-color: #"+hex);
@@ -1181,6 +1200,8 @@ public class VennBase extends Application	 {
 		importB.setStyle("-fx-background-color: #"+hex);
 		exportB.setStyle("-fx-background-color: #"+hex);
 		capture.setStyle("-fx-background-color: #"+hex);
+		undo.setStyle("-fx-background-color: #"+hex);
+		redo.setStyle("-fx-background-color: #"+hex);
 		autoSaveFile.overwriteLineInFile("BuColor ", "BuColor "+hex);
 	}
 
