@@ -458,7 +458,7 @@ public class VennBase extends Application	 {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					vb.getChildren().add(xtravb);
-					plusbtn.setVisible(false);
+					vb.getChildren().remove(plusbtn);
 				}
 			}
 		});
@@ -467,8 +467,9 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
+					xtraInfo.clear();
 					vb.getChildren().remove(xtravb);
-					plusbtn.setVisible(true);
+					vb.getChildren().add(plusbtn);
 				}
 			}
 		});
@@ -485,13 +486,25 @@ public class VennBase extends Application	 {
 			{
 				if (ke.getCode().equals(KeyCode.ENTER))
 				{
-					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()));
+					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
 					text.clear();
 				}
 			}
 		});
 		
-		//Second text field functions
+//		//Second text field functions
+//		xtraInfo.setOnKeyPressed(new EventHandler<KeyEvent>()
+//		{
+//			@Override
+//			public void handle(KeyEvent ke)
+//			{
+//				if (ke.getCode().equals(KeyCode.ENTER))
+//				{
+//					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
+//					text.clear();
+//				}
+//			}
+//		});
 
 		HBox boxhb = new HBox(txtbox, boxcp);
 		boxhb.setSpacing(5);

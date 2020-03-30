@@ -6,3 +6,5 @@ Anchoring off
 Title Title
 Right right
 Left left
+Record0 0.18421052631578946 0.3755813953488372 false false
+Box0 5 Lukas universal 252.0 323.0 9980E6 000000

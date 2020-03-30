@@ -9,6 +9,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -23,6 +24,7 @@ public class TextBox {
 	
 	int stackable;
 	Button box;
+	TextArea xtraBox;
 	Record record;
 	String pos;		//can be: "universal", "intersection", "left", "right"
 	int boxNum;
@@ -31,7 +33,7 @@ public class TextBox {
 
 
 	//Text box constructor
-	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol){
+	public TextBox(Pane pane, Button textAdder, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol, String xtraInfo){
 		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));
 
 		//Text box properties
@@ -39,9 +41,17 @@ public class TextBox {
 		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
 		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		box.setLayoutX(15);
-		box.setLayoutY((pane.getHeight()*.2)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
+		box.setLayoutY((pane.getHeight()*.35)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
 		boxNum=Record.numBoxes;
 		pos="universal";
+		
+		//xtraInfo box properties
+		xtraBox = new TextArea(xtraInfo);
+		xtraBox.prefWidthProperty().bind(box.prefWidthProperty());
+		xtraBox.prefHeightProperty().bind(box.prefHeightProperty().multiply(2.0));
+		xtraBox.layoutXProperty().bind(box.layoutXProperty());
+		xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
+//		xtraBox.setVisible(false);
 
 		//variables for use in resize detection and position detection
 		record = new Record(VennBase.autoSaveFile);
@@ -58,6 +68,7 @@ public class TextBox {
 		//styling box
 		
 		box.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
+		xtraBox.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
 		
 		boxCol = boxcol;
 		fontCol = fontcol;
@@ -254,6 +265,7 @@ public class TextBox {
 	//method to add this text box
 	public void addToList(Pane pane) {
 		pane.getChildren().add(this.box);
+		pane.getChildren().add(this.xtraBox);
 		Record.addTextBox(this);
 	}
 

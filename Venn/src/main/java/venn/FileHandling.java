@@ -249,7 +249,7 @@ public class FileHandling {
 						int letterCount=0;
 						int i = 2;
 						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
-						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4));
+						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4), "NEEDS TO BE CHANGED");
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
