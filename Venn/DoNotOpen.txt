@@ -1,0 +1,8 @@
+BColor 0.0 0.0 0.0
+RColor 0.0 0.0 1.0
+LColor 1.0 0.0 0.0
+BuColor 999999
+Anchoring off
+Title Title
+Right right
+Left left
