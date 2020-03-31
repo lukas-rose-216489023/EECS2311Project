@@ -72,6 +72,36 @@ public class VennBase extends Application	 {
 	static FileHandling autoSaveFile;
 	static Text ctrl = new Text("Control Selection Mode: OFF");
 
+	// History linear structure for undo-redo functionality
+	static	ArrayList<Object> undoList = new ArrayList<Object>();
+	static	ArrayList<Object> redoList = new ArrayList<Object>();
+	
+	static	ArrayList<Color> rColorList = new ArrayList<Color>();
+	static int rColorCursor = 0;
+	
+	static	ArrayList<Color> lColorList = new ArrayList<Color>();
+	static int lColorCursor = 0;
+	
+	static	ArrayList<Color> bckColorList = new ArrayList<Color>();
+	static int bckCursor = 0;
+	
+	static	ArrayList<Color> boxColorList = new ArrayList<Color>();
+	static int boxColorCursor = 0;
+	
+	static	ArrayList<String> titleList = new ArrayList<String>();
+	static int titleCursor = 0;
+	
+	static	ArrayList<String> leftTitleList = new ArrayList<String>();
+	static int leftTitleCursor = 0;
+	
+	static	ArrayList<String> rightTitleList = new ArrayList<String>();
+	static int rightTitleCursor = 0;
+	
+	static Button undoBox;
+	static ArrayList<String> undoBoxName = new ArrayList<String>();
+	static int undoBoxNameCursor = 0;
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
 	public void start(Stage stage) {
@@ -94,13 +124,6 @@ public class VennBase extends Application	 {
 		stage.setMaximized(true);
 		stage.show();
 		
-		
-		// History linear structure for undo-redo functionality
-		ArrayList<Object> undoList = new ArrayList<Object>();
-		ArrayList<Object> redoList = new ArrayList<Object>();
-		ArrayList<Color> cList = new ArrayList<Color>(2);
-		ArrayList<String> sList = new ArrayList<String>(3);
-
 		//Custom colors
 		Color blue = new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 0.5);		
 		Color red = new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 0.5);
@@ -109,14 +132,15 @@ public class VennBase extends Application	 {
 		Color grey = new Color(179.0/255.0, 179.0/255.0, 179.0/255.0, 1);
 		
 		
-		//Temporary variables added to avoid compilation error for undo/redo
-		cList.add(0, blue);
-		cList.add(1, blue);
+		//Filling in history structures with original values
+		rColorList.add(rColorCursor, blue);
+		lColorList.add(lColorCursor, red); 
+		bckColorList.add(bckCursor, black);
+		boxColorList.add(boxColorCursor, grey); 
 		
-		sList.add(0, "A");
-		sList.add(1, "A");
-		sList.add(2, "A");
-		
+		titleList.add(titleCursor, "Title"); 
+		leftTitleList.add(leftTitleCursor, "left"); 
+		rightTitleList.add(rightTitleCursor, "right");
 		
 		
 		//background
@@ -169,7 +193,7 @@ public class VennBase extends Application	 {
 				col1.saturate();
 				circleR.setStroke(col1);
 				undoList.add(circleR);
-				cList.add(0, col1);
+				rColorList.add(++rColorCursor, col1);
 			}
 		});
 		
@@ -184,7 +208,7 @@ public class VennBase extends Application	 {
 				col2.saturate();
 				circleL.setStroke(col2);
 				undoList.add(col2);
-				cList.add(1, col2);
+				lColorList.add(++lColorCursor, col2);
 			}
 		});
 
@@ -197,6 +221,7 @@ public class VennBase extends Application	 {
 				Background background = new Background(backgroundColor);
 				pane.setBackground(background);
 				undoList.add(background);
+				bckColorList.add(++bckCursor, col3);
 			}
 		});
 		
@@ -441,6 +466,7 @@ public class VennBase extends Application	 {
 				{
 					if (text.getText().length()<=25) {
 						TextBox b = new TextBox(pane, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()));
+						undoBoxName.add(0, text.getText());
 						text.clear();
 						undoList.add(b);
 					}
@@ -493,7 +519,7 @@ public class VennBase extends Application	 {
 					title.layoutXProperty().bind(pane.widthProperty().divide(2).subtract(title.getText().length()*4));
 					autoSaveFile.overwriteLineInFile("Title ", "Title "+title.getText());
 					undoList.add(new Character('a'));
-					sList.add(0, result);
+					titleList.add(++titleCursor, result);
 				}
 			}
 		});
@@ -519,7 +545,7 @@ public class VennBase extends Application	 {
 					right.layoutXProperty().bind(pane.widthProperty().divide(5.0/3.0).subtract(right.getText().length()*5/2));
 					autoSaveFile.overwriteLineInFile("Right ", "Right "+right.getText());
 					undoList.add(new Integer(0));
-					sList.add(1, result);
+					rightTitleList.add(++rightTitleCursor, result);
 				}
 			}
 		});
@@ -545,7 +571,7 @@ public class VennBase extends Application	 {
 					left.layoutXProperty().bind(pane.widthProperty().divide(5.0/2.0).subtract(left.getText().length()*5/2));
 					autoSaveFile.overwriteLineInFile("Left ", "Left "+left.getText());
 					undoList.add(new Text());
-					sList.add(2, result);
+					leftTitleList.add(++leftTitleCursor, result);
 				}
 			}
 		});
@@ -701,29 +727,35 @@ public class VennBase extends Application	 {
 							TextBox b = (TextBox) latest;
 							pane.getChildren().remove(b.box);
 						} else if (latest instanceof Circle) {
-							circleR.setFill(blue);
+							circleR.setFill(rColorList.get(--rColorCursor));
 						} else if (latest instanceof Color) {
-							circleL.setFill(red);
+							circleL.setFill(lColorList.get(--lColorCursor));
 						} else if (latest instanceof Button) {
-							if (VennBase.anchor) {
-								VennBase.anchor = false;
+							if (Main.anchor) {
+								Main.anchor = false;
 								anchorOption.setText("Anchoring off");
 							} else {
-								VennBase.anchor = true;
+								Main.anchor = true;
 								anchorOption.setText("Anchoring on");
 							}
 						} else if(latest instanceof Background) {
-							pane.setBackground(background);
+							BackgroundFill backgroundColor = new BackgroundFill(bckColorList.get(--bckCursor), null, null);
+							Background b = new Background(backgroundColor);
+							pane.setBackground(b);
 						} else if (latest instanceof String) {
-							String s = colorToHex(grey);
+							String s = colorToHex(boxColorList.get(--boxColorCursor));
 							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,capture, undo, redo);
 						} else if(latest instanceof Character) {
-							title.setText("Title");
+							title.setText(titleList.get(--titleCursor));
 						} else if(latest instanceof Integer) {
-							right.setText("right");
+							right.setText(rightTitleList.get(--rightTitleCursor));
 						} else if(latest instanceof Text) {
-							left.setText("left");
-						} 
+							left.setText(leftTitleList.get(--leftTitleCursor));
+						} else if(latest instanceof Double) {
+							undoBox.setText(undoBoxName.get(--undoBoxNameCursor));
+						} else if(latest instanceof Boolean) {
+							pane.getChildren().add(undoBox);
+						}
 						redoList.add(latest);
 						undoList.remove(undoList.size() - 1);
 					} else {
@@ -750,30 +782,35 @@ public class VennBase extends Application	 {
 							TextBox b = (TextBox) latest;
 							b.addToList(pane);
 						} else if (latest instanceof Circle) {
-							circleR.setFill(cList.get(0));
+							circleR.setFill(rColorList.get(++rColorCursor));
 						} else if (latest instanceof Color) {
-							circleL.setFill(cList.get(1));
+							circleL.setFill(lColorList.get(++lColorCursor));
 						} else if (latest instanceof Button) {
-							if (VennBase.anchor) {
-								VennBase.anchor = false;
+							if (Main.anchor) {
+								Main.anchor = false;
 								anchorOption.setText("Anchoring off");
 							} else {
-								VennBase.anchor = true;
+								Main.anchor = true;
 								anchorOption.setText("Anchoring on");
 							}
 						} else if(latest instanceof Background) {
-							Background b = (Background) latest;
+							BackgroundFill backgroundColor = new BackgroundFill(bckColorList.get(++bckCursor), null, null);
+							Background b = new Background(backgroundColor);
 							pane.setBackground(b);
 						} else if (latest instanceof String) {
-							String s = (String) latest;
+							String s = colorToHex(boxColorList.get(++boxColorCursor));
 							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,	capture, undo, redo);
 						} else if(latest instanceof Character) {
-							title.setText(sList.get(0));
+							title.setText(titleList.get(++titleCursor));
 						} else if(latest instanceof Integer) {
-							right.setText(sList.get(1));
+							right.setText(rightTitleList.get(++rightTitleCursor));
 						} else if(latest instanceof Text) {
-							left.setText(sList.get(2));
-						} 
+							left.setText(leftTitleList.get(--leftTitleCursor));
+						} else if(latest instanceof Double) {
+							undoBox.setText(undoBoxName.get(++undoBoxNameCursor));
+						} else if(latest instanceof Boolean) {
+							pane.getChildren().remove(undoBox);
+						}
 						undoList.add(latest);
 						redoList.remove(redoList.size() - 1);
 					} else {
@@ -795,6 +832,7 @@ public class VennBase extends Application	 {
 				String hex = colorToHex(col4);
 				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB, capture, undo, redo);
 				undoList.add(hex);
+				boxColorList.add(++boxColorCursor, col4);
 			}
 		});
 
