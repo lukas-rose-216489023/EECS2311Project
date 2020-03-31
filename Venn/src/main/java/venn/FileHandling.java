@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 //Saving systems
 public class FileHandling {
@@ -26,6 +28,20 @@ public class FileHandling {
 			if (file.createNewFile()) {System.out.println("File -<"+fileName+">- created!");}
 		}
 		catch(Exception e) {System.out.println("An error occurred when creaing the file"+fileName+"!");}
+	}
+	
+	public void CreateFile(String fileName, Stage stage) {
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Where would you like to save the compare results?");
+		fc.setInitialFileName("Compare Results");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
+		try {
+			File f = new File(fileName);
+			f = fc.showSaveDialog(stage);
+			fc.setInitialDirectory(f.getParentFile());
+			this.file = f;
+		}
+		catch(Exception e){System.out.println(e);}
 	}
 
 	public void overwriteLineInFile(String oldData, String newData) {
@@ -73,13 +89,13 @@ public class FileHandling {
 	public void WriteToFile(String line) {
 		try {
 			if (first) {
-			FileWriter writer = new FileWriter("DoNotOpen.txt");
+			FileWriter writer = new FileWriter(file);
 			writer.write(line+"\n");
 			writer.close();
 			first=false;
 			}
 			else {
-				FileWriter writer = new FileWriter("DoNotOpen.txt", true);
+				FileWriter writer = new FileWriter(file, true);
 				writer.write(line+"\n");
 				writer.close();
 			}
@@ -133,7 +149,7 @@ public class FileHandling {
 	}
 	
 	
-	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Button textAdder, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
+	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
 		//Read save data
 //		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
@@ -233,7 +249,6 @@ public class FileHandling {
 					cp3.setStyle("-fx-background-color: #"+indivContent.get(1));
 					cp4.setStyle("-fx-background-color: #"+indivContent.get(1));
 					anchorOption.setStyle("-fx-background-color: #"+indivContent.get(1));
-					textAdder.setStyle("-fx-background-color: #"+indivContent.get(1));
 					multAdd.setStyle("-fx-background-color: #"+indivContent.get(1));
 					reset.setStyle("-fx-background-color: #"+indivContent.get(1));
 					importB.setStyle("-fx-background-color: #"+indivContent.get(1));
@@ -249,7 +264,7 @@ public class FileHandling {
 						int letterCount=0;
 						int i = 2;
 						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
-						TextBox b = new TextBox(pane, textAdder, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4), "NEEDS TO BE CHANGED");
+						TextBox b = new TextBox(pane, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4));
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
@@ -279,6 +294,168 @@ public class FileHandling {
 			catch (IOException e) {e.printStackTrace();}
 		}
 		
+	}
+	
+	public static void compareFiles(File thisFile, File fileToCompare, Stage stage) {
+		//Read save data
+		System.out.println("Reading save data...");
+		ArrayList<String> thisFileContents = new ArrayList<String>();
+		ArrayList<String> otherFileContents = new ArrayList<String>();
+		BufferedReader reader = null;
+		BufferedReader reader2 = null;
+
+		try
+		{
+			reader = new BufferedReader(new FileReader(thisFile));
+
+			//Reading all the lines of input text file
+			System.out.println("Reading currunt file content...");
+			String nline = reader.readLine();
+			while (nline != null) {
+				thisFileContents.add(nline);
+				nline = reader.readLine();
+			}
+
+			reader2 = new BufferedReader(new FileReader(fileToCompare));
+
+			//Reading all the lines of input text file
+			System.out.println("Reading compare file content...");
+			String nline2 = reader2.readLine();
+			while (nline2 != null) {
+				otherFileContents.add(nline2);
+				nline2 = reader2.readLine();
+			}
+
+			//compare data
+			System.out.println("Comparing data and putting in a new file...");
+
+			FileHandling compareData = new FileHandling();
+			compareData.CreateFile("compareData", stage);
+			compareData.WriteToFile("Compare data between current file and the file "+fileToCompare+" : ");
+
+			if(thisFileContents.size()>=otherFileContents.size()) {
+				for (int iter=0;iter<thisFileContents.size();iter++) {
+					ArrayList<String> indivContentT = new ArrayList<String>();
+					ArrayList<String> indivContentO = new ArrayList<String>();
+					String[] split= thisFileContents.get(iter).split(" ");
+					for (String indiv:split) {indivContentT.add(indiv);}
+					split = otherFileContents.get(iter).split(" ");
+					for (String indiv:split) {indivContentO.add(indiv);}
+
+					if (indivContentT.get(0).equals("Title")) {
+						System.out.println("Comparing title text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current title: "+textT+"\t\tCompare title: "+textO);
+					}
+
+					else if (indivContentT.get(0).equals("Right")) {
+						System.out.println("Comparing right text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current right circle title: "+textT+"\t\tCompare right cicrcle title: "+textO);
+					}
+
+					else if (indivContentT.get(0).equals("Left")) {
+						System.out.println("Comparing left text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current left circle title: "+textT+"\t\tCompare left circle title: "+textO);
+					}
+
+					else {
+						if (indivContentT.get(0).contains("Box")) {
+							System.out.println("Comparing "+indivContentT.get(0)+"...");
+							String textT="";
+							int letterCount=0;
+							int i = 2;
+							while (letterCount<Integer.parseInt(indivContentT.get(1))){textT+=indivContentT.get(i)+" "; letterCount+=indivContentT.get(i).length()+1; i++;}
+
+							String textO="";
+							letterCount=0;
+							int j = 2;
+							while (letterCount<Integer.parseInt(indivContentO.get(1))){textO+=indivContentO.get(j)+" "; letterCount+=indivContentO.get(j).length()+1; j++;}
+
+							compareData.WriteToFile("Current "+indivContentT.get(0)+" text: "+textT+"\t\tCompare "+indivContentO.get(0)+"text: "+textO);
+							compareData.WriteToFile("Current "+indivContentT.get(0)+" position: "+indivContentT.get(i)+"\t\tCompare "+indivContentO.get(0)+" position: "+indivContentO.get(j));
+						}
+					}
+				}
+			}
+			else {
+				for (int iter=0;iter<otherFileContents.size();iter++) {
+					ArrayList<String> indivContentT = new ArrayList<String>();
+					ArrayList<String> indivContentO = new ArrayList<String>();
+					String[] split= thisFileContents.get(iter).split(" ");
+					for (String indiv:split) {indivContentT.add(indiv);}
+					split = otherFileContents.get(iter).split(" ");
+					for (String indiv:split) {indivContentO.add(indiv);}
+
+					if (indivContentT.get(0).equals("Title")) {
+						System.out.println("Comparing title text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current title: "+textT+"\t\tCompare title: "+textO);
+					}
+
+					else if (indivContentT.get(0).equals("Right")) {
+						System.out.println("Comparing right text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current right circle title: "+textT+"\t\tCompare right cicrcle title: "+textO);
+					}
+
+					else if (indivContentT.get(0).equals("Left")) {
+						System.out.println("Comparing left text...");
+						String textT="";
+						for (int i=1;i<indivContentT.size();i++) {textT+=indivContentT.get(i)+" ";}
+						String textO="";
+						for (int i=1;i<indivContentO.size();i++) {textO+=indivContentO.get(i)+" ";}
+						compareData.WriteToFile("Current left circle title: "+textT+"\t\tCompare left circle title: "+textO);
+					}
+
+					else {
+						if (indivContentT.get(0).contains("Box")) {
+							System.out.println("Comparing "+indivContentT.get(0)+"...");
+							String textT="";
+							int letterCount=0;
+							int i = 2;
+							while (letterCount<Integer.parseInt(indivContentT.get(1))){textT+=indivContentT.get(i)+" "; letterCount+=indivContentT.get(i).length()+1; i++;}
+
+							String textO="";
+							letterCount=0;
+							int j = 2;
+							while (letterCount<Integer.parseInt(indivContentO.get(1))){textO+=indivContentO.get(j)+" "; letterCount+=indivContentO.get(j).length()+1; j++;}
+
+							compareData.WriteToFile("Current "+indivContentT.get(0)+" text: "+textT+"\t\tCompare "+indivContentO.get(0)+"text: "+textO);
+							compareData.WriteToFile("Current "+indivContentT.get(0)+" position: "+indivContentT.get(i)+"\t\tCompare "+indivContentO.get(0)+" position: "+indivContentO.get(j));
+						}
+					}
+				}
+			}
+
+		}
+		catch (IOException e){e.printStackTrace();System.out.println(e.getMessage());}
+
+		finally {
+			try {
+				//Closing the resources
+				reader.close();
+				reader2.close();
+			} 
+			catch (IOException e) {e.printStackTrace();}
+		}
+
 	}
 	
 }
