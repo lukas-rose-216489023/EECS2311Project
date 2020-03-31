@@ -18,6 +18,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -420,7 +421,7 @@ public class VennBase extends Application	 {
 		multAdd.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
 		multAdd.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		multAdd.prefHeightProperty().bind(pane.heightProperty().multiply(15.0/100.0));
-		multAdd.setStyle("-fx-background-color: linear-gradient(to right, #BBD2C5, #536976);" + 
+		multAdd.setStyle("-fx-background-color: white;" + 
 				"-fx-background-radius: 5;" );
 
 		//Color Pickers
@@ -429,6 +430,7 @@ public class VennBase extends Application	 {
 		boxcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 		fontcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 
+		//Texts
 		Text txtbox = new Text("Box Color ");		
 		txtbox.setFont(new Font(12));
 		txtbox.setStroke(Color.BLACK);
@@ -439,11 +441,15 @@ public class VennBase extends Application	 {
 		txtfont.setStroke(Color.BLACK);
 		txtfont.setTextAlignment(TextAlignment.CENTER);
 		
-		//Xtra Section *EDITING*
-		Button plusbtn = new Button("+"); plusbtn.prefWidthProperty().bind(multAdd.prefWidthProperty().multiply(20.0/100.0));
-		plusbtn.setStyle("-fx-background-radius: 30; -fx-background-color: green; -fx-color: white"); //fix font color
-		Button minusbtn = new Button("-"); minusbtn.prefWidthProperty().bind(plusbtn.prefWidthProperty());
-		minusbtn.setStyle("-fx-background-radius: 30; -fx-background-color: red");
+		//Add Button
+		Button addbtn = new Button("+"); addbtn .prefWidthProperty().bind(multAdd.prefWidthProperty().multiply(19.0/100.0));
+		addbtn.setStyle("-fx-background-radius: 30; -fx-background-color: #" + colorToHex(boxcp.getValue()) + ";");
+		
+		//Extra Section 
+		Button plusbtn = new Button("More"); plusbtn.prefWidthProperty().bind(multAdd.prefWidthProperty().multiply(40.0/100.0));
+		plusbtn.setStyle("-fx-background-radius: 30;"); //fix font color
+		Button minusbtn = new Button("Less"); minusbtn.prefWidthProperty().bind(plusbtn.prefWidthProperty());
+		minusbtn.setStyle("-fx-background-radius: 30;");
 		
 		TextArea xtraInfo = new TextArea();
 		xtraInfo.prefWidthProperty().bind(multAdd.prefWidthProperty());
@@ -474,10 +480,9 @@ public class VennBase extends Application	 {
 			}
 		});
 		
-		
 		//first text field functions
 		TextField text = new TextField();
-		text.prefWidthProperty().bind(multAdd.prefWidthProperty());
+		text.prefWidthProperty().bind(multAdd.prefWidthProperty().add(30));
 		
 		text.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
@@ -488,31 +493,37 @@ public class VennBase extends Application	 {
 				{
 					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
 					text.clear();
+					xtraInfo.clear();
 				}
 			}
 		});
 		
-//		//Second text field functions
-//		xtraInfo.setOnKeyPressed(new EventHandler<KeyEvent>()
-//		{
-//			@Override
-//			public void handle(KeyEvent ke)
-//			{
-//				if (ke.getCode().equals(KeyCode.ENTER))
-//				{
-//					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
-//					text.clear();
-//				}
-//			}
-//		});
+		//+ button function
+		addbtn.setOnMouseClicked(new EventHandler<MouseEvent>() 
+		{
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
+					TextBox b = new TextBox(pane, textAdder, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
+					text.clear();
+					xtraInfo.clear();
+				}
+			}
+		});
 
+		
+		//Putting multAdd together
+		HBox tophb = new HBox(text, addbtn);
+//		tophb.setAlignment(Pos.BASELINE_RIGHT);
+		tophb.setSpacing(5);
 		HBox boxhb = new HBox(txtbox, boxcp);
 		boxhb.setSpacing(5);
 		HBox fonthb = new HBox(txtfont,fontcp);
 		fonthb.setSpacing(5);
 
 
-		vb.getChildren().addAll(text,boxhb,fonthb, plusbtn);	
+		vb.getChildren().addAll(tophb,boxhb,fonthb, plusbtn);	
 		vb.setPadding(new Insets(10));
 		vb.setSpacing(5);
 
@@ -689,9 +700,9 @@ public class VennBase extends Application	 {
 		//Export ------------------------------------------------------------------------------------------------------------
 //		exportB.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
 //		exportB.layoutYProperty().bind(pane.heightProperty().multiply(32.0/100.0));
-		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(5.0/100.0));
+		exportB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		exportB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		exportB.setStyle("-fx-background-color: #999999; -fx-background-radius: 30");
+		exportB.setStyle("-fx-background-color: #999999;");
 		exportB.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

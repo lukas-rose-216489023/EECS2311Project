@@ -51,7 +51,7 @@ public class TextBox {
 		xtraBox.prefHeightProperty().bind(box.prefHeightProperty().multiply(2.0));
 		xtraBox.layoutXProperty().bind(box.layoutXProperty());
 		xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
-//		xtraBox.setVisible(false);
+		xtraBox.setVisible(false);
 
 		//variables for use in resize detection and position detection
 		record = new Record(VennBase.autoSaveFile);
@@ -168,6 +168,25 @@ public class TextBox {
 			}
 		});
 
+		//xtraInfo box shows when hovered over text box
+		box.hoverProperty().addListener((observable, oldValue, newValue) -> {
+		    if (newValue) {
+		    	xtraBox.toFront();
+		        xtraBox.setVisible(true);
+		    } else {
+		    	xtraBox.setVisible(false);
+		    }
+		});
+		
+		xtraBox.hoverProperty().addListener((observabl, oldValue, newValue) -> {
+		    if (newValue) {
+		    	xtraBox.toFront();
+		        xtraBox.setVisible(true);
+		    } else {
+		    	xtraBox.setVisible(false);
+		    }
+		});
+		
 		//Anchoring
 		box.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
@@ -261,6 +280,11 @@ public class TextBox {
 		
 		addToList(pane);
 	}
+	
+	//method to change xtraInfo box visibility
+//	public void showXtraInfo() {
+//		xtraInfo.
+//	}
 
 	//method to add this text box
 	public void addToList(Pane pane) {
