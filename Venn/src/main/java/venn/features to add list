@@ -12,9 +12,9 @@ Things to add:
   		- Undo button
   		- Redo Button
 	
-	- Better multiple adder => Lukas
-		- Delete selection
-		- Easier editing
+	- Better multiple adder => Lukas			- Done
+		- Delete selection						- Done
+		- Easier editing						- Done
  	
  	- Anchoring resize => Jawad					- Will not do
  	
@@ -39,9 +39,9 @@ Things to add:
 		- Cool name
 		- Cool icon
  	
- 	- Move buttons to the left	=> Jawad
- 		- All buttons hidden
- 		- Hover over options
+ 	- Move buttons to the left	=> Jawad		- Done
+ 		- All buttons hidden					- Done
+ 		- Hover over options					- Done
  		
  	- control selection options	=> Jawad		- Done
  	
@@ -61,5 +61,6 @@ Stakeholder requirements:
 	The items to be compared can be anthing; the stakeholder is flexible. This can be done either visually or 
 	via text. 
 
-   
+   1. Finished by Lukas.
+   2. Finished by Jawad.
    

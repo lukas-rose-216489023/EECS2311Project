@@ -1196,8 +1196,6 @@ public class VennBase extends Application	 {
 
 		pane.setOnMouseMoved(maxScreen(stage));
 		
-		
-		
 	}//Main end
 	
 	@Override

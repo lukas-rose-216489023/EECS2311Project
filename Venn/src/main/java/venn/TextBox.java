@@ -69,7 +69,6 @@ public class TextBox {
 
 		
 		//styling box
-		
 		box.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
 		xtraBox.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
 		
