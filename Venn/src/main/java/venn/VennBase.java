@@ -731,11 +731,11 @@ public class VennBase extends Application	 {
 						} else if (latest instanceof Color) {
 							circleL.setFill(lColorList.get(--lColorCursor));
 						} else if (latest instanceof Button) {
-							if (Main.anchor) {
-								Main.anchor = false;
+							if (VennBase.anchor) {
+								VennBase.anchor = false;
 								anchorOption.setText("Anchoring off");
 							} else {
-								Main.anchor = true;
+								VennBase.anchor = true;
 								anchorOption.setText("Anchoring on");
 							}
 						} else if(latest instanceof Background) {
@@ -786,11 +786,11 @@ public class VennBase extends Application	 {
 						} else if (latest instanceof Color) {
 							circleL.setFill(lColorList.get(++lColorCursor));
 						} else if (latest instanceof Button) {
-							if (Main.anchor) {
-								Main.anchor = false;
+							if (VennBase.anchor) {
+								VennBase.anchor = false;
 								anchorOption.setText("Anchoring off");
 							} else {
-								Main.anchor = true;
+								VennBase.anchor = true;
 								anchorOption.setText("Anchoring on");
 							}
 						} else if(latest instanceof Background) {
@@ -1150,7 +1150,7 @@ public class VennBase extends Application	 {
 		
 		
 		
-	}//Main end
+	}//VennBase end
 	
 	@Override
 	public void stop(){

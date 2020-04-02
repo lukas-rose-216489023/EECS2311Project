@@ -91,9 +91,9 @@ public class TextBox {
 							result = dialog.showAndWait().get();
 						}
 						box.setText(result);
-						Main.undoList.add(new Double(0.0));
-						Main.undoBox = box;
-						Main.undoBoxName.add(++Main.undoBoxNameCursor, result);
+						VennBase.undoList.add(new Double(0.0));
+						VennBase.undoBox = box;
+						VennBase.undoBoxName.add(++VennBase.undoBoxNameCursor, result);
 						FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 					}
@@ -113,8 +113,8 @@ public class TextBox {
 					if (result.get() == deleteButton) {
 						// ... user chose "delete"
 						removeFromList(pane);
-						Main.undoList.add(new Boolean(true));
-						Main.undoBox = box;
+						VennBase.undoList.add(new Boolean(true));
+						VennBase.undoBox = box;
 						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), "");
 						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), "");
 					}
