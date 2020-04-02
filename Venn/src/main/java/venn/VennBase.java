@@ -176,14 +176,17 @@ public class VennBase extends Application	 {
 		final ColorPicker cp2 = new ColorPicker(Color.RED);
 		final ColorPicker cp3 = new ColorPicker(Color.BLACK);
 		final ColorPicker cp4 = new ColorPicker(Color.BLACK);
+		final ColorPicker cp5 = new ColorPicker(Color.WHITE);
 		cp1.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp2.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp3.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp4.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
+		cp5.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		cp1.setStyle("-fx-background-color: #999999");
 		cp2.setStyle("-fx-background-color: #999999");
 		cp3.setStyle("-fx-background-color: #999999");
 		cp4.setStyle("-fx-background-color: #999999");
+		cp5.setStyle("-fx-background-color: #999999");
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
@@ -502,7 +505,7 @@ public class VennBase extends Application	 {
 		//first text field functions
 		TextField text = new TextField();
 		text.prefWidthProperty().bind(multAdd.prefWidthProperty().add(30));
-
+		
 		text.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
 			@Override
@@ -558,8 +561,15 @@ public class VennBase extends Application	 {
 		vb.setSpacing(5);
 
 		multAdd.getChildren().addAll(vb);
-	
 		
+		//Color Picker for multAdd background
+		cp5.setOnAction(new EventHandler() {
+			@Override
+			public void handle(javafx.event.Event event) {
+				Color col5 = new Color(cp5.getValue().getRed(), cp5.getValue().getGreen(), cp5.getValue().getBlue(), 1);
+				multAdd.setStyle("-fx-background-color: #"+colorToHex(col5)+"; -fx-background-radius: 5;" );
+			}
+		});
 		
 		//Texts ------------------------------------------------------------------------------------------------------------
 		autoSaveFile.WriteToFile("Title "+"Title");
@@ -662,6 +672,12 @@ public class VennBase extends Application	 {
 		cpBu.setFont(new Font(12));
 		cpBu.setStroke(Color.BLACK);
 		cpBu.setTextAlignment(TextAlignment.CENTER);
+
+		//multAdd color picker label
+		Text cpM = new Text("  Text Adder background");
+		cpM.setFont(new Font(12));
+		cpM.setStroke(Color.BLACK);
+		cpM.setTextAlignment(TextAlignment.CENTER);
 
 		//control selection mode label
 		ctrl.setFont(new Font(12));
@@ -906,7 +922,7 @@ public class VennBase extends Application	 {
 	    menu.prefHeightProperty().bind(pane.heightProperty());
 	    menu.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 	    menu.setLayoutX(pane.getWidth()*.8);
-	    menu.setStyle("-fx-background-color: #b3b3b3; -fx-spacing: 25");
+	    menu.setStyle("-fx-background-color: #b3b3b3; -fx-spacing: 20");
 	    
 	    HBox rc = new HBox();
 	    rc.getChildren().addAll(cp1, cpR);
@@ -916,8 +932,10 @@ public class VennBase extends Application	 {
 	    ba.getChildren().addAll(cp3, cpB);
 	    HBox bu = new HBox();
 	    bu.getChildren().addAll(cp4, cpBu);
+	    HBox ma = new HBox();
+	    ma.getChildren().addAll(cp5, cpM);
 	    
-	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu);
+	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
 	    
 	    menu.setTranslateX(pane.getWidth()*.18);
 	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);

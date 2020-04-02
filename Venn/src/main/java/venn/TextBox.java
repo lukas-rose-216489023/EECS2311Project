@@ -32,7 +32,7 @@ public class TextBox {
 	String fontCol;
 	
 	static boolean lock;
-
+	
 
 	//Text box constructor
 	public TextBox(Pane pane, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol, String xtraInfo){
