@@ -6,3 +6,5 @@ Anchoring off
 Title Title
 Right right
 Left left
+Record0 0.0 0.0 false false
+Box0 0  universal 15.0 301.0 9ACD32 000000

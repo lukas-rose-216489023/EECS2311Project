@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,7 @@ public class TextBox {
 	int boxNum;
 	String boxCol;
 	String fontCol;
+	boolean lock;
 
 
 	//Text box constructor
@@ -52,6 +54,7 @@ public class TextBox {
 		xtraBox.layoutXProperty().bind(box.layoutXProperty());
 		xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
 		xtraBox.setVisible(false);
+
 
 		//variables for use in resize detection and position detection
 		record = new Record(VennBase.autoSaveFile);
@@ -169,17 +172,30 @@ public class TextBox {
 		});
 
 		//xtraInfo box shows when hovered over text box
+		pane.setOnKeyPressed(e -> { //lock when "L" key pressed
+		    if (e.getCode() == KeyCode.L) {
+		    	if(lock) {
+		    		lock = false;
+		    	}
+		    	else {
+		    		lock = true;
+		    	}
+		    }
+		});
+		
+		
 		box.hoverProperty().addListener((observable, oldValue, newValue) -> {
-		    if (newValue) {
+		    if (newValue && !lock) {
 		    	xtraBox.toFront();
 		        xtraBox.setVisible(true);
+		        
 		    } else {
 		    	xtraBox.setVisible(false);
 		    }
 		});
 		
 		xtraBox.hoverProperty().addListener((observabl, oldValue, newValue) -> {
-		    if (newValue) {
+		    if (newValue && !lock) {
 		    	xtraBox.toFront();
 		        xtraBox.setVisible(true);
 		    } else {
@@ -281,10 +297,6 @@ public class TextBox {
 		addToList(pane);
 	}
 	
-	//method to change xtraInfo box visibility
-//	public void showXtraInfo() {
-//		xtraInfo.
-//	}
 
 	//method to add this text box
 	public void addToList(Pane pane) {

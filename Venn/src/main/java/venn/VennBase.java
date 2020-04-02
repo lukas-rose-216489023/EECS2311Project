@@ -742,11 +742,7 @@ public class VennBase extends Application	 {
 			}
 		});
 		
-		//Icons
-		
-//		FileInputStream input = new FileInputStream("images/lock.png");
-//	    Image image = new Image(input);
-//	    ImageView imageView = new ImageView(image);
+
 		//Sliding menu -------------------------------------------------------------------------------------------------------------------------
 		VBox menu = new VBox();
 	    menu.prefHeightProperty().bind(pane.heightProperty());
@@ -796,7 +792,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=anchorOption.getStyle();
-//				anchorOption.setStyle("-fx-background-color: #ffffff");
+				anchorOption.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    anchorOption.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -809,7 +805,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=capture.getStyle();
-//				capture.setStyle("-fx-background-color: #ffffff");
+				capture.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    capture.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -822,7 +818,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=reset.getStyle();
-//				reset.setStyle("-fx-background-color: #ffffff");
+				reset.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    reset.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -835,7 +831,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=importB.getStyle();
-//				importB.setStyle("-fx-background-color: #ffffff");
+				importB.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    importB.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -848,7 +844,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=exportB.getStyle();
-//				exportB.setStyle("-fx-background-color: #ffffff");
+				exportB.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    exportB.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -861,7 +857,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=cp1.getStyle();
-//				cp1.setStyle("-fx-background-color: #ffffff");
+				cp1.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    cp1.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -874,7 +870,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=cp2.getStyle();
-//				cp2.setStyle("-fx-background-color: #ffffff");
+				cp2.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    cp2.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -887,7 +883,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=cp3.getStyle();
-//				cp3.setStyle("-fx-background-color: #ffffff");
+				cp3.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    cp3.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -900,7 +896,7 @@ public class VennBase extends Application	 {
 			@Override
 			public void handle(MouseEvent event) {
 				Record.prevStyle=cp4.getStyle();
-//				cp4.setStyle("-fx-background-color: #ffffff");
+				cp4.setStyle("-fx-background-color: #ffffff");
 			}
 		});
 	    cp4.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -909,22 +905,6 @@ public class VennBase extends Application	 {
 				cp4.setStyle(Record.prevStyle);
 			}
 		});
-
-//		//Right Side Panel --------------------------------------------------------------------------------------------------------
-//
-//		//Panel Specifications
-//		rightSide.layoutXProperty().bind(pane.widthProperty().multiply(89.0/100.0));
-//		rightSide.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
-//		rightSide.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-//		rightSide.setStyle("-fx-background-color: linear-gradient(to right, #BBD2C5, #536976);" + 
-//				"-fx-background-radius: 5;" );
-//
-//		//VBox Specifications
-//		VBox rsp = new VBox(anchorOption, capture, reset, importB, exportB);
-//		rsp.setSpacing(5);
-//		rsp.setPadding(new Insets(10));
-//		//VBox Style
-//		rsp.setStyle("-fx-alignment: center;" );
 
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
