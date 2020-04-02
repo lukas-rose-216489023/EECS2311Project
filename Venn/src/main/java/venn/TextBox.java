@@ -9,6 +9,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -26,22 +27,34 @@ public class TextBox {
 	Record record;
 	String pos;		//can be: "universal", "intersection", "left", "right"
 	int boxNum;
+	TextArea xtraBox;
 	String boxCol;
 	String fontCol;
+	
+	static boolean lock;
 
 
 	//Text box constructor
-	public TextBox(Pane pane, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol){
-		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.2) / (pane.getHeight()*.05+10));
+	public TextBox(Pane pane, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol, String xtraInfo){
+		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.4) / (pane.getHeight()*.05+10));
 
 		//Text box properties
 		box = new Button(text);
 		box.prefWidthProperty().bind(circleL.radiusProperty().subtract(50));
 		box.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		box.setLayoutX(15);
-		box.setLayoutY((pane.getHeight()*.2)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
+		box.setLayoutY((pane.getHeight()*.4)+(pane.getHeight()*.05+10)*(Record.numBoxes%stackable));
 		boxNum=Record.numBoxes;
 		pos="universal";
+		
+		//xtraInfo box properties
+		xtraBox = new TextArea(xtraInfo);
+		xtraBox.prefWidthProperty().bind(box.prefWidthProperty());
+		xtraBox.prefHeightProperty().bind(box.prefHeightProperty().multiply(2.0));
+		xtraBox.layoutXProperty().bind(box.layoutXProperty());
+		xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
+		xtraBox.setVisible(false);
+
 
 		//variables for use in resize detection and position detection
 		record = new Record(VennBase.autoSaveFile);
@@ -58,6 +71,7 @@ public class TextBox {
 		//styling box
 		
 		box.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
+		xtraBox.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
 		
 		boxCol = boxcol;
 		fontCol = fontcol;
@@ -161,6 +175,26 @@ public class TextBox {
 				}
 			}
 		});
+		
+		//xtraInfo box shows when hovered over text box
+		box.hoverProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue && !lock) {
+				xtraBox.toFront();
+				xtraBox.setVisible(true);
+
+			} else {
+				xtraBox.setVisible(false);
+			}
+		});
+
+		xtraBox.hoverProperty().addListener((observabl, oldValue, newValue) -> {
+			if (newValue && !lock) {
+				xtraBox.toFront();
+				xtraBox.setVisible(true);
+			} else {
+				xtraBox.setVisible(false);
+			}
+		});
 
 		//Anchoring
 		box.setOnMouseReleased(new EventHandler<MouseEvent>() {
@@ -186,38 +220,6 @@ public class TextBox {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
 				box.setLayoutX(pane.getWidth() * record.percentX);
-//
-//				p.l1 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), circleL.getLayoutY()-(circleL.getRadius()*0.8359));
-//				p.l2 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l1.yValue+pane.getHeight()*0.0608);
-//				p.l3 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l2.yValue+pane.getHeight()*0.0608);
-//				p.l4 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l3.yValue+pane.getHeight()*0.0608);
-//				p.l5 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l4.yValue+pane.getHeight()*0.0608);
-//				p.l6 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.96875), p.l5.yValue+pane.getHeight()*0.0608);
-//				p.l7 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.92969), p.l6.yValue+pane.getHeight()*0.0608);
-//				p.l8 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.87890), p.l7.yValue+pane.getHeight()*0.0608);
-//				p.l9 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.78125), p.l8.yValue+pane.getHeight()*0.0608);
-//				p.l10 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.65625), p.l9.yValue+pane.getHeight()*0.0608);
-//				p.l11 = new Point(circleL.getLayoutX()-(circleL.getRadius()*0.51172), p.l10.yValue+pane.getHeight()*0.0608);
-//
-//				p.i1 = new Point((pane.getWidth()*0.41875), (pane.getHeight()*0.33739));
-//				p.i2 = new Point(pane.getWidth()*0.41875, p.i1.yValue+pane.getHeight()*0.05471);
-//				p.i3 = new Point(pane.getWidth()*0.41875, p.i2.yValue+pane.getHeight()*0.05471);
-//				p.i4 = new Point(pane.getWidth()*0.41875, p.i3.yValue+pane.getHeight()*0.05471);
-//				p.i5 = new Point(pane.getWidth()*0.41875, p.i4.yValue+pane.getHeight()*0.05471);
-//				p.i6 = new Point(pane.getWidth()*0.41875, p.i5.yValue+pane.getHeight()*0.05471);
-//
-//				p.r1 = new Point(p.l1.xValue+pane.getWidth()*0.23984, p.l1.yValue);
-//				p.r2 = new Point(p.l2.xValue+pane.getWidth()*0.29609, p.l2.yValue);
-//				p.r3 = new Point(p.l3.xValue+pane.getWidth()*0.34375, p.l3.yValue);
-//				p.r4 = new Point(p.l4.xValue+pane.getWidth()*0.378125, p.l4.yValue);
-//				p.r5 = new Point(p.l5.xValue+pane.getWidth()*0.40156, p.l5.yValue);
-//				p.r6 = new Point(p.l6.xValue+pane.getWidth()*0.42109, p.l6.yValue);
-//				p.r7 = new Point(p.l7.xValue+pane.getWidth()*0.40156, p.l7.yValue);
-//				p.r8 = new Point(p.l8.xValue+pane.getWidth()*0.378125, p.l8.yValue);
-//				p.r9 = new Point(p.l9.xValue+pane.getWidth()*0.34375, p.l9.yValue);
-//				p.r10 = new Point(p.l10.xValue+pane.getWidth()*0.29609, p.l10.yValue);
-//				p.r11 = new Point(p.l11.xValue+pane.getWidth()*0.23984, p.l11.yValue);
-
 			}
 		});
 
@@ -251,7 +253,6 @@ public class TextBox {
 				}
 			}
 		});
-
 		
 		addToList(pane);
 	}
@@ -259,12 +260,14 @@ public class TextBox {
 	//method to add this text box
 	public void addToList(Pane pane) {
 		pane.getChildren().add(this.box);
+		pane.getChildren().add(this.xtraBox);
 		Record.addTextBox(this);
 	}
 
 	//method to delete a text box
 	public void removeFromList(Pane pane) {
 		pane.getChildren().remove(this.box);
+		pane.getChildren().remove(this.xtraBox);
 		Record.removeTextBox(this);
 		Record.removeFromIntersetion(this);
 		Record.removeFromLeft(this);

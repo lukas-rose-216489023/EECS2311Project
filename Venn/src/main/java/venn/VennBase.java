@@ -2,6 +2,7 @@ package venn;
 
 //imports
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -30,6 +32,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.TextFieldListCell;
@@ -431,18 +434,22 @@ public class VennBase extends Application	 {
 		//New MultAdder ------------------------------------------------------------------------------------------------------------
 
 		AnchorPane multAdd = new AnchorPane();
+		VBox vb = new VBox();
 		multAdd.layoutXProperty().bind(pane.widthProperty().multiply(1.0/100.0));
 		multAdd.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
 		multAdd.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-		multAdd.setStyle("-fx-background-color: radial-gradient(center 50% 50% , radius 50% , #ffffff, #666666);" + 
-						"-fx-background-radius: 5;" );
+		multAdd.prefHeightProperty().bind(pane.heightProperty().multiply(15.0/100.0));
+		multAdd.setStyle("-fx-background-color: white; -fx-background-radius: 5;" );
+//		multAdd.setStyle("-fx-background-color: radial-gradient(center 50% 50% , radius 50% , #ffffff, #666666);" + 
+//						"-fx-background-radius: 5;" );
 
 		//Color Pickers
 		ColorPicker boxcp = new ColorPicker(Color.YELLOWGREEN);
 		ColorPicker fontcp = new ColorPicker(Color.BLACK);
 		boxcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
 		fontcp.prefWidthProperty().bind(multAdd.prefWidthProperty());
-
+		
+		//MultAdder texts
 		Text txtbox = new Text("Box Color ");		
 		txtbox.setFont(new Font(12));
 		txtbox.setStroke(Color.BLACK);
@@ -453,9 +460,48 @@ public class VennBase extends Application	 {
 		txtfont.setStroke(Color.BLACK);
 		txtfont.setTextAlignment(TextAlignment.CENTER);
 
-		//text field functions
+		//Add Button
+		Button addbtn = new Button("+"); addbtn .prefWidthProperty().bind(multAdd.prefWidthProperty().multiply(19.0/100.0));
+		addbtn.setStyle("-fx-background-radius: 30; -fx-background-color: #" + colorToHex(boxcp.getValue()) + ";");
+
+		//Extra Section 
+		Button plusbtn = new Button("More"); plusbtn.prefWidthProperty().bind(multAdd.prefWidthProperty().multiply(40.0/100.0));
+		plusbtn.setStyle("-fx-background-radius: 30;"); //fix font color
+		Button minusbtn = new Button("Less"); minusbtn.prefWidthProperty().bind(plusbtn.prefWidthProperty());
+		minusbtn.setStyle("-fx-background-radius: 30;");
+
+		TextArea xtraInfo = new TextArea();
+		xtraInfo.prefWidthProperty().bind(multAdd.prefWidthProperty());
+		xtraInfo.prefHeightProperty().bind(multAdd.prefHeightProperty());
+
+
+		VBox xtravb = new VBox(minusbtn, xtraInfo);
+		xtravb.setSpacing(5);
+
+		plusbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					vb.getChildren().add(xtravb);
+					vb.getChildren().remove(plusbtn);
+				}
+			}
+		});
+
+		minusbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					xtraInfo.clear();
+					vb.getChildren().remove(xtravb);
+					vb.getChildren().add(plusbtn);
+				}
+			}
+		});
+
+		//first text field functions
 		TextField text = new TextField();
-		text.prefWidthProperty().bind(multAdd.prefWidthProperty());
+		text.prefWidthProperty().bind(multAdd.prefWidthProperty().add(30));
 
 		text.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
@@ -464,10 +510,25 @@ public class VennBase extends Application	 {
 			{
 				if (ke.getCode().equals(KeyCode.ENTER))
 				{
+					TextBox b = new TextBox(pane, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
+					text.clear();
+					xtraInfo.clear();
+				}
+			}
+		});
+		
+		//+ button function
+		addbtn.setOnMouseClicked(new EventHandler<MouseEvent>() 
+		{
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					if (text.getText().length()<=25) {
-						TextBox b = new TextBox(pane, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()));
+						TextBox b = new TextBox(pane, text.getText(), circleL, circleR, intersection, leftCircle, rightCircle, p, selection, colorToHex(boxcp.getValue()), colorToHex(fontcp.getValue()), xtraInfo.getText());
 						undoBoxName.add(0, text.getText());
 						text.clear();
+						xtraInfo.clear();
 						undoList.add(b);
 					}
 					else {
@@ -482,14 +543,17 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
-
+		
+		//Putting multAdd together
+		HBox tophb = new HBox(text, addbtn);
+		tophb.setSpacing(5);
 		HBox boxhb = new HBox(txtbox, boxcp);
 		boxhb.setSpacing(5);
 		HBox fonthb = new HBox(txtfont,fontcp);
 		fonthb.setSpacing(5);
 
 
-		VBox vb = new VBox(text,boxhb,fonthb);	
+		vb.getChildren().addAll(tophb,boxhb,fonthb, plusbtn);
 		vb.setPadding(new Insets(10));
 		vb.setSpacing(5);
 
@@ -1034,42 +1098,17 @@ public class VennBase extends Application	 {
 			}
 		});
 
-//		//Right Side Panel --------------------------------------------------------------------------------------------------------
-//
-//		//Panel Specifications
-//		rightSide.layoutXProperty().bind(pane.widthProperty().multiply(89.0/100.0));
-//		rightSide.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
-//		rightSide.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
-//		rightSide.setStyle("-fx-background-color: linear-gradient(to right, #BBD2C5, #536976);" + 
-//				"-fx-background-radius: 5;" );
-//
-//		//VBox Specifications
-//		VBox rsp = new VBox(anchorOption, capture, reset, importB, exportB);
-//		rsp.setSpacing(5);
-//		rsp.setPadding(new Insets(10));
-//		//VBox Style
-//		rsp.setStyle("-fx-alignment: center;" );
-
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
 		pane.getChildren().add(circleR);
 		pane.getChildren().add(circleL);
-//		pane.getChildren().addAll(cp1, cp2, cp3, cp4);
-//		pane.getChildren().add(textAdder);
-//		pane.getChildren().add(anchorOption);
-//		pane.getChildren().add(capture);
-//		pane.getChildren().add(layout);
 		pane.getChildren().add(multAdd);
-//		pane.getChildren().add(reset);;
-//		pane.getChildren().add(importB);
-//		pane.getChildren().add(exportB);
 		pane.getChildren().add(menu);
 
 		//Adds titles to window
 		pane.getChildren().add(title);
 		pane.getChildren().add(left);
 		pane.getChildren().add(right);
-//		pane.getChildren().addAll(cpR, cpL, cpB, cpBu);
 		pane.getChildren().add(ctrl);
 
 
@@ -1120,6 +1159,15 @@ public class VennBase extends Application	 {
 						pane.setOnMouseReleased(null);
 					}
 				}
+				//xtraInfo box shows when hovered over text box
+				else if (event.getCode() == KeyCode.L) {
+			    	if(TextBox.lock) {
+			    		TextBox.lock = false;
+			    	}
+			    	else {
+			    		TextBox.lock = true;
+			    	}
+			    }
 				//debug
 				if (event.getCode() == KeyCode.F3) {
 					if (VennBase.debug) {
@@ -1150,7 +1198,7 @@ public class VennBase extends Application	 {
 		
 		
 		
-	}//VennBase end
+	}//Main end
 	
 	@Override
 	public void stop(){
