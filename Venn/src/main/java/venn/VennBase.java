@@ -161,6 +161,7 @@ public class VennBase extends Application	 {
 		circleR.setStroke(Color.BLUE);
 		circleR.setFill(blue);
 		autoSaveFile.WriteToFile("RColor "+blue.getRed()+" "+blue.getGreen()+" "+blue.getBlue());
+		
 
 		//Left venn circle
 		Circle circleL= new Circle();
@@ -170,6 +171,7 @@ public class VennBase extends Application	 {
 		circleL.setStroke(Color.RED);
 		circleL.setFill(red);
 		autoSaveFile.WriteToFile("LColor "+red.getRed()+" "+red.getGreen()+" "+red.getBlue());
+		
 
 		//color picker setup ------------------------------------------------------------------------------------------------------------
 		final ColorPicker cp1 = new ColorPicker(Color.BLUE);
@@ -1163,7 +1165,7 @@ public class VennBase extends Application	 {
 				if (event.getCode() == KeyCode.CONTROL) {
 					if (TextBox.ctrlSelection) {
 						TextBox.releaseCtrlSelection();
-						pane.setOnMouseMoved(maxScreen(stage));
+						pane.setOnMouseMoved(mouseMoveHandler(stage, circleL, circleR));
 						pane.setOnMousePressed(initSelection);
 						pane.setOnMouseDragged(updateSelection);
 						pane.setOnMouseReleased(implementSelection);
@@ -1212,7 +1214,7 @@ public class VennBase extends Application	 {
 			}
 		});
 
-		pane.setOnMouseMoved(maxScreen(stage));
+		pane.setOnMouseMoved(mouseMoveHandler(stage, circleL, circleR));
 		
 	}//Main end
 	
@@ -1283,11 +1285,25 @@ public class VennBase extends Application	 {
 	    return hex2;
 	}
 	
-	public EventHandler<MouseEvent> maxScreen(Stage st){
+	public EventHandler<MouseEvent> mouseMoveHandler(Stage st, Circle circleL, Circle circleR){
 		return new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {		
 				if (VennBase.anchor) {st.setMaximized(true);}
+				
+				double x2 = event.getSceneX()*event.getSceneX();
+				double y2 = event.getSceneY()*event.getSceneY();
+				double La = circleL.getCenterX();
+				double Lb = circleL.getCenterY();
+				double Ra = circleR.getCenterX();
+				double Rb = circleR.getCenterY();
+				double Rr2 = circleR.getRadius()*circleR.getRadius();
+				double Lr2 = Rr2;
+
+				if ((x2-2*event.getSceneX()*La)+(y2-2*event.getSceneY()*Lb) < Lr2-La*La-Lb*Lb) {circleL.setStrokeWidth(5);}
+				else {circleL.setStrokeWidth(1);}
+				if ((x2-2*event.getSceneX()*Ra)+(y2-2*event.getSceneY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {circleR.setStrokeWidth(5);}
+				else {circleR.setStrokeWidth(1);}
 			}
 		};
 	}

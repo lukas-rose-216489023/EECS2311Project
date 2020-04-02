@@ -369,10 +369,10 @@ public class TextBox {
 		double Rr2 = circleR.getRadius()*circleR.getRadius();
 		double Lr2 = Rr2;
 
-		if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;}
-		else {record.inCircleL=false;}
-		if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;}
-		else {record.inCircleR=false;}
+		if ((x2-2*box.getLayoutX()*La)+(y2-2*box.getLayoutY()*Lb) < Lr2-La*La-Lb*Lb) {record.inCircleL=true;circleL.setStrokeWidth(5);}
+		else {record.inCircleL=false;circleL.setStrokeWidth(1);}
+		if ((x2-2*box.getLayoutX()*Ra)+(y2-2*box.getLayoutY()*Rb) < Rr2-Ra*Ra-Rb*Rb) {record.inCircleR=true;circleR.setStrokeWidth(5);}
+		else {record.inCircleR=false;circleR.setStrokeWidth(1);}
 
 		if (record.inCircleL && record.inCircleR) {
 			//box x and y are closest anchor points in the intersection
