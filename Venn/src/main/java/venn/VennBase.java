@@ -1117,6 +1117,19 @@ public class VennBase extends Application	 {
 				cp4.setStyle(Record.prevStyle);
 			}
 		});
+	    cp5.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Record.prevStyle=cp5.getStyle();
+				cp5.setStyle("-fx-background-color: #ffffff");
+			}
+		});
+	    cp5.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				cp5.setStyle(Record.prevStyle);
+			}
+		});
 
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
