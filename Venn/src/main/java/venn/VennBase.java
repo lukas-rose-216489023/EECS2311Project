@@ -688,10 +688,18 @@ public class VennBase extends Application	 {
 		ctrl.setTextAlignment(TextAlignment.CENTER);
 		ctrl.layoutXProperty().bind(pane.widthProperty().multiply(0.0/100.0));
 		ctrl.layoutYProperty().bind(pane.heightProperty().multiply(98.0/100.0));
+		
+		//Control Buttons --------------------------------------------------------------------------------------------------
+		Button capture = new Button("Screenshot");
+		Button reset = new Button("Reset");
+		Button importB = new Button("Import");
+		Button exportB = new Button("Export");
+		Button undo = new Button("Undo");
+		Button redo = new Button("Redo");
+		Button compare = new Button("Compare");
 
 
 		//Reset ------------------------------------------------------------------------------------------------------------
-		Button reset = new Button("Reset");
 		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		reset.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		reset.setStyle("-fx-background-color: #999999");
@@ -710,31 +718,6 @@ public class VennBase extends Application	 {
 					pane.setBackground(background);
 					Record.numBoxes=0;
 					Record.deleteAll(pane, autoSaveFile);
-				}
-			}
-		});
-
-
-		//Import ------------------------------------------------------------------------------------------------------------
-		Button exportB = new Button("Export");
-		Button capture = new Button("Screenshot");
-		Button importB = new Button("Import");
-		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		importB.setStyle("-fx-background-color: #999999");
-		importB.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					FileChooser fc = new FileChooser();
-					fc.setTitle("Import Venn Diagram");
-					fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
-					try {
-						File file = fc.showOpenDialog(stage);
-						fc.setInitialDirectory(file.getParentFile());
-						FileHandling.loadImport(file, pane, circleR, circleL, anchorOption, title, right, left, intersection, leftCircle, rightCircle, p, selection, cp1, cp2, cp3, cp4, multAdd, reset, importB, exportB, capture);
-					}
-					catch(Exception e){System.out.println(e);}
 				}
 			}
 		});
@@ -766,7 +749,6 @@ public class VennBase extends Application	 {
 		
 		
 		//Compare ------------------------------------------------------------------------------------------------------------
-		Button compare = new Button("Compare");
 		compare.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
 		compare.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
 		compare.setStyle("-fx-background-color: #999999");
@@ -795,8 +777,6 @@ public class VennBase extends Application	 {
 		
 		
 		// Undo button implementation ----------------------------------------------------------------------------------------------------
-		Button undo = new Button("Undo");
-		Button redo = new Button("Redo");
 		undo.prefWidthProperty().bind(pane.widthProperty().multiply(20.0 / 100.0));
 		undo.prefHeightProperty().bind(pane.heightProperty().multiply(5.0 / 100.0));
 		undo.setStyle("-fx-background-color: #999999");
@@ -902,6 +882,28 @@ public class VennBase extends Application	 {
 						alert.setHeaderText("Nothing left to redo!");
 						alert.show();
 					}
+				}
+			}
+		});
+
+
+		//Import ------------------------------------------------------------------------------------------------------------
+		importB.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		importB.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		importB.setStyle("-fx-background-color: #999999");
+		importB.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FileChooser fc = new FileChooser();
+					fc.setTitle("Import Venn Diagram");
+					fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Venn diagram save file", "*.txt"));
+					try {
+						File file = fc.showOpenDialog(stage);
+						fc.setInitialDirectory(file.getParentFile());
+						FileHandling.loadImport(file, pane, circleR, circleL, anchorOption, title, right, left, intersection, leftCircle, rightCircle, p, selection, cp1, cp2, cp3, cp4, cp5, multAdd, reset, importB, exportB, capture, undo, redo, compare);
+					}
+					catch(Exception e){System.out.println(e);}
 				}
 			}
 		});

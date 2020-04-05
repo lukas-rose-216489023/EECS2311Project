@@ -3,6 +3,12 @@ RColor 0.0 0.0 1.0
 LColor 1.0 0.0 0.0
 BuColor 999999
 Anchoring off
-Title Title
-Right right
-Left left
+Title Title 
+Right right 
+Left left 
+Record0 0.0 0.0 false false
+Box0 7 Test 1  universal 15.0 263.2 9ACD32 000000
+
+Record1 0.0 0.0 false false
+Box1 7 Test 2  universal 15.0 306.09999999999997 9ACD32 000000
+
