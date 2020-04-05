@@ -570,7 +570,6 @@ public class VennBase extends Application	 {
 			public void handle(Event event) {
 				Color col5 = new Color(cp5.getValue().getRed(), cp5.getValue().getGreen(), cp5.getValue().getBlue(), 1);
 				multAdd.setStyle("-fx-background-color: #"+colorToHex(col5)+"; -fx-background-radius: 5;" );
-				
 			}
 		});
 		
@@ -927,7 +926,7 @@ public class VennBase extends Application	 {
 	    ma.getChildren().addAll(cp5, cpM);
 	    
 	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
-
+	    
 	    menu.setTranslateX(pane.getWidth()*.18);
 	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
 	    
