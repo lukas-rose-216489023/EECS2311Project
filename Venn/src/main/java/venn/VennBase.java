@@ -192,7 +192,7 @@ public class VennBase extends Application	 {
 		
 		cp1.setOnAction(new EventHandler() {
 			@Override
-			public void handle(javafx.event.Event event) {
+			public void handle(Event event) {
 				Color col1 = new Color(cp1.getValue().getRed(), cp1.getValue().getGreen(), cp1.getValue().getBlue(), 0.5);
 				autoSaveFile.overwriteLineInFile("RColor ", "RColor "+col1.getRed()+" "+col1.getGreen()+" "+col1.getBlue());
 				circleR.setFill(col1);
@@ -207,7 +207,7 @@ public class VennBase extends Application	 {
 		
 		cp2.setOnAction(new EventHandler() {
 			@Override
-			public void handle(javafx.event.Event event) {
+			public void handle(Event event) {
 				Color col2 = new Color(cp2.getValue().getRed(), cp2.getValue().getGreen(), cp2.getValue().getBlue(), 0.5);
 				autoSaveFile.overwriteLineInFile("LColor ", "LColor "+col2.getRed()+" "+col2.getGreen()+" "+col2.getBlue());
 				circleL.setFill(col2);
@@ -222,7 +222,7 @@ public class VennBase extends Application	 {
 
 		cp3.setOnAction(new EventHandler() {
 			@Override
-			public void handle(javafx.event.Event event) {
+			public void handle(Event event) {
 				Color col3 = new Color(cp3.getValue().getRed(), cp3.getValue().getGreen(), cp3.getValue().getBlue(), 0.5);
 				autoSaveFile.overwriteLineInFile("BColor ", "BColor "+col3.getRed()+" "+col3.getGreen()+" "+col3.getBlue());
 				BackgroundFill backgroundColor = new BackgroundFill(col3, null, null);
@@ -567,9 +567,10 @@ public class VennBase extends Application	 {
 		//Color Picker for multAdd background
 		cp5.setOnAction(new EventHandler() {
 			@Override
-			public void handle(javafx.event.Event event) {
+			public void handle(Event event) {
 				Color col5 = new Color(cp5.getValue().getRed(), cp5.getValue().getGreen(), cp5.getValue().getBlue(), 1);
 				multAdd.setStyle("-fx-background-color: #"+colorToHex(col5)+"; -fx-background-radius: 5;" );
+				
 			}
 		});
 		
@@ -826,7 +827,7 @@ public class VennBase extends Application	 {
 							pane.setBackground(b);
 						} else if (latest instanceof String) {
 							String s = colorToHex(boxColorList.get(--boxColorCursor));
-							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,capture, undo, redo);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, cp5, anchorOption, reset, importB, exportB,capture, undo, redo, compare);
 						} else if(latest instanceof Character) {
 							title.setText(titleList.get(--titleCursor));
 						} else if(latest instanceof Integer) {
@@ -881,7 +882,7 @@ public class VennBase extends Application	 {
 							pane.setBackground(b);
 						} else if (latest instanceof String) {
 							String s = colorToHex(boxColorList.get(++boxColorCursor));
-							changeButtonColor(s, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB,	capture, undo, redo);
+							changeButtonColor(s, cp1, cp2, cp3, cp4, cp5, anchorOption, reset, importB, exportB, capture, undo, redo, compare);
 						} else if(latest instanceof Character) {
 							title.setText(titleList.get(++titleCursor));
 						} else if(latest instanceof Integer) {
@@ -904,27 +905,15 @@ public class VennBase extends Application	 {
 				}
 			}
 		});
-		
-		
-		//Button color picker event
-		cp4.setOnAction(new EventHandler() {
-			@Override
-			public void handle(javafx.event.Event event) {
-				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
-				String hex = colorToHex(col4);
-				changeButtonColor(hex, cp1, cp2, cp3, cp4, anchorOption, reset, importB, exportB, capture, undo, redo);
-				undoList.add(hex);
-				boxColorList.add(++boxColorCursor, col4);
-			}
-		});
 
 		
 		//Sliding menu -------------------------------------------------------------------------------------------------------------------------
 		VBox menu = new VBox();
 	    menu.prefHeightProperty().bind(pane.heightProperty());
 	    menu.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-	    menu.setLayoutX(pane.getWidth()*.8);
-	    menu.setStyle("-fx-background-color: #b3b3b3; -fx-spacing: 20");
+	    menu.layoutXProperty().bind(pane.widthProperty().multiply(80.0/100.0));
+	    menu.setStyle("-fx-background-color: #b3b3b3");
+	    menu.spacingProperty().bind(pane.heightProperty().multiply(3.0/100.0));
 	    
 	    HBox rc = new HBox();
 	    rc.getChildren().addAll(cp1, cpR);
@@ -938,11 +927,20 @@ public class VennBase extends Application	 {
 	    ma.getChildren().addAll(cp5, cpM);
 	    
 	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
-	    
+
 	    menu.setTranslateX(pane.getWidth()*.18);
 	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
 	    
 	    menuTranslation.setFromX(pane.getWidth()*.18);
+	    
+	    pane.widthProperty().addListener(new ChangeListener<Number>() {
+	    	@Override
+	    	public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
+	    		menu.setTranslateX(pane.getWidth()*.18);
+	    		menuTranslation.setFromX(pane.getWidth()*.18);
+	    	}
+	    });
+	    
 	    menuTranslation.setToX(0);
 
 	    menu.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -1117,6 +1115,33 @@ public class VennBase extends Application	 {
 				cp4.setStyle(Record.prevStyle);
 			}
 		});
+	    cp5.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Record.prevStyle=cp5.getStyle();
+				cp5.setStyle("-fx-background-color: #ffffff");
+			}
+		});
+	    cp5.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				cp5.setStyle(Record.prevStyle);
+			}
+		});
+		
+		
+		//Button color picker event
+		cp4.setOnAction(new EventHandler() {
+			@Override
+			public void handle(Event event) {
+				Color col4 = new Color(cp4.getValue().getRed(), cp4.getValue().getGreen(), cp4.getValue().getBlue(), 0.5);
+				String hex = colorToHex(col4);
+				changeButtonColor(hex, cp1, cp2, cp3, cp4, cp5, anchorOption, reset, importB, exportB, capture, undo, redo, compare);
+				menu.setStyle("-fx-background-color: #"+colorToHex(col4.darker())+"; -fx-spacing: 20");
+				undoList.add(hex);
+				boxColorList.add(++boxColorCursor, col4);
+			}
+		});
 
 
 		//Adds items to the window -----------------------------------------------------------------------------------------------
@@ -1158,6 +1183,8 @@ public class VennBase extends Application	 {
 		Text resetButton = new Text();
 		resetButton.setLayoutY(300);
 		
+		//Keyboard input options -------------------------------------------------------------------------------------------------------------
+		TextBox.lock = true;
 		pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -1180,7 +1207,7 @@ public class VennBase extends Application	 {
 					}
 				}
 				//xtraInfo box shows when hovered over text box
-				else if (event.getCode() == KeyCode.L) {
+				else if (event.getCode() == KeyCode.C) {
 			    	if(TextBox.lock) {
 			    		TextBox.lock = false;
 			    	}
@@ -1308,11 +1335,12 @@ public class VennBase extends Application	 {
 		};
 	}
 	
-	public static void changeButtonColor(String hex, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, Button anchorOption, Button reset, Button importB, Button exportB, Button capture, Button undo, Button redo) {
+	public static void changeButtonColor(String hex, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, ColorPicker cp5, Button anchorOption, Button reset, Button importB, Button exportB, Button capture, Button undo, Button redo, Button compare) {
 		cp1.setStyle("-fx-background-color: #"+hex);
 		cp2.setStyle("-fx-background-color: #"+hex);
 		cp3.setStyle("-fx-background-color: #"+hex);
 		cp4.setStyle("-fx-background-color: #"+hex);
+		cp5.setStyle("-fx-background-color: #"+hex);
 		anchorOption.setStyle("-fx-background-color: #"+hex);
 		reset.setStyle("-fx-background-color: #"+hex);
 		importB.setStyle("-fx-background-color: #"+hex);
@@ -1320,6 +1348,7 @@ public class VennBase extends Application	 {
 		capture.setStyle("-fx-background-color: #"+hex);
 		undo.setStyle("-fx-background-color: #"+hex);
 		redo.setStyle("-fx-background-color: #"+hex);
+		compare.setStyle("-fx-background-color: #"+hex);
 		autoSaveFile.overwriteLineInFile("BuColor ", "BuColor "+hex);
 	}
 

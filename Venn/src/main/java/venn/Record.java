@@ -33,7 +33,7 @@ public class Record {
 	//resize detection variables
 	double percentX;
 	double percentY;
-
+	
 	//position detection variables
 	boolean inCircleR;
 	boolean inCircleL;

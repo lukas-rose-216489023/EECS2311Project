@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.input.MouseButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 public class TextBox {
 	static boolean ctrlSelection = false;
@@ -31,10 +33,13 @@ public class TextBox {
 	String boxCol;
 	String fontCol;
 	
+	HBox custOptions;
+	
 	static boolean lock;
 	
 
 	//Text box constructor
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public TextBox(Pane pane, String text, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, String boxcol, String fontcol, String xtraInfo){
 		this.stackable = (int) ((pane.getHeight()-pane.getHeight()*.4) / (pane.getHeight()*.05+10));
 
@@ -54,6 +59,12 @@ public class TextBox {
 		xtraBox.layoutXProperty().bind(box.layoutXProperty());
 		xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
 		xtraBox.setVisible(false);
+		box.prefHeightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				xtraBox.layoutYProperty().bind(box.layoutYProperty().add(box.getPrefHeight()));
+			}
+		});
 
 
 		//variables for use in resize detection and position detection
@@ -77,7 +88,7 @@ public class TextBox {
 		
 		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 
-		//Text box action options
+		//Text box control selection
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -91,58 +102,116 @@ public class TextBox {
 						box.setStyle("-fx-border-width: 5px; -fx-border-color: #0000ff50; -fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
 					}
 				}
-
-				else if (event.getButton().equals(MouseButton.PRIMARY)) {
-					if (event.getClickCount()==2) {
-						TextInputDialog dialog = new TextInputDialog(box.getText());
-						dialog.setTitle("Change text");
-						dialog.setHeaderText("Enter to change text");
-						dialog.setContentText("25 character limit");
-						String result = dialog.showAndWait().get();
-						while (result.length()>25) {
-							dialog.setHeaderText("Character limit is 25!");
-							result = dialog.showAndWait().get();
-						}
-						box.setText(result);
-						VennBase.undoList.add(new Double(0.0));
-						VennBase.undoBox = box;
-						VennBase.undoBoxName.add(++VennBase.undoBoxNameCursor, result);
-						FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
-						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+			}
+		});
+		
+		//Hover over customization options -------------------------------------------------------------------------------------------------
+		custOptions = new HBox();
+		custOptions.spacingProperty().bind(pane.widthProperty().multiply(1.0/100.0));
+		custOptions.prefWidthProperty().bind(this.box.widthProperty());
+		custOptions.prefHeightProperty().bind(this.box.heightProperty());
+		custOptions.layoutXProperty().bind(this.box.layoutXProperty());
+		custOptions.layoutYProperty().bind(this.box.layoutYProperty().subtract(box.getPrefHeight()));
+		box.prefHeightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				custOptions.layoutYProperty().bind(box.layoutYProperty().subtract(box.getPrefHeight()));
+			}
+		});
+		custOptions.setVisible(false);
+		
+		Button textChange = new Button("T");
+		Font Tfont = new Font("Times New Roman", 14);
+		textChange.setFont(Tfont);
+		textChange.prefWidthProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		textChange.prefHeightProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		textChange.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				TextInputDialog dialog = new TextInputDialog(box.getText());
+				dialog.setTitle("Change text");
+				dialog.setHeaderText("Enter to change text");
+				dialog.setContentText("25 character limit");
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()) {
+					while (result.get().length()>25) {
+						dialog.setHeaderText("Character limit is 25!");
+						result = dialog.showAndWait();
 					}
+					box.setText(result.get());
 				}
-				else if (event.getButton().equals(MouseButton.SECONDARY)) {
-					pane.getChildren().remove(selection);
-					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.setTitle("Delete Text Box");
-					alert.setHeaderText("Are you sure you want to delete this text box?");
-
-					ButtonType deleteButton = new ButtonType("Delete");
-					ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-					alert.getButtonTypes().setAll(deleteButton, cancel);
-
-					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == deleteButton) {
-						// ... user chose "delete"
-						removeFromList(pane);
-						VennBase.undoList.add(new Boolean(true));
-						VennBase.undoBox = box;
-						FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), "");
-						FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), "");
-					}
-					else if (result.get() == cancel) {
-						// ... user chose "cancel"
-					}
-					
-					
-					selection.setWidth(0);selection.setHeight(0);
+				if (result.isPresent()) {
+					VennBase.undoList.add(new Double(0.0));
+					VennBase.undoBox = box;
+					VennBase.undoBoxName.add(++VennBase.undoBoxNameCursor, result.get());
 				}
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+			}
+		});
+		custOptions.getChildren().add(textChange);
+		
+		ColorPicker fc = new ColorPicker(Color.web("0x"+fontCol));
+		fc.prefWidthProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		fc.prefHeightProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		fc.setOnAction(new EventHandler() {
+			@Override
+			public void handle(Event event) {
+				Color fcl = new Color(fc.getValue().getRed(), fc.getValue().getGreen(), fc.getValue().getBlue(), 1);
+				fontCol = VennBase.colorToHex(fcl);
+				box.setStyle("-fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+			}
+		});
+		custOptions.getChildren().add(fc);
+		
+		ColorPicker bc = new ColorPicker(Color.web("0x"+boxCol));
+		bc.prefWidthProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		bc.prefHeightProperty().bind(pane.heightProperty().multiply(4.5/100.0));
+		bc.setOnAction(new EventHandler() {
+			@Override
+			public void handle(Event event) {
+				Color bcl = new Color(bc.getValue().getRed(), bc.getValue().getGreen(), bc.getValue().getBlue(), 1);
+				boxCol = VennBase.colorToHex(bcl);
+				box.setStyle("-fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+			}
+		});
+		custOptions.getChildren().add(bc);
+		
+		Image trashI = new Image(getClass().getResourceAsStream("/imgs/trash.png"));
+		ImageView trash = new ImageView(trashI);
+		trash.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		trash.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		Button delete = new Button();
+		delete.setGraphic(trash);
+		delete.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				removeFromList(pane);
+			}
+		});
+		custOptions.getChildren().add(delete);
+		
+		box.hoverProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue && lock) {
+				custOptions.setVisible(true);
+			} else {
+				custOptions.setVisible(false);
+			}
+		});
+		
+		custOptions.hoverProperty().addListener((observabl, oldValue, newValue) -> {
+			if (newValue && lock) {
+				custOptions.toFront();
+				custOptions.setVisible(true);
+			} else {
+				custOptions.setVisible(false);
 			}
 		});
 		
 
-		//changes cursor when moving text box  and  records distance moved
+		//changes cursor when moving text box  and  records distance moved -----------------------------------------------------------------
 		box.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -175,9 +244,9 @@ public class TextBox {
 			}
 		});
 		
-		//xtraInfo box shows when hovered over text box
+		//xtraInfo box shows when hovered over text box ------------------------------------------------------------------------------------
 		box.hoverProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue && !lock) {
+			if (newValue && lock) {
 				xtraBox.toFront();
 				xtraBox.setVisible(true);
 
@@ -187,7 +256,7 @@ public class TextBox {
 		});
 
 		xtraBox.hoverProperty().addListener((observabl, oldValue, newValue) -> {
-			if (newValue && !lock) {
+			if (newValue && lock) {
 				xtraBox.toFront();
 				xtraBox.setVisible(true);
 			} else {
@@ -260,6 +329,7 @@ public class TextBox {
 	public void addToList(Pane pane) {
 		pane.getChildren().add(this.box);
 		pane.getChildren().add(this.xtraBox);
+		pane.getChildren().add(this.custOptions);
 		Record.addTextBox(this);
 	}
 
@@ -267,11 +337,16 @@ public class TextBox {
 	public void removeFromList(Pane pane) {
 		pane.getChildren().remove(this.box);
 		pane.getChildren().remove(this.xtraBox);
+		pane.getChildren().remove(this.custOptions);
 		Record.removeTextBox(this);
 		Record.removeFromIntersetion(this);
 		Record.removeFromLeft(this);
 		Record.removeFromRight(this);
 		Record.removeFromUniversal(this);
+		VennBase.undoList.add(new Boolean(true));
+		VennBase.undoBox = box;
+		FileHandling.saveChanges(VennBase.autoSaveFile, ("Box"+boxNum), "");
+		FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), "");
 	}
 
 	//method to get a text box's text
