@@ -27,9 +27,8 @@ public class Record {
 	double x;
 	double y;
 
-	//Default text box color stored in this circle
-	//		static String textBox = null;
-
+	
+	
 	//resize detection variables
 	double percentX;
 	double percentY;

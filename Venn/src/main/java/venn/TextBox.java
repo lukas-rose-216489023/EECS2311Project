@@ -66,7 +66,7 @@ public class TextBox {
 			}
 		});
 
-
+		
 		//variables for use in resize detection and position detection
 		record = new Record(VennBase.autoSaveFile);
 		record.percentX = box.getLayoutX() / pane.getWidth();

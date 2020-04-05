@@ -942,7 +942,7 @@ public class VennBase extends Application	 {
 	    });
 	    
 	    menuTranslation.setToX(0);
-
+	    
 	    menu.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
