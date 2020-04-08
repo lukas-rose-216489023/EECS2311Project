@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
@@ -310,22 +311,6 @@ public class VennBase extends Application	 {
 		rightCircle.addPoint(p.r9);
 		rightCircle.addPoint(p.r10);
 		rightCircle.addPoint(p.r11);
-
-		
-		//Anchor option button  ----------------------------------------------------------------------------------------------------------------------------	
-		autoSaveFile.WriteToFile("Anchoring off");
-		Button anchorOption = new Button("Anchoring off");
-		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
-		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
-		anchorOption.setStyle("-fx-background-color: #999999");
-		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				undoList.add(anchorOption);
-				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring off");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");Record.printAll();}
-				else {VennBase.anchor = true;anchorOption.setText("Anchoring on");autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
-			}
-		});
 
 
 		//selection ----------------------------------------------------------------------------------------------------------------------------
@@ -690,6 +675,7 @@ public class VennBase extends Application	 {
 		ctrl.layoutYProperty().bind(pane.heightProperty().multiply(98.0/100.0));
 		
 		//Control Buttons --------------------------------------------------------------------------------------------------
+		Button anchorOption = new Button("Anchoring: off");
 		Button capture = new Button("Screenshot");
 		Button reset = new Button("Reset");
 		Button importB = new Button("Import");
@@ -697,7 +683,89 @@ public class VennBase extends Application	 {
 		Button undo = new Button("Undo");
 		Button redo = new Button("Redo");
 		Button compare = new Button("Compare");
+		
+		//Control button icons
+		Image offI = new Image(getClass().getResourceAsStream("/imgs/off.png"));
+		ImageView off = new ImageView(offI);
+		off.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		off.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		Image onI = new Image(getClass().getResourceAsStream("/imgs/on.png"));
+		ImageView on = new ImageView(onI);
+		on.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		on.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		anchorOption.setGraphic(off);
+		anchorOption.graphicTextGapProperty().bind(anchorOption.widthProperty().multiply(25.0/100.0));
+		anchorOption.setAlignment(Pos.CENTER_LEFT);
+		
+		Image camI = new Image(getClass().getResourceAsStream("/imgs/cam.png"));
+		ImageView cam = new ImageView(camI);
+		cam.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		cam.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		capture.setGraphic(cam);
+		capture.graphicTextGapProperty().bind(capture.widthProperty().multiply(25.0/100.0));
+		capture.setAlignment(Pos.CENTER_LEFT);
+		
+		Image resI = new Image(getClass().getResourceAsStream("/imgs/res.png"));
+		ImageView res = new ImageView(resI);
+		res.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		res.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		reset.setGraphic(res);
+		reset.graphicTextGapProperty().bind(reset.widthProperty().multiply(25.0/100.0));
+		reset.setAlignment(Pos.CENTER_LEFT);
+		
+		Image inI = new Image(getClass().getResourceAsStream("/imgs/in.png"));
+		ImageView in = new ImageView(inI);
+		in.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		in.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		importB.setGraphic(in);
+		importB.graphicTextGapProperty().bind(importB.widthProperty().multiply(25.0/100.0));
+		importB.setAlignment(Pos.CENTER_LEFT);
+		
+		Image outI = new Image(getClass().getResourceAsStream("/imgs/out.png"));
+		ImageView out = new ImageView(outI);
+		out.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		out.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		exportB.setGraphic(out);
+		exportB.graphicTextGapProperty().bind(exportB.widthProperty().multiply(25.0/100.0));
+		exportB.setAlignment(Pos.CENTER_LEFT);
+		
+		Image unI = new Image(getClass().getResourceAsStream("/imgs/un.png"));
+		ImageView un = new ImageView(unI);
+		un.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		un.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		undo.setGraphic(un);
+		undo.graphicTextGapProperty().bind(undo.widthProperty().multiply(25.0/100.0));
+		undo.setAlignment(Pos.CENTER_LEFT);
+		
+		Image reI = new Image(getClass().getResourceAsStream("/imgs/re.png"));
+		ImageView re = new ImageView(reI);
+		re.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		re.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		redo.setGraphic(re);
+		redo.graphicTextGapProperty().bind(redo.widthProperty().multiply(25.0/100.0));
+		redo.setAlignment(Pos.CENTER_LEFT);
+		
+		Image compI = new Image(getClass().getResourceAsStream("/imgs/comp.png"));
+		ImageView comp = new ImageView(compI);
+		comp.fitWidthProperty().bind(pane.heightProperty().multiply(3.0/100.0));
+		comp.fitHeightProperty().bind(pane.heightProperty().multiply(3.25/100.0));
+		compare.setGraphic(comp);
+		compare.graphicTextGapProperty().bind(compare.widthProperty().multiply(25.0/100.0));
+		compare.setAlignment(Pos.CENTER_LEFT);
 
+
+		//Anchor option button  ----------------------------------------------------------------------------------------------------------------------------	
+		anchorOption.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
+		anchorOption.prefHeightProperty().bind(pane.heightProperty().multiply(5.0/100.0));
+		anchorOption.setStyle("-fx-background-color: #999999");
+		anchorOption.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				undoList.add(anchorOption);
+				if (VennBase.anchor) {VennBase.anchor = false;anchorOption.setText("Anchoring: off");anchorOption.setGraphic(off);}
+				else {VennBase.anchor = true;anchorOption.setText("Anchoring: on");anchorOption.setGraphic(on);}
+			}
+		});
 
 		//Reset ------------------------------------------------------------------------------------------------------------
 		reset.prefWidthProperty().bind(pane.widthProperty().multiply(20.0/100.0));
@@ -930,16 +998,16 @@ public class VennBase extends Application	 {
 	    
 	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
 
-	    menu.setTranslateX(pane.getWidth()*.18);
+	    menu.setTranslateX(pane.getWidth()*.17);
 	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
 	    
-	    menuTranslation.setFromX(pane.getWidth()*.18);
+	    menuTranslation.setFromX(pane.getWidth()*.17);
 	    
 	    pane.widthProperty().addListener(new ChangeListener<Number>() {
 	    	@Override
 	    	public void changed(ObservableValue<? extends Number> observable, Number oldX, Number newX) {
-	    		menu.setTranslateX(pane.getWidth()*.18);
-	    		menuTranslation.setFromX(pane.getWidth()*.18);
+	    		menu.setTranslateX(pane.getWidth()*.17);
+	    		menuTranslation.setFromX(pane.getWidth()*.17);
 	    	}
 	    });
 	    
