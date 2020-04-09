@@ -149,7 +149,7 @@ public class FileHandling {
 	}
 	
 	
-	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture) {
+	public static void loadImport(File file, Pane pane, Circle circleR, Circle circleL, Button anchorOption, Text title, Text right, Text left, Anchor intersection, Anchor leftCircle, Anchor rightCircle, Points p, Rectangle selection, ColorPicker cp1, ColorPicker cp2, ColorPicker cp3, ColorPicker cp4, ColorPicker cp5, AnchorPane multAdd, Button reset, Button importB, Button exportB, Button capture, Button undo, Button redo, Button compare) {
 		//Read save data
 //		System.out.println("Reading save data...");
 		ArrayList<String> fileContents = new ArrayList<String>();
@@ -174,13 +174,15 @@ public class FileHandling {
 			//Load save data into nodes
 //			System.out.println("Loading save data...");
 			ArrayList<String> prevIndivContent = new ArrayList<String>();
-			for (String line:fileContents) {
+			int iter=0;
+			for (iter=0;iter<fileContents.size();iter++) {
+				String line = fileContents.get(iter);
 				ArrayList<String> indivContent = new ArrayList<String>();
 				String[] split= line.split(" ");
 				for (String indiv:split) {indivContent.add(indiv);}
 				
-				if (indivContent.get(0).equals("BColor")) {
-//					System.out.println("Loading background color...");
+				if (iter==0) {
+					System.out.println("Loading background color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					BackgroundFill backgroundColor = new BackgroundFill(col, null, null);
 					Background background = new Background(backgroundColor);
@@ -188,8 +190,8 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("BColor ", "BColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
 				}
 				
-				else if (indivContent.get(0).equals("RColor")) {
-//					System.out.println("Loading right circle color...");
+				else if (iter==1) {
+					System.out.println("Loading right circle color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					circleR.setFill(col);
 					VennBase.autoSaveFile.overwriteLineInFile("RColor ", "RColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
@@ -199,8 +201,8 @@ public class FileHandling {
 					circleR.setStroke(col);
 				}
 				
-				else if (indivContent.get(0).equals("LColor")) {
-//					System.out.println("Loading left circle color...");
+				else if (iter==2) {
+					System.out.println("Loading left circle color...");
 					Color col = new Color(Double.parseDouble(indivContent.get(1)), Double.parseDouble(indivContent.get(2)), Double.parseDouble(indivContent.get(3)), 0.5);
 					circleL.setFill(col);
 					VennBase.autoSaveFile.overwriteLineInFile("LColor ", "LColor "+col.getRed()+" "+col.getGreen()+" "+col.getBlue());
@@ -210,14 +212,19 @@ public class FileHandling {
 					circleL.setStroke(col);
 				}
 				
-				else if (indivContent.get(0).equals("Anchoring")) {
-//					System.out.println("Loading anchor state...");
+				else if (iter==3) {
+					System.out.println("Loading button color...");
+					VennBase.changeButtonColor(indivContent.get(1), cp1, cp2, cp3, cp4, cp5, anchorOption, reset, importB, exportB, capture, undo, redo, compare);
+				}
+				
+				else if (iter==4) {
+					System.out.println("Loading anchor state...");
 					if (indivContent.get(1).equals("off")) {VennBase.anchor = false;anchorOption.setText("Anchoring off");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
 					else if (indivContent.get(1).equals("on")){VennBase.anchor = true;anchorOption.setText("Anchoring on");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
 				}
 				
-				else if (indivContent.get(0).equals("Title")) {
-//					System.out.println("Loading title text...");
+				else if (iter==5) {
+					System.out.println("Loading title text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					title.setText(text);
@@ -225,8 +232,8 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Title ", "Title "+title.getText());
 				}
 				
-				else if (indivContent.get(0).equals("Right")) {
-//					System.out.println("Loading right text...");
+				else if (iter==6) {
+					System.out.println("Loading right text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					right.setText(text);
@@ -234,8 +241,8 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Right ", "Right "+right.getText());
 				}
 				
-				else if (indivContent.get(0).equals("Left")) {
-//					System.out.println("Loading left text...");
+				else if (iter==7) {
+					System.out.println("Loading left text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
 					left.setText(text);
@@ -243,23 +250,12 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Left ", "Left "+left.getText());
 				}
 				
-				else if (indivContent.get(0).equals("BuColor")) {
-					cp1.setStyle("-fx-background-color: #"+indivContent.get(1));
-					cp2.setStyle("-fx-background-color: #"+indivContent.get(1));
-					cp3.setStyle("-fx-background-color: #"+indivContent.get(1));
-					cp4.setStyle("-fx-background-color: #"+indivContent.get(1));
-					anchorOption.setStyle("-fx-background-color: #"+indivContent.get(1));
-					multAdd.setStyle("-fx-background-color: #"+indivContent.get(1));
-					reset.setStyle("-fx-background-color: #"+indivContent.get(1));
-					importB.setStyle("-fx-background-color: #"+indivContent.get(1));
-					exportB.setStyle("-fx-background-color: #"+indivContent.get(1));
-					capture.setStyle("-fx-background-color: #"+indivContent.get(1));
-					VennBase.autoSaveFile.overwriteLineInFile("BuColor ", "BuColor "+indivContent.get(1));
-				}
-				
 				else {
-					if (indivContent.get(0).contains("Box")) {
-//						System.out.println("Loading "+indivContent.get(0)+"...");
+					if (indivContent.get(0).contains("Record")) {
+						prevIndivContent = indivContent;
+					}
+					else if (indivContent.get(0).contains("Box")) {
+						System.out.println("Loading "+indivContent.get(0)+"...");
 						String text="";
 						int letterCount=0;
 						int i = 2;
@@ -273,13 +269,39 @@ public class FileHandling {
 						b.record.percentY = Double.parseDouble(prevIndivContent.get(2));
 						b.record.inCircleR = Boolean.parseBoolean(prevIndivContent.get(3));
 						b.record.inCircleL = Boolean.parseBoolean(prevIndivContent.get(4));
+						
+						String xtraText="";
+						int xtraLen=0;
+						int xtraCount=0;
+						
+						
+						if (Integer.parseInt((indivContent.get(i+5)))!=0) {
+							
+							xtraLen=Integer.parseInt((indivContent.get(i+5)));
+							xtraCount=0;
+							xtraText="";
+							
+							while (xtraCount<xtraLen){
+								
+								iter++;
+								line = fileContents.get(iter);
+								indivContent = new ArrayList<String>();
+								split= line.split(" ");
+								for (String indiv:split) {indivContent.add(indiv);}
+								
+								xtraText+=line; 
+								xtraCount+=line.length(); 
+
+								if (xtraCount+1<xtraLen) {xtraCount++; xtraText+="\n";}
+							}
+							
+							b.xtraBox.setText(xtraText);
+						}
 
 						FileHandling.saveChanges(VennBase.autoSaveFile, "Record"+b.record.recordNum, "Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL);
 						FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+b.boxNum, "Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()+" "+indivContent.get(i+3)+" "+indivContent.get(i+4));
 					}
 				}
-				
-				prevIndivContent = indivContent;
 			}
 			
 //			System.out.println("Successfully loaded form file -<"+file.getName()+">-!");

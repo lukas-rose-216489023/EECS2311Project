@@ -87,7 +87,9 @@ public class TextBox {
 		boxCol = boxcol;
 		fontCol = fontcol;
 		
-		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
+		VennBase.autoSaveFile.WriteToFile(xtraBox.getText());
+		
 
 		//Text box control selection
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
