@@ -37,7 +37,13 @@ $ java -jar VennApplication.jar
 - [x] Comparing Projects
 - [x] Undo
 - [x] Redo
-- [x] 
+- [x] Reset
+- [x] Customizable Colors for:
+  - [x] Venn Circles
+  - [x] Background
+  - [x] Buttons
+  - [x] Textboxes
+  - [x] Textbox font
 
 
 ## Credits
