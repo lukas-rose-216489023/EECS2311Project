@@ -23,16 +23,21 @@ $ java -jar VennApplication.jar
 ### Mac OS
 1. Open the directory where the VennApplication.jar is located.
 2. Right-click the VennApplication.jar, choose open with/jar Launcher, the application will pop-up.
+
 ## Features
 - [x] Customizable Titles
-- [x] Customizable Circle Colors
-- [x] Customizable Text Boxes
+- [x] Customizable Circles
+- [x] Customizable Text Boxes 
 - [x] Drag and Drop Function
 - [x] Text Box Anchoring in the Circle Sections
-- [x] Save and Export Screenshot (.png)
-- [x] Saving 
-
-
+- [x] Save Screenshot (.png)
+- [x] Save Project work
+- [x] Import Project
+- [x] Export Project
+- [x] Comparing Projects
+- [x] 
+- [x] 
+- [x] 
 
 
 ## Credits
