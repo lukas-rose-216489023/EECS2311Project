@@ -107,6 +107,11 @@ public class VennBase extends Application	 {
 	static ArrayList<String> undoBoxName = new ArrayList<String>();
 	static int undoBoxNameCursor = 0;
 	
+	static ArrayList<Pair<Double, Double>> pointsList = new ArrayList<Pair<Double, Double>>();
+	static int pointsCursor = 0;
+	static ArrayList<Pair<Double, Double>> recordsList = new ArrayList<Pair<Double, Double>>();
+	static int recordsCursor = 0;
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
@@ -148,6 +153,8 @@ public class VennBase extends Application	 {
 		leftTitleList.add(leftTitleCursor, "left"); 
 		rightTitleList.add(rightTitleCursor, "right");
 		
+		pointsList.add(pointsCursor, new Pair(0, 0));
+		recordsList.add(recordsCursor, new Pair(0, 0));
 		
 		//background
 		BackgroundFill backgroundColor = new BackgroundFill(black, null, null);
@@ -888,6 +895,15 @@ public class VennBase extends Application	 {
 							undoBox.setText(undoBoxName.get(--undoBoxNameCursor));
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().add(undoBox);
+						} else if(latest instanceof Long) {
+							Pair p = pointsList.get(--pointsCursor);
+							Pair q = recordsList.get(--recordsCursor);
+							double mx = (double) p.getKey();
+							double my = (double) p.getValue();
+							double rx = (double) q.getKey();
+							double ry = (double) q.getValue();
+							undoBox.setLayoutX(mx - rx);
+							undoBox.setLayoutY(my - ry);
 						}
 						redoList.add(latest);
 						undoList.remove(undoList.size() - 1);
@@ -943,6 +959,15 @@ public class VennBase extends Application	 {
 							undoBox.setText(undoBoxName.get(++undoBoxNameCursor));
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().remove(undoBox);
+						} else if(latest instanceof Long) {
+							Pair p = pointsList.get(++pointsCursor);
+							Pair q = recordsList.get(++recordsCursor);
+							double mx = (double) p.getKey();
+							double my = (double) p.getValue();
+							double rx = (double) q.getKey();
+							double ry = (double) q.getValue();
+							undoBox.setLayoutX(mx + rx);
+							undoBox.setLayoutY(my + ry);
 						}
 						undoList.add(latest);
 						redoList.remove(redoList.size() - 1);
