@@ -36,7 +36,7 @@ $ java -jar VennApplication.jar
 - [x] Export Project
 - [x] Comparing Projects
 - [x] Undo
-- [x] 
+- [x] Redo
 - [x] 
 
 
