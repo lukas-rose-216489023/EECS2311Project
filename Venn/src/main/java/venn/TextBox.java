@@ -243,6 +243,10 @@ public class TextBox {
 					box.setLayoutY(mouseEvent.getSceneY() + record.y);
 					record.percentX = box.getLayoutX() / pane.getWidth();
 					record.percentY = box.getLayoutY() / pane.getHeight();
+					Main.undoList.add(new Long(3));
+					Main.undoBox = box;
+					Main.pointsList.add(++Main.pointsCursor, new Pair(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+					Main.recordsList.add(++Main.recordsCursor, new Pair(record.x, record.y));
 				}
 			}
 		});
