@@ -90,7 +90,12 @@ public class TextBox {
 		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 		VennBase.autoSaveFile.WriteToFile(xtraBox.getText());
 		
-
+		VennBase.undoList.add(new Long(3));
+		VennBase.undoBox = box;
+		VennBase.pointsList.add(++VennBase.pointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
+		VennBase.recordsList.add(++VennBase.recordsCursor, new Point(record.x, record.y));
+		
+		
 		//Text box control selection
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -243,10 +248,6 @@ public class TextBox {
 					box.setLayoutY(mouseEvent.getSceneY() + record.y);
 					record.percentX = box.getLayoutX() / pane.getWidth();
 					record.percentY = box.getLayoutY() / pane.getHeight();
-					Main.undoList.add(new Long(3));
-					Main.undoBox = box;
-					Main.pointsList.add(++Main.pointsCursor, new Pair(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
-					Main.recordsList.add(++Main.recordsCursor, new Pair(record.x, record.y));
 				}
 			}
 		});
@@ -489,6 +490,11 @@ public class TextBox {
 		}
 		FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 		FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+
+		VennBase.undoList.add(new Long(3));
+		VennBase.undoBox = box;
+		VennBase.pointsList.add(++VennBase.pointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
+		VennBase.recordsList.add(++VennBase.recordsCursor, new Point(record.x, record.y));
 	}
 	
 	public static void releaseCheckAll(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {

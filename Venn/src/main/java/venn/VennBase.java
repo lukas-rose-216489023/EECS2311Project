@@ -107,9 +107,9 @@ public class VennBase extends Application	 {
 	static ArrayList<String> undoBoxName = new ArrayList<String>();
 	static int undoBoxNameCursor = 0;
 	
-	static ArrayList<Pair<Double, Double>> pointsList = new ArrayList<Pair<Double, Double>>();
+	static ArrayList<Point> pointsList = new ArrayList<Point>();
 	static int pointsCursor = 0;
-	static ArrayList<Pair<Double, Double>> recordsList = new ArrayList<Pair<Double, Double>>();
+	static ArrayList<Point> recordsList = new ArrayList<Point>();
 	static int recordsCursor = 0;
 	
 	
@@ -153,8 +153,8 @@ public class VennBase extends Application	 {
 		leftTitleList.add(leftTitleCursor, "left"); 
 		rightTitleList.add(rightTitleCursor, "right");
 		
-		pointsList.add(pointsCursor, new Pair(0, 0));
-		recordsList.add(recordsCursor, new Pair(0, 0));
+		pointsList.add(pointsCursor, new Point(0, 0));
+		recordsList.add(recordsCursor, new Point(0, 0));
 		
 		//background
 		BackgroundFill backgroundColor = new BackgroundFill(black, null, null);
@@ -896,12 +896,12 @@ public class VennBase extends Application	 {
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().add(undoBox);
 						} else if(latest instanceof Long) {
-							Pair p = pointsList.get(--pointsCursor);
-							Pair q = recordsList.get(--recordsCursor);
-							double mx = (double) p.getKey();
-							double my = (double) p.getValue();
-							double rx = (double) q.getKey();
-							double ry = (double) q.getValue();
+							Point p = pointsList.get(--pointsCursor);
+							Point q = recordsList.get(--recordsCursor);
+							double mx = (double) p.getX();
+							double my = (double) p.getY();
+							double rx = (double) q.getX();
+							double ry = (double) q.getY();
 							undoBox.setLayoutX(mx - rx);
 							undoBox.setLayoutY(my - ry);
 						}
@@ -960,12 +960,12 @@ public class VennBase extends Application	 {
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().remove(undoBox);
 						} else if(latest instanceof Long) {
-							Pair p = pointsList.get(++pointsCursor);
-							Pair q = recordsList.get(++recordsCursor);
-							double mx = (double) p.getKey();
-							double my = (double) p.getValue();
-							double rx = (double) q.getKey();
-							double ry = (double) q.getValue();
+							Point p = pointsList.get(++pointsCursor);
+							Point q = recordsList.get(++recordsCursor);
+							double mx = (double) p.getX();
+							double my = (double) p.getY();
+							double rx = (double) q.getX();
+							double ry = (double) q.getY();
 							undoBox.setLayoutX(mx + rx);
 							undoBox.setLayoutY(my + ry);
 						}
