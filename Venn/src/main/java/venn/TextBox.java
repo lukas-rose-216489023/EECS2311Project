@@ -148,7 +148,7 @@ public class TextBox {
 					VennBase.undoBox = box;
 					VennBase.undoBoxName.add(++VennBase.undoBoxNameCursor, result.get());
 				}
-				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});
@@ -163,7 +163,7 @@ public class TextBox {
 				Color fcl = new Color(fc.getValue().getRed(), fc.getValue().getGreen(), fc.getValue().getBlue(), 1);
 				fontCol = VennBase.colorToHex(fcl);
 				box.setStyle("-fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
-				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 			}
 		});
 		custOptions.getChildren().add(fc);
@@ -177,7 +177,7 @@ public class TextBox {
 				Color bcl = new Color(bc.getValue().getRed(), bc.getValue().getGreen(), bc.getValue().getBlue(), 1);
 				boxCol = VennBase.colorToHex(bcl);
 				box.setStyle("-fx-background-color: #"+boxCol+"; -fx-text-fill: #"+fontCol);
-				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 			}
 		});
 		custOptions.getChildren().add(bc);
@@ -275,7 +275,7 @@ public class TextBox {
 				if (ctrlSelection) {releaseCheckAll(pane, circleL, circleR, intersection, leftCircle, rightCircle);}
 				releaseCheck(pane, circleL, circleR, intersection, leftCircle, rightCircle);
 
-				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 			}
 		});
@@ -379,7 +379,7 @@ public class TextBox {
 				b.record.percentX = b.box.getLayoutX() / pane.getWidth();
 				b.record.percentY = b.box.getLayoutY() / pane.getHeight();
 				
-				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+b.boxNum, "Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()+" "+b.boxCol+" "+b.fontCol);
+				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+b.boxNum, "Box"+b.boxNum+" "+b.box.getText().length()+" "+b.box.getText()+" "+b.pos+" "+b.box.getLayoutX()+" "+b.box.getLayoutY()+" "+b.boxCol+" "+b.fontCol+" "+b.xtraBox.getLength());
 				FileHandling.saveChanges(autoSaveFile, ("Record"+b.record.recordNum), ("Record"+b.record.recordNum+" "+b.record.percentX+" "+b.record.percentY+" "+b.record.inCircleR+" "+b.record.inCircleL));
 			}
 		}
@@ -484,7 +484,7 @@ public class TextBox {
 		else {
 			Record.addToUniversal(getThis());
 		}
-		FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
+		FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 		FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 
 		VennBase.undoList.add(new Long(3));

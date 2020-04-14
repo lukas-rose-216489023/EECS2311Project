@@ -1,16 +1,16 @@
 BColor 0.0 0.0 0.0
 RColor 0.0 0.0 1.0
-LColor 1.0 0.0 0.0
+LColor 0.9918032884597778 1.0 0.0
 BuColor 999999
-Title Title
-Right right
-Left left
+Title Venn Diagram Demo 
+Right Things I'm good at 
+Left left 
+Record0 0.20625 0.47116999999999987 false true
+Box0 0  left 264.0 310.0298599999999 9ACD32 000000
 
+Record1 0.41875 0.44681000000000004 true true
+Box1 2 A  intersection 536.0 294.00098 9ACD32 000000
 
-
-
-
-
-Record2 0.29765625 0.328774062816616 false true
-Box2 0  left 381.0 216.33333333333331 9ACD32 000000
+Record2 0.62734 0.47116999999999987 true false
+Box2 0  right 802.9952000000001 310.0298599999999 9ACD32 000000
 

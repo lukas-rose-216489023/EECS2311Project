@@ -437,9 +437,7 @@ public class VennBase extends Application	 {
 		multAdd.layoutYProperty().bind(pane.heightProperty().multiply(2.0/100.0));
 		multAdd.prefWidthProperty().bind(pane.widthProperty().multiply(10.0/100.0));
 		multAdd.prefHeightProperty().bind(pane.heightProperty().multiply(15.0/100.0));
-		multAdd.setStyle("-fx-background-color: white; -fx-background-radius: 5;" );
-//		multAdd.setStyle("-fx-background-color: radial-gradient(center 50% 50% , radius 50% , #ffffff, #666666);" + 
-//						"-fx-background-radius: 5;" );
+		multAdd.setStyle("-fx-background-color: #cccccc; -fx-background-radius: 5;" );
 
 		//Color Pickers
 		ColorPicker boxcp = new ColorPicker(Color.YELLOWGREEN);

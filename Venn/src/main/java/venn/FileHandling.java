@@ -218,12 +218,6 @@ public class FileHandling {
 				}
 				
 				else if (iter==4) {
-					System.out.println("Loading anchor state...");
-					if (indivContent.get(1).equals("off")) {VennBase.anchor = false;anchorOption.setText("Anchoring off");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"off");}
-					else if (indivContent.get(1).equals("on")){VennBase.anchor = true;anchorOption.setText("Anchoring on");VennBase.autoSaveFile.overwriteLineInFile("Anchoring ", "Anchoring "+"on");}
-				}
-				
-				else if (iter==5) {
 					System.out.println("Loading title text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
@@ -232,7 +226,7 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Title ", "Title "+title.getText());
 				}
 				
-				else if (iter==6) {
+				else if (iter==5) {
 					System.out.println("Loading right text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
@@ -241,7 +235,7 @@ public class FileHandling {
 					VennBase.autoSaveFile.overwriteLineInFile("Right ", "Right "+right.getText());
 				}
 				
-				else if (iter==7) {
+				else if (iter==6) {
 					System.out.println("Loading left text...");
 					String text="";
 					for (int i=1;i<indivContent.size();i++) {text+=indivContent.get(i)+" ";}
@@ -258,9 +252,14 @@ public class FileHandling {
 						System.out.println("Loading "+indivContent.get(0)+"...");
 						String text="";
 						int letterCount=0;
-						int i = 2;
-						while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
+						int i = 3;
+						if (!(indivContent.get(1).equals("0"))) {
+							i--;
+							while (letterCount<Integer.parseInt(indivContent.get(1))){text+=indivContent.get(i)+" "; letterCount+=indivContent.get(i).length()+1; i++;}
+						}
+						System.out.println(indivContent.get(i+3)+" "+indivContent.get(i+4));
 						TextBox b = new TextBox(pane, text, circleL, circleR, intersection, leftCircle, rightCircle, p, selection, indivContent.get(i+3), indivContent.get(i+4), "");
+						System.out.println("Text Box created..");
 						b.pos = indivContent.get(i);
 						b.box.setLayoutX(Double.parseDouble(indivContent.get(i+1)));
 						b.box.setLayoutY(Double.parseDouble(indivContent.get(i+2)));
@@ -280,7 +279,6 @@ public class FileHandling {
 							xtraLen=Integer.parseInt((indivContent.get(i+5)));
 							xtraCount=0;
 							xtraText="";
-							
 							while (xtraCount<xtraLen){
 								
 								iter++;
