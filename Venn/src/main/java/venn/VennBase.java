@@ -107,10 +107,11 @@ public class VennBase extends Application	 {
 	static ArrayList<String> undoBoxName = new ArrayList<String>();
 	static int undoBoxNameCursor = 0;
 	
-	static ArrayList<Point> pointsList = new ArrayList<Point>();
-	static int pointsCursor = 0;
-	static ArrayList<Point> recordsList = new ArrayList<Point>();
-	static int recordsCursor = 0;
+	static ArrayList<Point> initialPointsList = new ArrayList<Point>();
+	static int initialPointsCursor = -1;
+	
+	static ArrayList<Point> finalPointsList = new ArrayList<Point>();
+	static int finalPointsCursor = -1;
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -153,8 +154,6 @@ public class VennBase extends Application	 {
 		leftTitleList.add(leftTitleCursor, "left"); 
 		rightTitleList.add(rightTitleCursor, "right");
 		
-		pointsList.add(pointsCursor, new Point(0, 0));
-		recordsList.add(recordsCursor, new Point(0, 0));
 		
 		//background
 		BackgroundFill backgroundColor = new BackgroundFill(black, null, null);
@@ -896,14 +895,10 @@ public class VennBase extends Application	 {
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().add(undoBox);
 						} else if(latest instanceof Long) {
-							Point p = pointsList.get(--pointsCursor);
-							Point q = recordsList.get(--recordsCursor);
-							double mx = (double) p.getX();
-							double my = (double) p.getY();
-							double rx = (double) q.getX();
-							double ry = (double) q.getY();
-							undoBox.setLayoutX(mx - rx);
-							undoBox.setLayoutY(my - ry);
+							Point initialP = initialPointsList.get(initialPointsCursor);
+							Point finalP = finalPointsList.get(finalPointsCursor);
+							undoBox.setLayoutX(initialP.getX());
+							undoBox.setLayoutY(initialP.getY());
 						}
 						redoList.add(latest);
 						undoList.remove(undoList.size() - 1);
@@ -960,14 +955,10 @@ public class VennBase extends Application	 {
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().remove(undoBox);
 						} else if(latest instanceof Long) {
-							Point p = pointsList.get(++pointsCursor);
-							Point q = recordsList.get(++recordsCursor);
-							double mx = (double) p.getX();
-							double my = (double) p.getY();
-							double rx = (double) q.getX();
-							double ry = (double) q.getY();
-							undoBox.setLayoutX(mx + rx);
-							undoBox.setLayoutY(my + ry);
+							Point initialP = initialPointsList.get(initialPointsCursor);
+							Point finalP = finalPointsList.get(finalPointsCursor);
+							undoBox.setLayoutX(finalP.getX());
+							undoBox.setLayoutY(finalP.getY());
 						}
 						undoList.add(latest);
 						redoList.remove(redoList.size() - 1);
