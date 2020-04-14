@@ -1,0 +1,297 @@
+	Software Requirements Document  (Version vF)   -   Group 17
+================================================================================================================================
+	Members:		Student IDs:
+	Jawad Ahmed 		216340309
+	Lukas Rose 		216489023
+	Sarwat Shaheen 		214677322
+	Wei Ming Yu		216665424
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	Venn Diagram Visual Tool
+================================================================================================================================
+
+
+	Table of Contents
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.	System Purpose
+2.	System Features	
+3.	Acceptance Requirements
+4.	Use Cases
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+1.	System Purpose
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	The purpose of the Venn Diagram Visual Tool is to allow users to organize their information visually into three 
+	categories, consisting of sections of two circles and a section where the two circles overlap another. Users are
+	able to see the relationships between the sets of information and identify similarities and differences.
+	
+	All essential features of the system are described in this document.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.	System Features
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	The System Features of the Venn Diagram Visual Tool.
+
+	- User can customize the visual look of the application to their preference
+		- Customizable background color of application
+		- Customizable menu button colors 
+		- Customizable menu color
+
+	- User is able to customize their Venn diagram to their preference
+		- Customizable color of each circle
+		- Customizable size of the application/diagram
+		- Customizable titles of the visual diagram
+
+
+	- User can add customizable text elements, which include text element title and extra information box, to the three segments of the Venn diagram
+		- Text elements can be added 
+		- Text elements are able to be dragged and dropped to preferred diagram sections
+		- Customizable color of text element
+		- Customizable color of font 
+	
+	- User can activate and deactivate textboxes being anchored in fixed positions inside the venn diagram conjunctions
+
+	- User can clear all the work and reset the application 
+
+	- User can export a screenshot .PNG file of the Venn Diagram 
+
+	- User can Import past projects to continue on
+		
+	- User can save their work on local directory
+
+	- User can Undo their recent actions in the application
+
+	- User can Redo their recent actions in the application
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+3.	Acceptance Requirements
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	The Acceptance Requirements met by the Venn Diagram Visual Tool.
+
+
+	- User interface includes a two-circle Venn diagram visual with a title, and subtitles above each circle
+
+	- Texts of titles are editable to user
+	
+	- Venn Diagram allows user to add Text Boxes into three separate conjunctions
+
+	- Text boxes can be put in fixed places or according to the user's preference and the options can be toggled
+	
+	- The user interface includes a text adder window, located in the top left corner 
+
+	- Buttons and text fields in the text adder will allow the user to do the following:
+
+		- 'textbox name' text field
+			- Allows users to add a name/title to the textbox to be created
+		
+		- green round '+' button
+			- Allows user to create a new text box to the left side of the user interface which will then
+			   be available for dragging into the diagram sets
+			- This button is also replacable with the 'Enter' key when the user is selecting the 'textbox name' text field
+			   
+		- 'Box Color'
+			- Gives user ability to change the color of the textbox to be created 
+
+		- 'Font Color'
+			- Gives user ability to change the color of the text  in the textbox to be created
+
+		- 'More' / 'Less' button
+			- Allows user to expand and shrink the text adder window to reveal or hide the extra information text field
+		 
+		- 'Extra information' text field
+			- Allows users to add extra information attached to the textbox to be created
+
+
+	- The textboxes created will allow the user to do the following when hovered over with mouse:
+	
+		- 'Text Edit'
+			- Allows user to edit the textbox name of the textbox hovered over
+
+		- 'Box Color'
+			- Gives user ability to change the color of the textbox hovered over
+
+		- 'Font Color'
+			- Gives user ability to change the color of the text  in the textbox hovered over
+
+		- 'Trashcan'
+			- Gives user ability to discard the textbox hovered over
+		
+
+	- The user interface includes  right side panel of oparates icons which expands when hovered over with mouse
+
+	- Buttons in the right side panel will allow the user to do the following:
+
+		- 'Anchoring'	
+			- Allows user to turn anchoring on and off	
+				- When anchoring is on, text boxes will move to preprogrammed positions when dragged within the circles and
+			    	  the screen will stay maximized. This also means only a fixed amount of text boxes can be dragged into each 
+				  region.	
+				- When anchoring is off, text boxes can be dragged anywhere the user prefers and the screen can be resized
+				   according to the user's preference
+
+		- 'Screenshot'	
+			- Lets users save a screenshot image, default in .png file format, of the diagram which will be saved in the directory from 
+			   where the program was run or of users choice
+
+		- 'Reset'
+			- Allows users to clear all user action and reset the application to it's default state
+
+		- 'Import'
+			- Allows users to open and load an exisiting venn diagram project file
+
+		- 'Export'
+			- User can save the project process in a text file which can then be opened again through the 'Import' function 	
+				
+		- 'Undo'
+			- Lets user undo their latest action in the application window
+
+		- 'Redo'
+			- Lets user redo their latest redo action in the application window
+
+		- 'Compare'
+			- Allows users to compare two different venn diagram projects in these aspects:
+				- Comparing title of the diagram
+				- Comparing circle titles 
+				- Comparing textbox texts
+				- Comparing textbox positions (left, right, centre)
+
+		- 'Right Circle Color' 
+			- Gives user ability to change the color the right circle of the diagram
+
+		- 'Left Circle Color' 
+			- Gives user ability to change the color the left circle of the diagram
+
+		- 'Background Color'
+			- Gives user ability to change color of the background of the application
+
+		- 'Button Color'
+			- Gives user ability to change color of the buttons in the application
+
+		- 'Text Adder Background' 
+			- Gives user ability to change color of the text adder, located in the left top corner,
+		                     background
+
+
+	- Text boxes are held either in the section it is dropped into by user, or the preprogrammed positions depending on whether 
+	  anchoring is on or off.
+  
+	- Text boxes exist in a list on the left side of the interface prior to dragging into diagram.
+
+	- The different circles have the same radius.
+
+	- The circles have a set radius (depending on the screen size).
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+4.	Use Cases
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	The steps involved to perform the implementation of a user-personalized venn diagram are as listed below.
+
+	
+	- Changing the left circle color to green
+		1. Hover the mouse above the right side panel
+		2. Click the 'Left Circle Color' color picker
+		3. Click the green color from the color palette
+		
+		The left circle color is now green
+
+	- Adding a new text box to the universal list (list on the left side of the window)
+		1. Click on the green round '+' button located in the text adder window in the top left of the window.
+		
+		Text Box is added to Universal List with no name
+		
+	- Adding 5 new text boxes named 'box 1-5' to the universal list (list on the left side of the window)
+		1. Click on the text field beside the '+' button located in the text adder window in the top left of the window
+		2. Enter 'box 1' into the text field
+		3. Click the 'Enter' key on keyboard
+		4. Repeat steps 2 and 3 for the rest of the texts
+		
+		5 new text boxes are added to Universal List with texts 'box 1-5'.
+
+	- Adding a blue text box named 'Name' with extra information of 'Date of Birth' with white text
+		1. Click on the text field beside the '+' button located in the text adder window in the top left of the window
+		2. Enter 'Name' into the text field
+		3. Click the 'Box Color' and select Blue
+		4. Click the 'Font Color' and select White
+		5. Click the 'More' button
+		6. Enter 'Date of Birth' into the text field under the 'Less' button
+		7. Press the '+' button
+
+		Blue text box named 'Name' and contains extra information of 'Date of Birth' with text color White	
+
+	- Changing the text in a text box to 'Hello World'
+		1. Hover the mouse over the text box wishing to change title
+		2. Click the 'T' button
+		3. Enter "Hello World" and press 'Enter' key
+		
+		The text of the text box now says 'Hello World'
+
+	- Move a text box to the right circle of the Venn Diagram
+		1. Click on the text box 
+		2. Drag the text box to the right circle
+		3. Drop the text box
+		
+		The text box is now in the right circle of the Venn diagram
+		
+	- Delete a text Box
+		1. Hover over the text box with mouse
+		2. Click the 'trashcan' button
+		
+		The text box is no more.
+		
+	- Changing the title of the Venn diagram to 'My Venn Diagram'
+		
+		1. Left click on the title
+		2. Enter 'My Venn Diagram' and press 'Enter' key
+		
+		The title is now changed to 'My Venn Diagram'
+		
+	- Changing the title of the right circle to 'Things I'm Good At'
+		
+		1. Left click on the right circle title.
+		2. Enter 'Things I'm Good At' and press 'Enter' key
+		
+		The right circle title is now changed to 'Things I'm Good At'
+
+	- Saving a screenshot of the diagram named 'VD_1.png'
+		1. Hover the mouse above the right side panel
+		2. Click the 'Screenshot' button
+		3. Name the file 'VD_1'
+		4. Select '.png' for file type and save it in desired local directory location
+
+		Screenshot  'VD_1.png'  is saved 
+
+	- Clear all of the textboxes and reset to the default application settings
+		1. Hover the mouse above the right side panel
+		2. Click the 'Reset' button
+
+	- Change background color of application to white 
+		1. Hover the mouse above the right side panel
+		2. Click the 'Background' color picker
+		3. Click the white color from the color palette
+		
+		The background of the application is now white
+	
+	- Move 3 textboxes from universal list to right circle
+		1. Click on the text boxes one after the other
+		2. Drag the textboxes to the right circle
+		3. Drop the textboxes
+
+		The 3 textboxes have been moved to the right circle 
+		
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
+
+
+
