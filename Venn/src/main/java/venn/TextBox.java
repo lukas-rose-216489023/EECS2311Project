@@ -20,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
 
 public class TextBox {
 	static boolean ctrlSelection = false;
@@ -90,7 +89,7 @@ public class TextBox {
 		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 		VennBase.autoSaveFile.WriteToFile(xtraBox.getText());
 		
-		
+		VennBase.initialPointsList.add(++VennBase.initialPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 		
 		//Text box control selection
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -278,9 +277,6 @@ public class TextBox {
 
 				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol);
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
-				VennBase.undoList.add(new Long(3));
-				VennBase.undoBox = box;
-				VennBase.finalPointsList.add(++VennBase.finalPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 			}
 		});
 
@@ -493,8 +489,7 @@ public class TextBox {
 
 		VennBase.undoList.add(new Long(3));
 		VennBase.undoBox = box;
-		VennBase.pointsList.add(++VennBase.pointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
-		VennBase.recordsList.add(++VennBase.recordsCursor, new Point(record.x, record.y));
+		VennBase.finalPointsList.add(++VennBase.finalPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 	}
 	
 	public static void releaseCheckAll(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {
