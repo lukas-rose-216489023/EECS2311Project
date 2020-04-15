@@ -77,7 +77,9 @@ public class TextBox {
 
 		Record.numBoxes++;
 
-
+		//Setting primary points for each TextBox
+		DragUndo d = new DragUndo(box, box.getLayoutX(), box.getLayoutY());
+		
 		
 		//styling box
 		box.setStyle("-fx-background-color: #"+boxcol+"; -fx-text-fill: #"+fontcol);
@@ -228,7 +230,6 @@ public class TextBox {
 					if (pos.equals("right")) {Record.removeFromRight(getThis());}
 					if (pos.equals("universal")) {Record.removeFromUniversal(getThis());}
 				}
-				VennBase.initialPointsList.add(++VennBase.initialPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 			}
 		});
 
@@ -277,6 +278,12 @@ public class TextBox {
 
 				FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 				FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
+				
+				//Adding drag undo "event" to undo arraylist
+				VennBase.undoList.add(d);
+				
+				//Adding latest point to DragUndo arraylist
+				d.addPoint(box.getLayoutX(), box.getLayoutY());
 			}
 		});
 
