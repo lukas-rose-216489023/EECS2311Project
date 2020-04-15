@@ -107,12 +107,6 @@ public class VennBase extends Application	 {
 	static ArrayList<String> undoBoxName = new ArrayList<String>();
 	static int undoBoxNameCursor = 0;
 	
-	static ArrayList<Point> initialPointsList = new ArrayList<Point>();
-	static int initialPointsCursor = -1;
-	
-	static ArrayList<Point> finalPointsList = new ArrayList<Point>();
-	static int finalPointsCursor = -1;
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override 
@@ -892,11 +886,11 @@ public class VennBase extends Application	 {
 							undoBox.setText(undoBoxName.get(--undoBoxNameCursor));
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().add(undoBox);
-						} else if(latest instanceof Long) {
-							Point initialP = initialPointsList.get(initialPointsCursor);
-							Point finalP = finalPointsList.get(finalPointsCursor);
-							undoBox.setLayoutX(initialP.getX());
-							undoBox.setLayoutY(initialP.getY());
+						} else if(latest instanceof DragUndo) {
+							DragUndo d = (DragUndo) latest;
+							Point p = d.pointsList.get(--d.pointsCursor);
+							d.b.setLayoutX(p.getX());
+							d.b.setLayoutY(p.getY());
 						}
 						redoList.add(latest);
 						undoList.remove(undoList.size() - 1);
@@ -952,11 +946,11 @@ public class VennBase extends Application	 {
 							undoBox.setText(undoBoxName.get(++undoBoxNameCursor));
 						} else if(latest instanceof Boolean) {
 							pane.getChildren().remove(undoBox);
-						} else if(latest instanceof Long) {
-							Point initialP = initialPointsList.get(initialPointsCursor);
-							Point finalP = finalPointsList.get(finalPointsCursor);
-							undoBox.setLayoutX(finalP.getX());
-							undoBox.setLayoutY(finalP.getY());
+						} else if(latest instanceof DragUndo) {
+							DragUndo d = (DragUndo) latest;
+							Point p = d.pointsList.get(++d.pointsCursor);
+							d.b.setLayoutX(p.getX());
+							d.b.setLayoutY(p.getY());
 						}
 						undoList.add(latest);
 						redoList.remove(redoList.size() - 1);
