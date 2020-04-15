@@ -68,4 +68,6 @@ Errors:
 
 	- Save file inefficiencies
 	- xtra info cannot have Box in the first word.
+	- Undoing a delete does not save
+	- compare does not compare xtra box
 	   
