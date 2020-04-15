@@ -493,9 +493,9 @@ public class TextBox {
 		FileHandling.saveChanges(VennBase.autoSaveFile, "Box"+boxNum, "Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 		FileHandling.saveChanges(VennBase.autoSaveFile, ("Record"+record.recordNum), ("Record"+record.recordNum+" "+record.percentX+" "+record.percentY+" "+record.inCircleR+" "+record.inCircleL));
 
-		VennBase.undoList.add(new Long(3));
-		VennBase.undoBox = box;
-		VennBase.finalPointsList.add(++VennBase.finalPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
+		//VennBase.undoList.add(new Long(3));
+		//VennBase.undoBox = box;
+		//VennBase.finalPointsList.add(++VennBase.finalPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 	}
 	
 	public static void releaseCheckAll(Pane pane, Circle circleL, Circle circleR, Anchor intersection, Anchor leftCircle, Anchor rightCircle) {
