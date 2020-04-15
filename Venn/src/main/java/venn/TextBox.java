@@ -91,7 +91,6 @@ public class TextBox {
 		VennBase.autoSaveFile.WriteToFile("Box"+boxNum+" "+box.getText().length()+" "+box.getText()+" "+pos+" "+box.getLayoutX()+" "+box.getLayoutY()+" "+boxCol+" "+fontCol+" "+xtraBox.getLength());
 		VennBase.autoSaveFile.WriteToFile(xtraBox.getText());
 		
-		VennBase.initialPointsList.add(++VennBase.initialPointsCursor, new Point(box.getLayoutX(), box.getLayoutY()));
 		
 		//Text box control selection
 		box.setOnMouseClicked(new EventHandler<MouseEvent>() {
