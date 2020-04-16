@@ -1,0 +1,73 @@
+Things to add:
+
+  	- Save files => Jawad						- Done
+		- import								- Done
+		- export								- Done
+		
+  	- Selection customization => Jawad			- Done
+  		- Delete selection						- Done
+  		- Move selection						- Done
+  	
+  	- Undo/Redo  => Sarwat
+  		- Undo button
+  		- Redo Button
+	
+	- Better multiple adder => Lukas			- Done
+		- Delete selection						- Done
+		- Easier editing						- Done
+ 	
+ 	- Anchoring resize => Jawad					- Will not do
+ 	
+ 	- Better screenshot => Jawad				- Done
+		- Save location							- Done
+		- Window only							- Done
+		- Multiple saves						- Done
+	
+	- Deleting text boxes easier => Jawad		- Done
+	
+	- Text detection => Jawad					- Done
+	  	- something like if same				- Done
+	  	  text exists in right 
+	  	  and left, add to 
+	  	  intersection
+ 	
+ 	- Text box color => Wei Ming
+ 	
+ 	- Reset button => Jawad						- Done
+ 	
+ 	- Trademark icon => Wei Ming
+		- Cool name
+		- Cool icon
+ 	
+ 	- Move buttons to the left	=> Jawad		- Done
+ 		- All buttons hidden					- Done
+ 		- Hover over options					- Done
+ 		
+ 	- control selection options	=> Jawad		- Done
+ 	
+ 	- Customizable background color => Jawad	- Done
+ 		- background 							- Done
+ 	
+ 	- Have a list form as well 
+ 		- Option to switch to list view
+ 		- Option to switch back to venn
+ 		
+Stakeholder requirements:
+
+1. 	Each text box is just a placeholder for the real text. In other words a textbox is just a title and there 
+	could be other text that needs to be accessed.
+   
+2. 	The application must support a compare feature where user can compare current diagram with a saved diagram. 
+	The items to be compared can be anthing; the stakeholder is flexible. This can be done either visually or 
+	via text. 
+	
+   1. Finished by Lukas.
+   2. Finished by Jawad.
+   
+Errors:
+
+	- Save file inefficiencies
+	- xtra info cannot have Box in the first word.
+	- Undoing a delete does not save
+	- compare does not compare xtra box
+	   
