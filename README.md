@@ -26,7 +26,7 @@ $ java -jar VennApplication.jar
 ## Features
 - [x] Customizable Titles
 - [x] Customizable Circle Colors
-- [x] Adding Single or Multiple Customizable Text Boxes
+- [x] Adding Customizable Text Boxes
 - [x] Drag and Drop Text Box Function
 - [x] Text Box Anchoring in the Circle Sections
 - [x] Save Screenshot of Venn Diagram 
@@ -34,7 +34,6 @@ $ java -jar VennApplication.jar
 - [x] Saving the Process Option
 - [x] Undo Option 
 - [x] Import/Export
-- [ ] 3 Circle Layout
 
 
 ## Credits
