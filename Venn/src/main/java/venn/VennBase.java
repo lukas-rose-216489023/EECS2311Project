@@ -1009,8 +1009,7 @@ public class VennBase extends Application	 {
 	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
 	    
 	    menu.setTranslateX(pane.getWidth()*.17);
-	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
-	    
+	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);	    
 	    menuTranslation.setFromX(pane.getWidth()*.17);
 	    
 	    pane.widthProperty().addListener(new ChangeListener<Number>() {
