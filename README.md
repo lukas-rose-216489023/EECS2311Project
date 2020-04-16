@@ -34,6 +34,8 @@ $ java -jar VennApplication.jar
 - [x] Saving the Process Option
 - [x] Undo Option 
 - [x] Import/Export
+- [x] Extra Text Option
+- [x] Compare Option
 
 
 ## Credits
