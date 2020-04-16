@@ -5,6 +5,3 @@ BuColor 999999
 Title Title
 Right right
 Left left
-
-
-

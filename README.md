@@ -1,4 +1,4 @@
-# Venn Application
+# Venn 
   <p align="center">
   <img src="https://www.pitango.com//data/upl/companies/venn%20300x300_transparent%20background.png" /></a>
  
@@ -28,10 +28,17 @@ $ java -jar VennApplication.jar
 
 ## Features
 - [x] Customizable Titles
+<<<<<<< HEAD
 - [x] Customizable Circle Colors
 - [x] Adding Customizable Text Boxes
 - [x] Drag and Drop Text Box Function
+=======
+- [x] Customizable Circles
+- [x] Customizable Text Boxes 
+- [x] Drag and Drop Function
+>>>>>>> branch 'master' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 - [x] Text Box Anchoring in the Circle Sections
+<<<<<<< HEAD
 - [x] Save Screenshot of Venn Diagram 
 - [x] Resizable Window
 - [x] Saving the Process Option
@@ -39,6 +46,22 @@ $ java -jar VennApplication.jar
 - [x] Import/Export
 - [x] Extra Text Option
 - [x] Compare Option
+=======
+- [x] Save Screenshot (.png)
+- [x] Save Project work
+- [x] Import Project
+- [x] Export Project
+- [x] Comparing Projects
+- [x] Undo
+- [x] Redo
+- [x] Reset
+- [x] Customizable Colors for:
+  - [x] Venn Circles
+  - [x] Background
+  - [x] Buttons
+  - [x] Textboxes
+  - [x] Textbox font
+>>>>>>> branch 'master' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 
 
 ## Credits

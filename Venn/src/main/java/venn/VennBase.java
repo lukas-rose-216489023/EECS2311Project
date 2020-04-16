@@ -1,6 +1,14 @@
 package venn;
 
+<<<<<<< HEAD
 //imports
+=======
+import javafx.util.Pair;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+>>>>>>> branch 'master' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
