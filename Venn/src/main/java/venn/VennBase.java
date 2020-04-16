@@ -1,14 +1,6 @@
 package venn;
 
-<<<<<<< HEAD
 //imports
-=======
-import javafx.util.Pair;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
->>>>>>> branch 'master' of https://github.com/lukas-rose-216489023/EECS2311Project.git
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -1017,7 +1009,8 @@ public class VennBase extends Application	 {
 	    menu.getChildren().addAll(anchorOption, capture, reset, importB, exportB, undo, redo, compare, rc, lc, ba, bu, ma);
 	    
 	    menu.setTranslateX(pane.getWidth()*.17);
-	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);	    
+	    TranslateTransition menuTranslation = new TranslateTransition(Duration.millis(500), menu);
+	    
 	    menuTranslation.setFromX(pane.getWidth()*.17);
 	    
 	    pane.widthProperty().addListener(new ChangeListener<Number>() {
