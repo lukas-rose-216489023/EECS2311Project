@@ -6,11 +6,13 @@
  <img src="https://img.shields.io/badge/Code%20Coverage-97%25-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Code%20Language-Java-9cf" /></a>
   <img src="https://img.shields.io/badge/Code%20Style-Standard-brightgreen" /></a>
-  <img src="https://img.shields.io/badge/Version-vM-blue" /></a>
+  <img src="https://img.shields.io/badge/Version-vF-blue" /></a>
  ---
 A desktop platform for creating customizable Venn Diagrams effectively and easily. The purpose of the Venn Diagram Visual Tool is to allow users to organize their information visually into three categories, consisting of sections of two circles and a section where the two circles overlap another. Users are	able to see the relationships between the sets of information and identify similarities and differences.
 
 ## Running the application
+
+When running the application, it is advised to download the executable JAR file in a folder/directory of its own.
 
 ### Linux
 In terminal in proper directory where application is located:
@@ -23,6 +25,7 @@ $ java -jar VennApplication.jar
 ### Mac OS
 1. Open the directory where the VennApplication.jar is located.
 2. Right-click the VennApplication.jar, choose open with/jar Launcher, the application will pop-up.
+
 ## Features
 - [x] Customizable Titles
 - [x] Customizable Circle Colors
